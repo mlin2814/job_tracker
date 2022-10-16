@@ -1,5 +1,5 @@
 import create from "zustand";
-import dummyData from "../dummyData.json";
+import dummyData from "../../dummyData.json";
 
 const useUserStore = create((set) => ({
     userData: dummyData,

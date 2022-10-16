@@ -1,5 +1,5 @@
 import React from "react";
-import useUserStore from "../../stores/userStore";
+import useUserStore from "../stores/userStore";
 
 function Jobs() {
     const userJobs = useUserStore((state) => state.jobs);

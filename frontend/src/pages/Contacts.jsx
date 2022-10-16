@@ -1,5 +1,5 @@
 import React from "react";
-import useUserStore from "../../stores/userStore";
+import useUserStore from "../stores/userStore";
 
 function Contacts() {
     const userContacts = useUserStore((state) => state.contacts);
