@@ -19,7 +19,10 @@ function NavBar() {
                     <Link to={"/contacts"}>Contacts</Link>
                 </li>
                 <li>
-                    <Link to={"/jobs"}>Logout</Link>
+                    <Link to={"/login"}>Login</Link>
+                </li>
+                <li>
+                    <Link to={"/"}>Logout</Link>
                 </li>
             </ul>
         </nav>
