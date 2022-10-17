@@ -5,8 +5,15 @@ const { logger } = require('./middleware/logger')
 const errorHandler = require('./middleware/errorHandler')
 const cookieParser = require('cookie-parser')
 const cors = require('cors')
+const mongoose = require('mongoose')
 const corsOptions = require('./config/corsOptions')
 const PORT = process.env.PORT || 3500
+
+require('dotenv').config();
+
+const DATABASE_CONNECTION = process.env.DATABASE_URL;
+
+mongoose.connect(DATABASE_CONNECTION);
 
 app.use(logger)
 
