@@ -7,7 +7,7 @@ function Skills() {
 
     const skillItems = userSkills.map((skill, i) => (
         <div key={i}>
-            {skill.name}
+            <h4>{skill.name}</h4>
             <ul>
                 <li>Skill ID: {skill.id}</li>
                 <li>Comfort Level: {skill.comfortLevel}/10</li>
@@ -18,7 +18,7 @@ function Skills() {
     return (
         <div>
             <h1>Skills</h1>
-            <ul>{skillItems}</ul>
+            {skillItems}
         </div>
     );
 }

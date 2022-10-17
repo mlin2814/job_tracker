@@ -7,7 +7,7 @@ function NavBar() {
             <h3>NavBar</h3>
             <ul>
                 <li>
-                    <Link to={"/"}>JobTracker</Link>
+                    <Link to={"/"}>Home</Link>
                 </li>
                 <li>
                     <Link to={"/jobs"}>Jobs</Link>

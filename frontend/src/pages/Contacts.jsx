@@ -20,7 +20,7 @@ function Contacts() {
     return (
         <div>
             <h1>Contacts</h1>
-            <ul>{contactItems}</ul>
+            {contactItems}
         </div>
     );
 }
