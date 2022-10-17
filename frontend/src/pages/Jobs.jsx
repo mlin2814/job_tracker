@@ -3,8 +3,6 @@ import useUserStore from "../stores/userStore";
 
 function Jobs() {
     const userJobs = useUserStore((state) => state.jobs);
-    const userSkills = useUserStore((state) => state.skills);
-    const userContacts = useUserStore((state) => state.contacts);
     console.log({ userJobs });
 
     const jobItems = userJobs.map((job, i) => (
