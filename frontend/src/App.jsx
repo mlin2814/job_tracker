@@ -8,16 +8,11 @@ import Restricted from "./pages/Restricted";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Loading from "./components/Loading";
 import { Routes, Route } from "react-router-dom";
-import useUserStore from "./stores/userStore";
 import { useAuth0 } from "@auth0/auth0-react";
 
 function App() {
-    const userId = useUserStore((state) => state.userId);
-    const userName = useUserStore((state) => state.userName);
-    const isLoggedIn = useUserStore((state) => state.isLoggedIn);
     const { isLoading, isAuthenticated, user } = useAuth0();
 
-    console.log({ userId, userName, isLoggedIn });
     console.log({ isLoading, isAuthenticated, user });
 
     if (isLoading) {
