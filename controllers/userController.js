@@ -1,4 +1,3 @@
-const { default: mongoose } = require("mongoose");
 const User = require("../models/User");
 
 exports.createUser = async (req, res) => {
@@ -11,7 +10,7 @@ exports.createUser = async (req, res) => {
         const savedUser = await newUser.save();
 
         if (savedUser){
-            res.status(200).send("User created");
+            res.status(200).send(savedUser);
         } else {
             res.status(500).send({"Error": "Error creating user"});
         }
