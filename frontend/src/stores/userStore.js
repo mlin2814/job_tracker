@@ -8,6 +8,12 @@ const useUserStore = create((set) => ({
     jobs: dummyData.jobs,
     skills: dummyData.skills,
     contacts: dummyData.contacts,
+
+    isLoggedIn: false,
+    setIsLoggedIn: (newLoggedIn) =>
+        set((state) => ({
+            isLoggedIn: newLoggedIn,
+        })),
 }));
 
 export default useUserStore;

@@ -1,6 +1,6 @@
 import React from "react";
 
-function PageNotFound() {
+function NotFound() {
     return (
         <div>
             <h1>404: Page Not Found</h1>
@@ -9,4 +9,4 @@ function PageNotFound() {
     );
 }
 
-export default PageNotFound;
+export default NotFound;
