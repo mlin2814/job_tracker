@@ -7,5 +7,7 @@ router.get('/user', (req, res) => {
 })
 
 router.post('/user', userController.createUser);
+router.put('/user/:userId', userController.updateUser);
+router.delete('/user/:userId', userController.deleteUser);
 
 module.exports = router;
