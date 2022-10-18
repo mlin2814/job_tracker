@@ -29,7 +29,6 @@ function Jobs() {
 
     return (
         <div>
-            {/* <Loading /> */}
             <h1>Jobs</h1>
             {jobItems}
         </div>

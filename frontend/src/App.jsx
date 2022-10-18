@@ -4,7 +4,6 @@ import Jobs from "./pages/Jobs";
 import Skills from "./pages/Skills";
 import Contacts from "./pages/Contacts";
 import NotFound from "./pages/NotFound";
-import Restricted from "./pages/Restricted";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Loading from "./components/Loading";
 import { Routes, Route } from "react-router-dom";
@@ -37,7 +36,6 @@ function App() {
                     path="contacts"
                     element={<ProtectedRoute component={Contacts} />}
                 />
-                <Route path="restricted" element={<Restricted />} />
                 <Route path="*" element={<NotFound />} />
             </Routes>
         </div>
