@@ -25,7 +25,7 @@ function Contacts() {
         console.log({ jobs });
 
         return (
-            <Grid item xs={12} sm={6} key={i}>
+            <Grid item xs={12} md={6} key={i}>
                 <Card>
                     <CardHeader
                         action={
@@ -39,16 +39,19 @@ function Contacts() {
                         <Typography variant="body2">
                             Contact ID: {contact.id}
                         </Typography>
-                        <ul>
-                            <li>Contact ID: {contact.id}</li>
-                            <li>Email: {contact.email}</li>
-                            <li>Phone Number: {contact.phoneNumber}</li>
-                            <li>LinkedIn: {contact.linkedin}</li>
-                            <li>
-                                Affiliated Jobs:{" "}
-                                {jobs.length ? jobs.join(", ") : "None"}
-                            </li>
-                        </ul>
+                        <Typography variant="body2">
+                            Email: {contact.email}
+                        </Typography>
+                        <Typography variant="body2">
+                            Phone Number: {contact.phoneNumber}
+                        </Typography>
+                        <Typography variant="body2">
+                            LinkedIn: {contact.linkedin}
+                        </Typography>
+                        <Typography variant="body2">
+                            Affiliated Jobs:{" "}
+                            {jobs.length ? jobs.join(", ") : "None"}
+                        </Typography>
                     </CardContent>
                 </Card>
             </Grid>
