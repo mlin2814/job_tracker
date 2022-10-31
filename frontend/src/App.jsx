@@ -8,6 +8,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Loading from "./components/Loading";
 import { Routes, Route } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
+import ResponsiveNavBar from "./components/ResponsiveNavBar";
 
 function App() {
     const { isLoading, isAuthenticated, user } = useAuth0();
@@ -20,7 +21,8 @@ function App() {
 
     return (
         <div>
-            <NavBar />
+            <ResponsiveNavBar />
+            {/* <NavBar /> */}
 
             <Routes>
                 <Route index element={<Home />} />
