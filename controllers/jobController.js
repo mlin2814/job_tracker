@@ -36,7 +36,7 @@ exports.updateJob = async (req, res) => {
         if (result.matchedCount == 0){
             res.status(404).send({"Error": "No job found"});
         } else {
-            res.status(200).send("Job updated");
+            res.status(200).send(result);
         }
     } else {
         res.status(400).send({"Error": "Missing parameters"});
