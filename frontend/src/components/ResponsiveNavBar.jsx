@@ -13,6 +13,7 @@ import { Link } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import "../styles.css";
 import logo from "../assets/logo.png";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 const pages = [
     { name: "Jobs", link: "/jobs" },
@@ -36,8 +37,8 @@ function ResponsiveNavBar() {
     // TODO - Cite https://icons8.com/icons/set/job-hunt for logo
 
     return (
-        <AppBar position="static">
-            <Container maxWidth="xl">
+        <AppBar position="sticky" m={0} p={0}>
+            <Container maxWidth="lg">
                 <Toolbar disableGutters>
                     <Link to="/">
                         <Typography
@@ -99,15 +100,25 @@ function ResponsiveNavBar() {
                                 display: { xs: "block", md: "none" },
                             }}
                         >
-                            {pages.map((page) => (
-                                <Link to={page.link} key={page.name}>
+                            {user &&
+                                pages.map((page) => (
+                                    <Link to={page.link} key={page.name}>
+                                        <MenuItem onClick={handleCloseNavMenu}>
+                                            <Typography textAlign="center">
+                                                {page.name}
+                                            </Typography>
+                                        </MenuItem>
+                                    </Link>
+                                ))}
+                            {!user && (
+                                <Link onClick={() => loginWithRedirect()}>
                                     <MenuItem onClick={handleCloseNavMenu}>
                                         <Typography textAlign="center">
-                                            {page.name}
+                                            Log in
                                         </Typography>
                                     </MenuItem>
                                 </Link>
-                            ))}
+                            )}
                         </Menu>
                     </Box>
                     <Typography
@@ -140,23 +151,29 @@ function ResponsiveNavBar() {
                             display: { xs: "none", md: "flex" },
                         }}
                     >
-                        {pages.map((page) => (
-                            <Link to={page.link} key={page.name}>
-                                <Button
-                                    onClick={handleCloseNavMenu}
-                                    sx={{
-                                        my: 2,
-                                        color: "white",
-                                        display: "block",
-                                    }}
-                                >
-                                    {page.name}
-                                </Button>
-                            </Link>
-                        ))}
+                        {user &&
+                            pages.map((page) => (
+                                <Link to={page.link} key={page.name}>
+                                    <Button
+                                        onClick={handleCloseNavMenu}
+                                        sx={{
+                                            my: 2,
+                                            color: "white",
+                                            display: "block",
+                                        }}
+                                    >
+                                        {page.name}
+                                    </Button>
+                                </Link>
+                            ))}
                     </Box>
 
                     <Box sx={{ flexGrow: 0 }}>
+                        {isLoading && (
+                            <LoadingButton loading={isLoading} variant="text">
+                                disabled
+                            </LoadingButton>
+                        )}
                         {!isLoading && !user && (
                             <Button
                                 variant="text"

@@ -1,49 +1,69 @@
-import React from "react";
+import React, { useState } from "react";
 import useUserStore from "../stores/userStore";
-import Card from "@mui/material/Card";
-import CardHeader from "@mui/material/CardHeader";
-import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import { Container } from "@mui/system";
 import Grid from "@mui/material/Grid";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
-
-import IconButton from "@mui/material/IconButton";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
+import SkillCard from "../components/SkillCard";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+import FilterAltIcon from "@mui/icons-material/FilterAlt";
+import Button from "@mui/material/Button";
 
 function Skills() {
     const userSkills = useUserStore((state) => state.skills);
     console.log({ userSkills });
 
+    const [sort, setSort] = useState("");
+
+    const handleChange = (event) => {
+        setSort(event.target.value);
+    };
+
     const skillItems = userSkills.map((skill, i) => (
-        <Grid item xs={12} sm={6} md={4} key={i}>
-            <Card>
-                <CardHeader
-                    action={
-                        <IconButton aria-label="settings">
-                            <MoreVertIcon />
-                        </IconButton>
-                    }
-                    title={skill.name}
-                    subheader={`Comfort Level: ${skill.comfortLevel}/10`}
-                />
-                <CardContent>
-                    <Typography variant="body2">
-                        Skill ID: {skill.id}
-                    </Typography>
-                </CardContent>
-            </Card>
-        </Grid>
+        <SkillCard skill={skill} key={i} />
     ));
 
     return (
-        <Container maxWidth="md">
+        <Container maxWidth="lg">
             <Grid container my={3} alignItems="center">
-                <Grid item xs={8}>
-                    <Typography variant="h3">Skills</Typography>
+                <Grid item xs={2} sm={5}>
+                    <Typography variant="h4">Skills</Typography>
                 </Grid>
-                <Grid item xs={4} textAlign="right">
+                <Grid item xs={3} sx={{ display: { sm: "none" } }}></Grid>
+                <Grid item xs={3} sm={3} textAlign="right" pr={1}>
+                    <Button variant="outlined" startIcon={<FilterAltIcon />}>
+                        Filter
+                    </Button>
+                </Grid>
+                <Grid item xs={3} sm={3}>
+                    <FormControl size="small" fullWidth>
+                        <InputLabel id="demo-simple-select-label">
+                            Sort By
+                        </InputLabel>
+                        <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={sort}
+                            label="sort"
+                            onChange={handleChange}
+                        >
+                            <MenuItem value={"A-Z"}>A-Z</MenuItem>
+                            <MenuItem value={"Z-A"}>Z-A</MenuItem>
+                            <MenuItem value={"Comfort: Asc"}>
+                                Comfort: Asc
+                            </MenuItem>
+                            <MenuItem value={"Comfort: Desc"}>
+                                Comfort: Desc
+                            </MenuItem>
+                        </Select>
+                    </FormControl>
+                </Grid>
+
+                <Grid item xs={1} textAlign="center">
                     <Fab size="small" color="secondary" aria-label="add">
                         <AddIcon />
                     </Fab>
