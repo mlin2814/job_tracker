@@ -10,6 +10,7 @@ const corsOptions = require('./config/corsOptions')
 const connectDB = require('./config/dbConn')
 const mongoose = require('mongoose')
 const { connect } = require('http2')
+const main = require('./public/manifest.json')
 
 const PORT = process.env.PORT || 3500
 
@@ -20,6 +21,7 @@ connectDB()
 app.use(logger)
 
 //app.use(cors(corsOptions))
+app.set('view engine', 'ejs');
 
 app.use(express.json())
 
@@ -27,10 +29,17 @@ app.use(cookieParser())
 
 app.use('/', express.static(path.join(__dirname, 'public')))
 
-app.use('/', require('./routes/root'))
+//app.use('/', require('./routes/root'))
 
 app.use('/users', require('./routes/userRoutes'))
 app.use('/jobs', require('./routes/jobRoutes'))
+
+app.get('*', (req, res) => {
+    res.render(path.resolve(__dirname, 'public', 'index.ejs'), {
+        module: main['src/main.jsx']['file'],
+        stylesheet: main['src/main.css']['file']
+    })
+});
 
 app.all('*', (req, res) => {
     res.status(404)
@@ -42,10 +51,6 @@ app.all('*', (req, res) => {
         res.type('txt').send('404 Not Found')
     }
 })
-
-app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, 'public', 'index.html'));
-  });
 
 app.use(errorHandler)
 
