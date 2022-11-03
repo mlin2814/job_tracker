@@ -156,6 +156,7 @@ function Skills() {
                                     min={0}
                                     max={10}
                                     value={comfortLevel}
+                                    valueLabelDisplay="auto"
                                     onChange={(e) =>
                                         setComfortLevel(e.target.value)
                                     }
