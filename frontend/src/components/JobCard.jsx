@@ -11,18 +11,30 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { useState } from "react";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import useUserStore from "../stores/userStore.js";
 
 function JobCard({ job }) {
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
 
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
+    const deleteJob = useUserStore((state) => state.deleteJob);
 
-    const handleClose = () => {
+    function handleClick(event) {
+        setAnchorEl(event.currentTarget);
+    }
+
+    function handleClose() {
         setAnchorEl(null);
-    };
+    }
+
+    function handleEdit() {
+        handleClose();
+    }
+
+    function handleDelete() {
+        deleteJob(job.id);
+        handleClose();
+    }
 
     return (
         <Grid item xs={12}>
@@ -47,8 +59,10 @@ function JobCard({ job }) {
                     open={open}
                     onClose={handleClose}
                 >
-                    <MenuItem onClick={handleClose}>Edit</MenuItem>
-                    <MenuItem onClick={handleClose}>Delete</MenuItem>
+                    <MenuItem onClick={handleEdit} disabled>
+                        Edit
+                    </MenuItem>
+                    <MenuItem onClick={handleDelete}>Delete</MenuItem>
                 </Menu>
                 <CardContent>
                     <Typography variant="body2">Job ID: {job.id}</Typography>

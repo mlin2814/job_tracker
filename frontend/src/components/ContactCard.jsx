@@ -12,17 +12,27 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 
 function ContactCard({ contact }) {
     const userJobs = useUserStore((state) => state.jobs);
+    const deleteContact = useUserStore((state) => state.deleteContact);
 
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
 
-    const handleClick = (event) => {
+    function handleClick(event) {
         setAnchorEl(event.currentTarget);
-    };
+    }
 
-    const handleClose = () => {
+    function handleClose() {
         setAnchorEl(null);
-    };
+    }
+
+    function handleEdit() {
+        handleClose();
+    }
+
+    function handleDelete() {
+        deleteContact(contact.id);
+        handleClose();
+    }
 
     const jobs = userJobs
         .filter((job) => job.contacts.includes(contact.id))
@@ -52,8 +62,10 @@ function ContactCard({ contact }) {
                     open={open}
                     onClose={handleClose}
                 >
-                    <MenuItem onClick={handleClose}>Edit</MenuItem>
-                    <MenuItem onClick={handleClose}>Delete</MenuItem>
+                    <MenuItem onClick={handleEdit} disabled>
+                        Edit
+                    </MenuItem>
+                    <MenuItem onClick={handleDelete}>Delete</MenuItem>
                 </Menu>
                 <CardContent>
                     <Typography variant="body2">

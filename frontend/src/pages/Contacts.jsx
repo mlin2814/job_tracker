@@ -36,7 +36,11 @@ function Contacts() {
                 </Grid>
                 <Grid item xs={3} sx={{ display: { sm: "none" } }}></Grid>
                 <Grid item xs={3} sm={3} textAlign="right" pr={1}>
-                    <Button variant="outlined" startIcon={<FilterAltIcon />}>
+                    <Button
+                        variant="outlined"
+                        startIcon={<FilterAltIcon />}
+                        disabled
+                    >
                         Filter
                     </Button>
                 </Grid>
@@ -51,6 +55,7 @@ function Contacts() {
                             value={sort}
                             label="sort"
                             onChange={handleChange}
+                            disabled
                         >
                             <MenuItem value={"Last Name: A-Z"}>
                                 Last Name: A-Z

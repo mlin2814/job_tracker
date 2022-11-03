@@ -14,6 +14,35 @@ const useUserStore = create((set) => ({
         set((state) => ({
             isLoggedIn: newLoggedIn,
         })),
+
+    addSkill: (skillName, skillComfort) =>
+        set((state) => {
+            const newId = Math.floor(Math.random() * Date.now()).toString();
+            const newSkill = {
+                id: newId,
+                name: skillName,
+                comfortLevel: skillComfort,
+            };
+
+            return { skills: [...state.skills, newSkill] };
+        }),
+
+    deleteSkill: (skillId) =>
+        set((state) => ({
+            skills: state.skills.filter((skill) => skill.id !== skillId),
+        })),
+
+    deleteContact: (contactId) =>
+        set((state) => ({
+            contacts: state.contacts.filter(
+                (contact) => contact.id !== contactId
+            ),
+        })),
+
+    deleteJob: (jobId) =>
+        set((state) => ({
+            jobs: state.jobs.filter((job) => job.id !== jobId),
+        })),
 }));
 
 export default useUserStore;
