@@ -48,6 +48,15 @@ const useUserStore = create((set) => ({
             ),
         })),
 
+    addJob: (newJob) =>
+        set((state) => {
+            const newId = Math.floor(Math.random() * Date.now()).toString();
+
+            return {
+                jobs: [...state.jobs, { ...newJob, id: newId }],
+            };
+        }),
+
     deleteJob: (jobId) =>
         set((state) => ({
             jobs: state.jobs.filter((job) => job.id !== jobId),

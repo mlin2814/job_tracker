@@ -17,17 +17,6 @@ import Select from "@mui/material/Select";
 import Modal from "@mui/material/Modal";
 import FormControl from "@mui/material/FormControl";
 
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-    PaperProps: {
-        style: {
-            maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-            width: 250,
-        },
-    },
-};
-
 const style = {
     position: "absolute",
     top: "50%",
@@ -42,7 +31,6 @@ const style = {
 
 function Contacts() {
     const userContacts = useUserStore((state) => state.contacts);
-    const userJobs = useUserStore((state) => state.jobs);
     const addContact = useUserStore((state) => state.addContact);
 
     const [sort, setSort] = useState("");
@@ -54,15 +42,10 @@ function Contacts() {
     const [email, setEmail] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
     const [linkedin, setLinkedin] = useState("");
-    // const [relatedJobs, setRelatedJobs] = useState([]);
 
     function handleSort(event) {
         setSort(event.target.value);
     }
-
-    // function handleRelatedJobs(event) {
-    //     setRelatedJobs(event.target.value);
-    // }
 
     const contactItems = userContacts.map((contact, i) => (
         <ContactCard contact={contact} key={i} />
@@ -193,31 +176,6 @@ function Contacts() {
                                 onChange={(e) => setLinkedin(e.target.value)}
                             />
                         </Box>
-
-                        {/* <Box textAlign={"center"} mt={3}>
-                            <FormControl sx={{ m: 1, width: 300 }}>
-                                <InputLabel id="multiple-name-label">
-                                    Related Jobs
-                                </InputLabel>
-                                <Select
-                                    labelId="multiple-name-label"
-                                    id="multiple-name"
-                                    multiple
-                                    value={relatedJobs}
-                                    onChange={handleRelatedJobs}
-                                    input={
-                                        <OutlinedInput label="Related Jobs" />
-                                    }
-                                    MenuProps={MenuProps}
-                                >
-                                    {userJobs.map((job, i) => (
-                                        <MenuItem key={i} value={job}>
-                                            {job.jobTitle}
-                                        </MenuItem>
-                                    ))}
-                                </Select>
-                            </FormControl>
-                        </Box> */}
 
                         <Grid
                             container

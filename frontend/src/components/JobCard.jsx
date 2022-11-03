@@ -82,7 +82,7 @@ function JobCard({ job }) {
                         Location: {job.jobLoc}
                     </Typography>
                     <Typography variant="body2" py={1}>
-                        Company: {job.jobDesc}
+                        Description: {job.jobDesc}
                     </Typography>
                     <Typography variant="body2" py={1}>
                         Deadline: {job.deadline}
