@@ -10,7 +10,6 @@ import { useAuth0 } from "@auth0/auth0-react";
 import ResponsiveNavBar from "./components/ResponsiveNavBar";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
-import 'vite/modulepreload-polyfill'
 
 function App() {
     const { isLoading, isAuthenticated, user } = useAuth0();

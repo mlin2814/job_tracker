@@ -30,7 +30,11 @@ function Jobs() {
                 </Grid>
                 <Grid item xs={3} sx={{ display: { sm: "none" } }}></Grid>
                 <Grid item xs={3} sm={3} textAlign="right" pr={1}>
-                    <Button variant="outlined" startIcon={<FilterAltIcon />}>
+                    <Button
+                        variant="outlined"
+                        startIcon={<FilterAltIcon />}
+                        disabled
+                    >
                         Filter
                     </Button>
                 </Grid>
@@ -45,6 +49,7 @@ function Jobs() {
                             value={sort}
                             label="sort"
                             onChange={handleChange}
+                            disabled
                         >
                             <MenuItem value={"Company: A-Z"}>
                                 Company: A-Z
