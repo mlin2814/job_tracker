@@ -17,6 +17,8 @@ function JobCard({ job }) {
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
 
+    const contacts = useUserStore((state) => state.contacts);
+    const skills = useUserStore((state) => state.skills);
     const deleteJob = useUserStore((state) => state.deleteJob);
 
     function handleClick(event) {
@@ -35,6 +37,13 @@ function JobCard({ job }) {
         deleteJob(job.id);
         handleClose();
     }
+
+    const relatedContacts = contacts
+        .filter((contact) => job.contacts.includes(contact.id))
+        .map((contact) => contact.name);
+    const relatedSkills = skills
+        .filter((skill) => job.skills.includes(skill.id))
+        .map((skill) => skill.name);
 
     return (
         <Grid item xs={12}>
@@ -66,23 +75,32 @@ function JobCard({ job }) {
                 </Menu>
                 <CardContent>
                     <Typography variant="body2">Job ID: {job.id}</Typography>
-                    <Typography variant="body2">
+                    <Typography variant="body2" py={1}>
                         Company: {job.companyName}
                     </Typography>
-                    <Typography variant="body2">
+                    <Typography variant="body2" py={1}>
                         Location: {job.jobLoc}
                     </Typography>
-                    <Typography variant="body2">
+                    <Typography variant="body2" py={1}>
+                        Company: {job.jobDesc}
+                    </Typography>
+                    <Typography variant="body2" py={1}>
                         Deadline: {job.deadline}
                     </Typography>
-                    <Typography variant="body2">
+                    <Typography variant="body2" py={1}>
                         Internship: {job.isInternship ? "Yes" : "No"}
                     </Typography>
-                    <Typography variant="body2">
-                        Skill IDs: {job.skills.join(", ")}
+                    <Typography variant="body2" py={1}>
+                        Related Skills:{" "}
+                        {relatedSkills.length
+                            ? relatedSkills.join(", ")
+                            : "None"}
                     </Typography>
-                    <Typography variant="body2">
-                        Contact IDs: {job.contacts.join(", ")}
+                    <Typography variant="body2" py={1}>
+                        Related Contacts:{" "}
+                        {relatedContacts.length
+                            ? relatedContacts.join(", ")
+                            : "None"}
                     </Typography>
                 </CardContent>
             </Card>
