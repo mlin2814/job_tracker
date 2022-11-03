@@ -129,7 +129,7 @@ function Skills() {
                     </Typography>
 
                     <form onSubmit={handleSubmit}>
-                        <Box display="flex" justifyContent="center" mt={3}>
+                        <Box textAlign={"center"} mt={3}>
                             <TextField
                                 sx={{ width: 300 }}
                                 required

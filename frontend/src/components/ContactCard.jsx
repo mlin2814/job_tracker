@@ -34,10 +34,6 @@ function ContactCard({ contact }) {
         handleClose();
     }
 
-    const relatedJobs = userJobs
-        .filter((job) => job.contacts.includes(contact.id))
-        .map((job) => job.jobTitle);
-
     return (
         <Grid item xs={12} md={6}>
             <Card>
@@ -78,10 +74,6 @@ function ContactCard({ contact }) {
                     </Typography>
                     <Typography variant="body2">
                         LinkedIn: {contact.linkedin}
-                    </Typography>
-                    <Typography variant="body2">
-                        Related Jobs:{" "}
-                        {relatedJobs.length ? relatedJobs.join(", ") : "None"}
                     </Typography>
                 </CardContent>
             </Card>

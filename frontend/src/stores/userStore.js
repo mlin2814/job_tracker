@@ -32,6 +32,15 @@ const useUserStore = create((set) => ({
             skills: state.skills.filter((skill) => skill.id !== skillId),
         })),
 
+    addContact: (newContact) =>
+        set((state) => {
+            const newId = Math.floor(Math.random() * Date.now()).toString();
+
+            return {
+                contacts: [...state.contacts, { ...newContact, id: newId }],
+            };
+        }),
+
     deleteContact: (contactId) =>
         set((state) => ({
             contacts: state.contacts.filter(
