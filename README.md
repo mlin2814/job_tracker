@@ -3,7 +3,6 @@
 This project will be a single page app that allows the user specific areas to focus on to keep more accurate records. The pages will be done with a React front end, and use Node.js with Express for the backend. The project database for storing the jobs/internships, skills, and contact information will be using MongoDB.
 
 ##  Local Backend Deployment Steps
-
 1. Clone from Github
 
 `git clone https://github.com/mlin2814/job_tracker.git`
@@ -22,10 +21,18 @@ ex. `DATABASE_URL=mongodb+srv://<username>:<password>@jobtracker-cluster`
 
 `npm run start` or `npm run dev`
 
-##  Fullstack Deployment Steps
+##  Frontend Deployment Steps
 All frontend development logic can be found in `./frontend`. Frontend changes can be independently tested using npm commands within that directory. 
 
-To deploy the fullstack app, first perform the backend deployment steps then do the following:
+The following environment variables are required for Auth0 in `./frontend/.env`:
+
+ - `VITE_DOMAIN`
+ -  `VITE_CLIENT_ID`
+
+Frontend can then be tested independently via `npm dev`
+
+##  Fullstack Deployment Steps
+To deploy the fullstack app, first perform the backend and frontend deployment steps then do the following:
 
  1. Change directory to `./frontend`
 
@@ -34,3 +41,5 @@ To deploy the fullstack app, first perform the backend deployment steps then do 
 	This performs a vite build as defined in `./frontend/vite.config.js` which builds a main.js, main.css and manifest.json file into the `./public` directory. The node server is set to use the correct references defined by manifest.json in the index.ejs template.
 	
  3. Return to the root directory and run `npm run start` 
+
+ 4. Clean up any artifacts or old builds
