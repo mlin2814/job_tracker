@@ -19,7 +19,7 @@ connectDB()
 
 app.use(logger)
 
-app.use(cors(corsOptions))
+//app.use(cors(corsOptions))
 
 app.use(express.json())
 
@@ -42,6 +42,10 @@ app.all('*', (req, res) => {
         res.type('txt').send('404 Not Found')
     }
 })
+
+app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'public', 'index.html'));
+  });
 
 app.use(errorHandler)
 

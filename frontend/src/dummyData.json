@@ -1,0 +1,103 @@
+{
+    "id": "634c8f21fc13ae30ab00083e",
+    "username": "fakeuser1",
+    "skills": [
+        {
+            "id": "634c8f21fc13ae30ab00083f",
+            "name": "JavaScript",
+            "comfortLevel": 8
+        },
+        {
+            "id": "634c8f21fc13ae30ab000840",
+            "name": "MongoDB",
+            "comfortLevel": 4
+        },
+        {
+            "id": "634c8f21fc13ae30ab000841",
+            "name": "Python",
+            "comfortLevel": 10
+        },
+        {
+            "id": "634c8f21fc13ae30ab000842",
+            "name": "Swift",
+            "comfortLevel": 6
+        },
+        {
+            "id": "634c8f21fc13ae30ab000843",
+            "name": "React",
+            "comfortLevel": 7
+        }
+    ],
+    "contacts": [
+        {
+            "id": "634c8f21fc13ae30ab000844",
+            "name": "Morissa Franzen",
+            "phoneNumber": "+1-949-559-7908",
+            "email": "mfranzen0@homestead.com",
+            "linkedin": "https://www.linkedin.com/in/mfranzen0"
+        },
+        {
+            "id": "634c8f21fc13ae30ab000845",
+            "name": "Marty Edghinn",
+            "phoneNumber": "+58-526-872-7547",
+            "email": "medghinn1@twitter.com",
+            "linkedin": "https://www.linkedin.com/in/medghinn1"
+        },
+        {
+            "id": "634c8f21fc13ae30ab000846",
+            "name": "Charmion Cicullo",
+            "phoneNumber": "+507-578-598-8670",
+            "email": "ccicullo2@marriott.com",
+            "linkedin": "https://www.linkedin.com/in/ccicullo2"
+        },
+        {
+            "id": "634c8f21fc13ae30ab000847",
+            "name": "Dolli Offiler",
+            "phoneNumber": "+33-799-784-4345",
+            "email": "doffiler3@mozilla.org",
+            "linkedin": "https://www.linkedin.com/in/doffiler3"
+        },
+        {
+            "id": "634c8f21fc13ae30ab000848",
+            "name": "Horace Kremer",
+            "phoneNumber": "+51-559-467-5538",
+            "email": "hkremer4@weibo.com",
+            "linkedin": "https://www.linkedin.com/in/hkremer4"
+        }
+    ],
+    "jobs": [
+        {
+            "id": "634c8f21fc13ae30ab000849",
+            "jobTitle": "Software Engineer I",
+            "companyName": "Nike",
+            "jobDesc": "As a Software Engineer I on the Omnichannel Product Platform team, you will be developing and maintaining the core digital catalog of Nike’s physical products. This catalog platform serves this product information across Nike’s digital experiences, retail stores, and Nike’s retail partners. We work in real-time, so this platform is responsible for efficiently managing thousands of products, processing large data streams in and serving this information at scale!",
+            "jobLoc": "Beaverton, OR",
+            "deadline": "2022-11-17",
+            "isInternship": false,
+            "skills": ["634c8f21fc13ae30ab00083f", "634c8f21fc13ae30ab000840"],
+            "contacts": ["634c8f21fc13ae30ab000844", "634c8f21fc13ae30ab000845"]
+        },
+        {
+            "id": "634c8f21fc13ae30ab00084a",
+            "jobTitle": "Software Engineer",
+            "companyName": "PayPal",
+            "jobDesc": "Software Engineers at PayPal develop innovative solutions and high-quality products that touch millions of people every day around the globe. Our engineers solve some of the most complex technical problems in the world of connected payments across all business units, including PayPal, Braintree, Venmo, Paydiant and others. We are looking for the highest levels of technical talent and programming skills, as well as a keen desire to deeply understand our products and services to push our technology forward with respect to functionality, performance, reliability, and scalability.",
+            "jobLoc": "San Jose, CA",
+            "deadline": "2022-11-30",
+            "isInternship": false,
+            "skills": ["634c8f21fc13ae30ab000841", "634c8f21fc13ae30ab000843"],
+            "contacts": ["634c8f21fc13ae30ab000846", "634c8f21fc13ae30ab000848"]
+        },
+        {
+            "id": "634c8f21fc13ae30ab00084b",
+            "jobTitle": "Software Engineering Intern",
+            "companyName": "Pinterest",
+            "jobDesc": "Millions of people across the world come to Pinterest to find new ideas every day. It's where they get inspiration, dream about new possibilities and plan for what matters most. Our mission is to help those people find their inspiration and create a life they love. In your role, you'll be challenged to take on work that upholds this mission and pushes Pinterest forward. You'll grow as a person and leader in your field, all the while helping Pinners make their lives better in the positive corner of the internet.",
+            "jobLoc": "Remote",
+            "deadline": "2022-12-05",
+            "isInternship": true,
+            "skills": ["634c8f21fc13ae30ab000841"],
+            "contacts": []
+        }
+    ]
+}
