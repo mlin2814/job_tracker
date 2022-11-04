@@ -8,7 +8,7 @@ export default function Create() {
    description: "",
    location: "",
    date: "",
-   skills: [""]
+   skills: ""
  });
  const navigate = useNavigate();
  
@@ -24,21 +24,21 @@ export default function Create() {
    e.preventDefault();
  
    // When a post request is sent to the create url, we'll add a new record to the database.
-   const newPerson = { ...form };
+   const newJob = { ...form };
  
    await fetch("http://localhost:5000/record/add", {
      method: "POST",
      headers: {
        "Content-Type": "application/json",
      },
-     body: JSON.stringify(newPerson),
+     body: JSON.stringify(newJob),
    })
    .catch(error => {
      window.alert(error);
      return;
    });
  
-   setForm({ title: "", company: "", description: "", location: "", date: "", skills: [""] });
+   setForm({ title: "", company: "", description: "", location: "", date: "", skills: "" });
    navigate("/");
  }
  
@@ -97,58 +97,60 @@ export default function Create() {
            onChange={(e) => updateForm({ date: e.target.value })}
          />
        </div>
+       {/* <div className="form-group">
+         <div className="form-check form-check-inline">
+            <select onChange={(e) => updateForm({ skills: e.target.value })}>
+                <option value="python">Python</option>
+                <option value="javascript">JavaScript</option>
+                <option value="sql">SQL</option>
+                <option value="html">HTML</option>
+                <option value="css">CSS</option>
+            </select>
+        </div>
+       </div> */}
        <div className="form-group">
-         <label htmlFor="description">description</label>
-         <input
-           type="text"
-           className="form-control"
-           id="description"
-           value={form.description}
-           onChange={(e) => updateForm({ description: e.target.value })}
-         />
-       </div>
-       <div className="form-group">
          <div className="form-check form-check-inline">
            <input
              className="form-check-input"
              type="radio"
-             name="positionOptions"
-             id="positionIntern"
-             value="Intern"
-             checked={form.level === "Intern"}
-             onChange={(e) => updateForm({ level: e.target.value })}
+             name="jobOptions"
+             id="jobPython"
+             value="Python"
+             checked={form.level === "Python"}
+             onChange={(e) => updateForm({ skills: e.target.value })}
            />
-           <label htmlFor="positionIntern" className="form-check-label">Intern</label>
+           <label htmlFor="jobPython" className="form-check-label">Python</label>
          </div>
          <div className="form-check form-check-inline">
            <input
              className="form-check-input"
              type="radio"
-             name="positionOptions"
-             id="positionJunior"
-             value="Junior"
-             checked={form.level === "Junior"}
-             onChange={(e) => updateForm({ level: e.target.value })}
+             name="jobOptions"
+             id="jobJavascript"
+             value="Javascript"
+             checked={form.level === "Javascript"}
+             onChange={(e) => updateForm({ skills: e.target.value })}
            />
-           <label htmlFor="positionJunior" className="form-check-label">Junior</label>
+           <label htmlFor="jobJavascript" className="form-check-label">Javascript</label>
          </div>
          <div className="form-check form-check-inline">
            <input
              className="form-check-input"
              type="radio"
-             name="positionOptions"
-             id="positionSenior"
-             value="Senior"
-             checked={form.level === "Senior"}
-             onChange={(e) => updateForm({ level: e.target.value })}
+             name="jobOptions"
+             id="jobSQL"
+             value="SQL"
+             checked={form.level === "SQL"}
+             onChange={(e) => updateForm({ skills: e.target.value })}
            />
-           <label htmlFor="positionSenior" className="form-check-label">Senior</label>
+           <label htmlFor="jobSQL" className="form-check-label">SQL</label>
          </div>
+         
        </div>
        <div className="form-group">
          <input
            type="submit"
-           value="Create person"
+           value="Create job"
            className="btn btn-primary"
          />
        </div>

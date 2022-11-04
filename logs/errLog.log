@@ -1,0 +1,4 @@
+20221016	22:10:08	9b77e703-d8a7-47dd-a303-312e06bb9fcc	Error: Not allowed by CORS	OPTIONS	/	https://www.google.com
+20221016	22:10:08	ff9a0cc2-0622-4029-b306-d1ad3183c971	Error: Not allowed by CORS	GET	/	https://www.google.com
+20221103	00:40:27	ea7d7652-739f-44a9-a5f2-cec95068bfde	ValidationError: Jobs validation failed: user: Cast to ObjectId failed for value "Brandley" (type string) at path "user" because of "BSONTypeError"	POST	/jobs	undefined
+20221103	00:41:08	c0a3f119-5700-4689-9cb4-e02caa5b79d0	SyntaxError: Unexpected token b in JSON at position 22	POST	/jobs	undefined
