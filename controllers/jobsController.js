@@ -1,7 +1,7 @@
-const Note = require('../models/Jobs')
+const Jobs = require('../models/Jobs')
 const User = require('../models/User')
 const asyncHandler = require('express-async-handler')
-const Jobs = require('../models/Jobs')
+// const Jobs = require('../models/Jobs')
 
 // @desc Get all notes 
 // @route GET /notes
