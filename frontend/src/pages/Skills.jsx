@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import useUserStore from "../stores/userStore";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -30,30 +30,71 @@ const style = {
 };
 
 function Skills() {
-    const userSkills = useUserStore((state) => state.skills);
-    const addSkill = useUserStore((state) => state.addSkill);
-
     const [sort, setSort] = useState("");
     const [open, setOpen] = useState(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
-
     const [name, setName] = useState("");
     const [comfortLevel, setComfortLevel] = useState(0);
+
+    const userSkills = useUserStore((state) => state.skills);
+    const setSkills = useUserStore((state) => state.setSkills);
+    const addSkill = useUserStore((state) => state.addSkill);
+    const skillItems = userSkills.map((skill, i) => (
+        <SkillCard skill={skill} key={i} />
+    ));
+
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
 
     const handleChange = (event) => {
         setSort(event.target.value);
     };
-
-    const skillItems = userSkills.map((skill, i) => (
-        <SkillCard skill={skill} key={i} />
-    ));
 
     function handleSubmit(event) {
         event.preventDefault();
         addSkill(name, comfortLevel);
         handleClose();
     }
+
+    // Any time sort changes, re-sort based on user's selection from drop-down
+    useEffect(() => {
+        if (sort === "A-Z") {
+            setSkills(
+                [...userSkills].sort((a, b) => {
+                    if (a.name < b.name) {
+                        return -1;
+                    }
+                    if (a.name > b.name) {
+                        return 1;
+                    }
+                    return 0;
+                })
+            );
+        } else if (sort === "Z-A") {
+            setSkills(
+                [...userSkills].sort((a, b) => {
+                    if (a.name < b.name) {
+                        return 1;
+                    }
+                    if (a.name > b.name) {
+                        return -1;
+                    }
+                    return 0;
+                })
+            );
+        } else if (sort === "Comfort: Asc") {
+            setSkills(
+                [...userSkills].sort((a, b) => {
+                    return a.comfortLevel - b.comfortLevel;
+                })
+            );
+        } else if (sort === "Comfort: Desc") {
+            setSkills(
+                [...userSkills].sort((a, b) => {
+                    return b.comfortLevel - a.comfortLevel;
+                })
+            );
+        }
+    }, [sort]);
 
     return (
         <Container maxWidth="lg">
@@ -66,7 +107,7 @@ function Skills() {
                     <Button
                         variant="outlined"
                         startIcon={<FilterAltIcon />}
-                        disabled
+                        // disabled
                     >
                         Filter
                     </Button>
@@ -82,10 +123,10 @@ function Skills() {
                             value={sort}
                             label="sort"
                             onChange={handleChange}
-                            disabled
+                            // disabled
                         >
-                            <MenuItem value={"A-Z"}>A-Z</MenuItem>
-                            <MenuItem value={"Z-A"}>Z-A</MenuItem>
+                            <MenuItem value={"A-Z"}>Name: A-Z</MenuItem>
+                            <MenuItem value={"Z-A"}>Name: Z-A</MenuItem>
                             <MenuItem value={"Comfort: Asc"}>
                                 Comfort: Asc
                             </MenuItem>

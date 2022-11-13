@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import useUserStore from "../stores/userStore";
 import Typography from "@mui/material/Typography";
 import { Container } from "@mui/system";
@@ -29,32 +29,60 @@ const style = {
 };
 
 function Contacts() {
-    const userContacts = useUserStore((state) => state.contacts);
-    const addContact = useUserStore((state) => state.addContact);
-
     const [sort, setSort] = useState("");
     const [open, setOpen] = useState(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
-
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
     const [linkedin, setLinkedin] = useState("");
 
-    function handleSort(event) {
-        setSort(event.target.value);
-    }
-
+    const userContacts = useUserStore((state) => state.contacts);
+    const setContacts = useUserStore((state) => state.setContacts);
+    const addContact = useUserStore((state) => state.addContact);
     const contactItems = userContacts.map((contact, i) => (
         <ContactCard contact={contact} key={i} />
     ));
+
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+    function handleSort(event) {
+        setSort(event.target.value);
+    }
 
     function handleSubmit(event) {
         event.preventDefault();
         addContact({ name, email, phoneNumber, linkedin });
         handleClose();
     }
+
+    // Any time sort changes, re-sort based on user's selection from drop-down
+    useEffect(() => {
+        if (sort === "A-Z") {
+            setContacts(
+                [...userContacts].sort((a, b) => {
+                    if (a.name < b.name) {
+                        return -1;
+                    }
+                    if (a.name > b.name) {
+                        return 1;
+                    }
+                    return 0;
+                })
+            );
+        } else if (sort === "Z-A") {
+            setContacts(
+                [...userContacts].sort((a, b) => {
+                    if (a.name < b.name) {
+                        return 1;
+                    }
+                    if (a.name > b.name) {
+                        return -1;
+                    }
+                    return 0;
+                })
+            );
+        }
+    }, [sort]);
 
     return (
         <Container maxWidth="lg">
@@ -67,7 +95,7 @@ function Contacts() {
                     <Button
                         variant="outlined"
                         startIcon={<FilterAltIcon />}
-                        disabled
+                        // disabled
                     >
                         Filter
                     </Button>
@@ -83,20 +111,10 @@ function Contacts() {
                             value={sort}
                             label="sort"
                             onChange={handleSort}
-                            disabled
+                            // disabled
                         >
-                            <MenuItem value={"Last Name: A-Z"}>
-                                Last Name: A-Z
-                            </MenuItem>
-                            <MenuItem value={"Last Name: Z-A"}>
-                                Last Name: Z-A
-                            </MenuItem>
-                            <MenuItem value={"First Name: A-Z"}>
-                                First Name: A-Z
-                            </MenuItem>
-                            <MenuItem value={"First Name: Z-A"}>
-                                First Name: Z-A
-                            </MenuItem>
+                            <MenuItem value={"A-Z"}>Name: A-Z</MenuItem>
+                            <MenuItem value={"Z-A"}>Name: Z-A</MenuItem>
                         </Select>
                     </FormControl>
                 </Grid>

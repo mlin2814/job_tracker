@@ -27,10 +27,15 @@ const useUserStore = create((set) => ({
             return { skills: [...state.skills, newSkill] };
         }),
 
+    setSkills: (newSkills) => set((state) => (state.skills = newSkills)),
+
     deleteSkill: (skillId) =>
         set((state) => ({
             skills: state.skills.filter((skill) => skill.id !== skillId),
         })),
+
+    setContacts: (newContacts) =>
+        set((state) => (state.contacts = newContacts)),
 
     addContact: (newContact) =>
         set((state) => {
