@@ -20,13 +20,8 @@ connectDB()
 
 app.use(logger)
 
-<<<<<<< HEAD
-//app.use(cors(corsOptions))
-app.set('view engine', 'ejs');
-=======
-// app.use(cors(corsOptions))
 app.use(cors())
->>>>>>> matthew
+app.set('view engine', 'ejs');
 
 app.use(express.json())
 
@@ -34,12 +29,8 @@ app.use(cookieParser())
 
 app.use('/', express.static(path.join(__dirname, 'public')))
 
-<<<<<<< HEAD
 //app.use('/', require('./routes/root'))
 
-=======
-app.use('/', require('./routes/root'))
->>>>>>> matthew
 app.use('/users', require('./routes/userRoutes'))
 app.use('/jobs', require('./routes/jobRoutes'))
 app.use('/contacts', require('./routes/contactRoutes'))
