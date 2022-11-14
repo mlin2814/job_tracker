@@ -15,6 +15,7 @@ import TextField from "@mui/material/TextField";
 import { OutlinedInput } from "@mui/material";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
+import moment from "moment";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -99,7 +100,7 @@ function Jobs() {
         // TODO - Re-filter userJobs into filteredJobs based on filter value
         // TODO - If filter is "", just set filteredJobs to the same as userJobs
 
-        // TODO - Re-sort the filteredJobs
+        // Re-sort the filteredJobs if sort or userJobs changes
         if (sort === "Job Title: A-Z") {
             setFilteredJobs(
                 [...filteredJobs].sort((a, b) => {
@@ -153,20 +154,16 @@ function Jobs() {
             );
         }
         if (sort === "Deadline (soonest first)") {
-            // TODO - Convert string date into number so they can be compared for sorting
-            console.log("Sort by deadline, soonest first");
             setFilteredJobs(
                 [...filteredJobs].sort((a, b) => {
-                    return a.deadline - b.deadline;
+                    return moment(a.deadline) - moment(b.deadline);
                 })
             );
         }
         if (sort === "Deadline (latest first)") {
-            // TODO - Convert string date into number so they can be compared for sorting
-            console.log("Sort by deadline, latest first");
             setFilteredJobs(
                 [...filteredJobs].sort((a, b) => {
-                    return b.deadline - a.deadline;
+                    return moment(b.deadline) - moment(a.deadline);
                 })
             );
         }
