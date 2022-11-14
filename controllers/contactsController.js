@@ -1,7 +1,5 @@
 const Contact = require('../models/Contact')
-// const Jobs = require('../models/Jobs')
 const asyncHandler = require('express-async-handler')
-// const bcrypt = require('bcrypt')
 
 // get all users; get /users; private
 const getAllContacts = asyncHandler(async (req, res) => {
