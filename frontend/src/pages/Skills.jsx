@@ -99,23 +99,14 @@ function Skills() {
     return (
         <Container maxWidth="lg">
             <Grid container my={3} alignItems="center">
-                <Grid item xs={2} sm={5}>
+                <Grid item xs={5} sm={8}>
                     <Typography variant="h4">Skills</Typography>
                 </Grid>
                 <Grid item xs={3} sx={{ display: { sm: "none" } }}></Grid>
-                <Grid item xs={3} sm={3} textAlign="right" pr={1}>
-                    <Button
-                        variant="outlined"
-                        startIcon={<FilterAltIcon />}
-                        // disabled
-                    >
-                        Filter
-                    </Button>
-                </Grid>
                 <Grid item xs={3} sm={3}>
                     <FormControl size="small" fullWidth>
                         <InputLabel id="demo-simple-select-label">
-                            Sort By
+                            Sort
                         </InputLabel>
                         <Select
                             labelId="demo-simple-select-label"
@@ -123,7 +114,6 @@ function Skills() {
                             value={sort}
                             label="sort"
                             onChange={handleChange}
-                            // disabled
                         >
                             <MenuItem value={"A-Z"}>Name: A-Z</MenuItem>
                             <MenuItem value={"Z-A"}>Name: Z-A</MenuItem>

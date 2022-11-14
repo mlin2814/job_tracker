@@ -53,6 +53,8 @@ const useUserStore = create((set) => ({
             ),
         })),
 
+    setJobs: (newJobs) => set((state) => (state.jobs = newJobs)),
+
     addJob: (newJob) =>
         set((state) => {
             const newId = Math.floor(Math.random() * Date.now()).toString();

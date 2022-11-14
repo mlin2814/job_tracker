@@ -87,31 +87,19 @@ function Contacts() {
     return (
         <Container maxWidth="lg">
             <Grid container my={3} alignItems="center">
-                <Grid item xs={2} sm={5}>
+                <Grid item xs={5} sm={8}>
                     <Typography variant="h4">Contacts</Typography>
                 </Grid>
                 <Grid item xs={3} sx={{ display: { sm: "none" } }}></Grid>
-                <Grid item xs={3} sm={3} textAlign="right" pr={1}>
-                    <Button
-                        variant="outlined"
-                        startIcon={<FilterAltIcon />}
-                        // disabled
-                    >
-                        Filter
-                    </Button>
-                </Grid>
                 <Grid item xs={3} sm={3}>
                     <FormControl size="small" fullWidth>
-                        <InputLabel id="simple-select-label">
-                            Sort By
-                        </InputLabel>
+                        <InputLabel id="simple-select-label">Sort</InputLabel>
                         <Select
                             labelId="simple-select-label"
                             id="simple-select"
                             value={sort}
                             label="sort"
                             onChange={handleSort}
-                            // disabled
                         >
                             <MenuItem value={"A-Z"}>Name: A-Z</MenuItem>
                             <MenuItem value={"Z-A"}>Name: Z-A</MenuItem>

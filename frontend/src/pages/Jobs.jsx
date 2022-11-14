@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import useUserStore from "../stores/userStore";
 import { Container, Typography, Grid, Fab } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
@@ -43,9 +43,12 @@ function Jobs() {
     const userJobs = useUserStore((state) => state.jobs);
     const userContacts = useUserStore((state) => state.contacts);
     const userSkills = useUserStore((state) => state.skills);
+    const setJobs = useUserStore((state) => state.setJobs);
     const addJob = useUserStore((state) => state.addJob);
 
+    const [filteredJobs, setFilteredJobs] = useState(userJobs);
     const [sort, setSort] = useState("");
+    const [filter, setFilter] = useState("");
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -88,7 +91,86 @@ function Jobs() {
         setRelatedSkills(event.target.value);
     }
 
-    const jobItems = userJobs.map((job, i) => <JobCard job={job} key={i} />);
+    const jobItems = filteredJobs.map((job, i) => (
+        <JobCard job={job} key={i} />
+    ));
+
+    useEffect(() => {
+        // TODO - Re-filter userJobs into filteredJobs based on filter value
+        // TODO - If filter is "", just set filteredJobs to the same as userJobs
+
+        // TODO - Re-sort the filteredJobs
+        if (sort === "Job Title: A-Z") {
+            setFilteredJobs(
+                [...filteredJobs].sort((a, b) => {
+                    if (a.jobTitle < b.jobTitle) {
+                        return -1;
+                    }
+                    if (a.jobTitle > b.jobTitle) {
+                        return 1;
+                    }
+                    return 0;
+                })
+            );
+        }
+        if (sort === "Job Title: Z-A") {
+            setFilteredJobs(
+                [...filteredJobs].sort((a, b) => {
+                    if (a.jobTitle < b.jobTitle) {
+                        return 1;
+                    }
+                    if (a.jobTitle > b.jobTitle) {
+                        return -1;
+                    }
+                    return 0;
+                })
+            );
+        }
+        if (sort === "Company: A-Z") {
+            setFilteredJobs(
+                [...filteredJobs].sort((a, b) => {
+                    if (a.companyName < b.companyName) {
+                        return -1;
+                    }
+                    if (a.companyName > b.companyName) {
+                        return 1;
+                    }
+                    return 0;
+                })
+            );
+        }
+        if (sort === "Company: Z-A") {
+            setFilteredJobs(
+                [...filteredJobs].sort((a, b) => {
+                    if (a.companyName < b.companyName) {
+                        return 1;
+                    }
+                    if (a.companyName > b.companyName) {
+                        return -1;
+                    }
+                    return 0;
+                })
+            );
+        }
+        if (sort === "Deadline (soonest first)") {
+            // TODO - Convert string date into number so they can be compared for sorting
+            console.log("Sort by deadline, soonest first");
+            setFilteredJobs(
+                [...filteredJobs].sort((a, b) => {
+                    return a.deadline - b.deadline;
+                })
+            );
+        }
+        if (sort === "Deadline (latest first)") {
+            // TODO - Convert string date into number so they can be compared for sorting
+            console.log("Sort by deadline, latest first");
+            setFilteredJobs(
+                [...filteredJobs].sort((a, b) => {
+                    return b.deadline - a.deadline;
+                })
+            );
+        }
+    }, [userJobs, filter, sort]);
 
     return (
         <Container maxWidth="lg">
@@ -98,18 +180,14 @@ function Jobs() {
                 </Grid>
                 <Grid item xs={3} sx={{ display: { sm: "none" } }}></Grid>
                 <Grid item xs={3} sm={3} textAlign="right" pr={1}>
-                    <Button
-                        variant="outlined"
-                        startIcon={<FilterAltIcon />}
-                        disabled
-                    >
+                    <Button variant="outlined" startIcon={<FilterAltIcon />}>
                         Filter
                     </Button>
                 </Grid>
                 <Grid item xs={3} sm={3}>
                     <FormControl size="small" fullWidth>
                         <InputLabel id="demo-simple-select-label">
-                            Sort By
+                            Sort
                         </InputLabel>
                         <Select
                             labelId="demo-simple-select-label"
@@ -117,19 +195,18 @@ function Jobs() {
                             value={sort}
                             label="sort"
                             onChange={handleSort}
-                            disabled
                         >
+                            <MenuItem value={"Job Title: A-Z"}>
+                                Job Title: A-Z
+                            </MenuItem>
+                            <MenuItem value={"Job Title: Z-A"}>
+                                Job Title: Z-A
+                            </MenuItem>
                             <MenuItem value={"Company: A-Z"}>
                                 Company: A-Z
                             </MenuItem>
                             <MenuItem value={"Company: Z-A"}>
                                 Company: Z-A
-                            </MenuItem>
-                            <MenuItem value={"Comfort: Asc"}>
-                                Job Title: Asc
-                            </MenuItem>
-                            <MenuItem value={"Comfort: Desc"}>
-                                Job Title: Desc
                             </MenuItem>
                             <MenuItem value={"Deadline (soonest first)"}>
                                 Deadline (soonest first)
