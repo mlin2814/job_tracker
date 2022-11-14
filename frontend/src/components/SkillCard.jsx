@@ -33,10 +33,11 @@ function SkillCard({ skill }) {
     const [modalOpen, setModalOpen] = useState(false);
     const [newName, setNewName] = useState(skill.name);
     const [newComfortLevel, setNewComfortLevel] = useState(skill.comfortLevel);
-    const open = Boolean(anchorEl);
 
     const deleteSkill = useUserStore((state) => state.deleteSkill);
     const editSkill = useUserStore((state) => state.editSkill);
+
+    const open = Boolean(anchorEl);
 
     function handleClick(event) {
         setAnchorEl(event.currentTarget);
@@ -52,8 +53,10 @@ function SkillCard({ skill }) {
 
     function handleEdit() {
         setAnchorEl(null);
+
         setNewName(skill.name);
         setNewComfortLevel(skill.comfortLevel);
+
         setModalOpen(true);
     }
 

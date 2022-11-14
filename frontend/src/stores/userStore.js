@@ -58,6 +58,18 @@ const useUserStore = create((set) => ({
             };
         }),
 
+    editContact: (contactId, updateObj) =>
+        set((state) => {
+            const updatedContacts = state.contacts.map((contact) => {
+                if (contact.id === contactId) {
+                    return updateObj;
+                } else {
+                    return contact;
+                }
+            });
+            return { contacts: updatedContacts };
+        }),
+
     deleteContact: (contactId) =>
         set((state) => ({
             contacts: state.contacts.filter(
@@ -74,6 +86,18 @@ const useUserStore = create((set) => ({
             return {
                 jobs: [...state.jobs, { ...newJob, id: newId }],
             };
+        }),
+
+    editJob: (jobId, updateObj) =>
+        set((state) => {
+            const updatedJobs = state.jobs.map((job) => {
+                if (job.id === jobId) {
+                    return updateObj;
+                } else {
+                    return job;
+                }
+            });
+            return { jobs: updatedJobs };
         }),
 
     deleteJob: (jobId) =>

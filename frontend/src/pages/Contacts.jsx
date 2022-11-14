@@ -9,7 +9,6 @@ import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
 import ContactCard from "../components/ContactCard";
 import MenuItem from "@mui/material/MenuItem";
-import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import Button from "@mui/material/Button";
 import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
@@ -35,16 +34,15 @@ function Contacts() {
     const [email, setEmail] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
     const [linkedin, setLinkedin] = useState("");
+    const [contactItems, setContactItems] = useState([]);
 
     const userContacts = useUserStore((state) => state.contacts);
     const setContacts = useUserStore((state) => state.setContacts);
     const addContact = useUserStore((state) => state.addContact);
-    const contactItems = userContacts.map((contact, i) => (
-        <ContactCard contact={contact} key={i} />
-    ));
 
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+
     function handleSort(event) {
         setSort(event.target.value);
     }
@@ -83,6 +81,14 @@ function Contacts() {
             );
         }
     }, [sort]);
+
+    useEffect(() => {
+        setContactItems(
+            userContacts.map((contact, i) => (
+                <ContactCard contact={contact} key={i} />
+            ))
+        );
+    }, [userContacts]);
 
     return (
         <Container maxWidth="lg">
