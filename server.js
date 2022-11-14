@@ -9,7 +9,7 @@ const cors = require('cors')
 // const corsOptions = require('./config/corsOptions')
 const connectDB = require('./config/dbConn')
 const mongoose = require('mongoose')
-const { connect } = require('http2')
+// const { connect } = require('http2')
 
 const PORT = process.env.PORT || 3500
 
@@ -29,9 +29,11 @@ app.use(cookieParser())
 app.use('/', express.static(path.join(__dirname, 'public')))
 
 app.use('/', require('./routes/root'))
+app.use('/auth', require('./routes/authRoutes'))
 app.use('/users', require('./routes/userRoutes'))
 app.use('/jobs', require('./routes/jobRoutes'))
 app.use('/contacts', require('./routes/contactRoutes'))
+
 
 app.all('*', (req, res) => {
     res.status(404)
