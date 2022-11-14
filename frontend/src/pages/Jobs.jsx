@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import useUserStore from "../stores/userStore";
 import { Container, Typography, Grid, Fab } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
@@ -9,18 +9,165 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import Button from "@mui/material/Button";
+import Modal from "@mui/material/Modal";
+import Box from "@mui/material/Box";
+import TextField from "@mui/material/TextField";
+import { OutlinedInput } from "@mui/material";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
+import moment from "moment";
+
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+    PaperProps: {
+        style: {
+            maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+            width: 250,
+        },
+    },
+};
+
+const style = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 400,
+    bgcolor: "background.paper",
+    border: "2px solid #000",
+    boxShadow: 24,
+    p: 4,
+};
 
 function Jobs() {
     const userJobs = useUserStore((state) => state.jobs);
-    console.log({ userJobs });
+    const userContacts = useUserStore((state) => state.contacts);
+    const userSkills = useUserStore((state) => state.skills);
+    const setJobs = useUserStore((state) => state.setJobs);
+    const addJob = useUserStore((state) => state.addJob);
 
+    const [filteredJobs, setFilteredJobs] = useState(userJobs);
     const [sort, setSort] = useState("");
+    const [filter, setFilter] = useState("");
+    const [open, setOpen] = useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
 
-    const handleChange = (event) => {
+    const [jobTitle, setJobTitle] = useState("");
+    const [companyName, setCompanyName] = useState("");
+    const [jobDesc, setJobDesc] = useState("");
+    const [jobLoc, setJobLoc] = useState("");
+    const [deadline, setDeadline] = useState("");
+    const [isInternship, setIsInternship] = useState(false);
+    const [relatedSkills, setRelatedSkills] = useState([]);
+    const [relatedContacts, setRelatedContacts] = useState([]);
+
+    function handleSort(event) {
         setSort(event.target.value);
-    };
+    }
 
-    const jobItems = userJobs.map((job, i) => <JobCard job={job} key={i} />);
+    function handleSubmit(event) {
+        event.preventDefault();
+        const newSkills = relatedSkills.map((skill) => skill.id);
+        const newContacts = relatedContacts.map((contact) => contact.id);
+        addJob({
+            jobTitle,
+            companyName,
+            jobDesc,
+            jobLoc,
+            deadline,
+            isInternship,
+            skills: newSkills,
+            contacts: newContacts,
+        });
+        handleClose();
+    }
+
+    function handleRelatedContacts(event) {
+        setRelatedContacts(event.target.value);
+    }
+
+    function handleRelatedSkills(event) {
+        setRelatedSkills(event.target.value);
+    }
+
+    const jobItems = filteredJobs.map((job, i) => (
+        <JobCard job={job} key={i} />
+    ));
+
+    useEffect(() => {
+        // TODO - Re-filter userJobs into filteredJobs based on filter value
+        // TODO - If filter is "", just set filteredJobs to the same as userJobs
+
+        // Re-sort the filteredJobs if sort or userJobs changes
+        if (sort === "Job Title: A-Z") {
+            setFilteredJobs(
+                [...filteredJobs].sort((a, b) => {
+                    if (a.jobTitle < b.jobTitle) {
+                        return -1;
+                    }
+                    if (a.jobTitle > b.jobTitle) {
+                        return 1;
+                    }
+                    return 0;
+                })
+            );
+        }
+        if (sort === "Job Title: Z-A") {
+            setFilteredJobs(
+                [...filteredJobs].sort((a, b) => {
+                    if (a.jobTitle < b.jobTitle) {
+                        return 1;
+                    }
+                    if (a.jobTitle > b.jobTitle) {
+                        return -1;
+                    }
+                    return 0;
+                })
+            );
+        }
+        if (sort === "Company: A-Z") {
+            setFilteredJobs(
+                [...filteredJobs].sort((a, b) => {
+                    if (a.companyName < b.companyName) {
+                        return -1;
+                    }
+                    if (a.companyName > b.companyName) {
+                        return 1;
+                    }
+                    return 0;
+                })
+            );
+        }
+        if (sort === "Company: Z-A") {
+            setFilteredJobs(
+                [...filteredJobs].sort((a, b) => {
+                    if (a.companyName < b.companyName) {
+                        return 1;
+                    }
+                    if (a.companyName > b.companyName) {
+                        return -1;
+                    }
+                    return 0;
+                })
+            );
+        }
+        if (sort === "Deadline (soonest first)") {
+            setFilteredJobs(
+                [...filteredJobs].sort((a, b) => {
+                    return moment(a.deadline) - moment(b.deadline);
+                })
+            );
+        }
+        if (sort === "Deadline (latest first)") {
+            setFilteredJobs(
+                [...filteredJobs].sort((a, b) => {
+                    return moment(b.deadline) - moment(a.deadline);
+                })
+            );
+        }
+    }, [userJobs, filter, sort]);
 
     return (
         <Container maxWidth="lg">
@@ -30,38 +177,33 @@ function Jobs() {
                 </Grid>
                 <Grid item xs={3} sx={{ display: { sm: "none" } }}></Grid>
                 <Grid item xs={3} sm={3} textAlign="right" pr={1}>
-                    <Button
-                        variant="outlined"
-                        startIcon={<FilterAltIcon />}
-                        disabled
-                    >
+                    <Button variant="outlined" startIcon={<FilterAltIcon />}>
                         Filter
                     </Button>
                 </Grid>
                 <Grid item xs={3} sm={3}>
                     <FormControl size="small" fullWidth>
                         <InputLabel id="demo-simple-select-label">
-                            Sort By
+                            Sort
                         </InputLabel>
                         <Select
                             labelId="demo-simple-select-label"
                             id="demo-simple-select"
                             value={sort}
                             label="sort"
-                            onChange={handleChange}
-                            disabled
+                            onChange={handleSort}
                         >
+                            <MenuItem value={"Job Title: A-Z"}>
+                                Job Title: A-Z
+                            </MenuItem>
+                            <MenuItem value={"Job Title: Z-A"}>
+                                Job Title: Z-A
+                            </MenuItem>
                             <MenuItem value={"Company: A-Z"}>
                                 Company: A-Z
                             </MenuItem>
                             <MenuItem value={"Company: Z-A"}>
                                 Company: Z-A
-                            </MenuItem>
-                            <MenuItem value={"Comfort: Asc"}>
-                                Job Title: Asc
-                            </MenuItem>
-                            <MenuItem value={"Comfort: Desc"}>
-                                Job Title: Desc
                             </MenuItem>
                             <MenuItem value={"Deadline (soonest first)"}>
                                 Deadline (soonest first)
@@ -74,7 +216,12 @@ function Jobs() {
                 </Grid>
 
                 <Grid item xs={1} textAlign="center">
-                    <Fab size="small" color="secondary" aria-label="add">
+                    <Fab
+                        size="small"
+                        color="secondary"
+                        aria-label="add"
+                        onClick={handleOpen}
+                    >
                         <AddIcon />
                     </Fab>
                 </Grid>
@@ -82,6 +229,161 @@ function Jobs() {
             <Grid container spacing={2}>
                 {jobItems}
             </Grid>
+
+            <Modal
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box sx={style}>
+                    <Typography
+                        id="modal-modal-title"
+                        variant="h6"
+                        component="h2"
+                        textAlign="center"
+                    >
+                        Add a New Contact
+                    </Typography>
+
+                    <form onSubmit={handleSubmit}>
+                        <Box textAlign={"center"} mt={3}>
+                            <TextField
+                                sx={{ width: 300 }}
+                                required
+                                id="outlined-required"
+                                label="Job Title"
+                                value={jobTitle}
+                                onChange={(e) => setJobTitle(e.target.value)}
+                            />
+                        </Box>
+                        <Box textAlign={"center"} mt={3}>
+                            <TextField
+                                sx={{ width: 300 }}
+                                required
+                                id="outlined-required"
+                                label="Company Name"
+                                value={companyName}
+                                onChange={(e) => setCompanyName(e.target.value)}
+                            />
+                        </Box>
+                        <Box textAlign={"center"} mt={3}>
+                            <TextField
+                                sx={{ width: 300 }}
+                                required
+                                id="outlined-required"
+                                label="Job Description"
+                                value={jobDesc}
+                                onChange={(e) => setJobDesc(e.target.value)}
+                            />
+                        </Box>
+                        <Box textAlign={"center"} mt={3}>
+                            <TextField
+                                sx={{ width: 300 }}
+                                required
+                                id="outlined-required"
+                                label="Job Location"
+                                value={jobLoc}
+                                onChange={(e) => setJobLoc(e.target.value)}
+                            />
+                        </Box>
+                        <Box textAlign={"center"} mt={3}>
+                            <TextField
+                                sx={{ width: 300 }}
+                                required
+                                id="outlined-required"
+                                label="Deadline"
+                                value={deadline}
+                                onChange={(e) => setDeadline(e.target.value)}
+                            />
+                        </Box>
+
+                        <Box textAlign={"center"} mt={3}>
+                            <FormControlLabel
+                                control={<Checkbox />}
+                                label="Is Internship?"
+                                value={isInternship}
+                                onChange={(e) =>
+                                    setIsInternship(e.target.checked)
+                                }
+                            />
+                        </Box>
+
+                        <Box mt={3} display="flex" justifyContent="center">
+                            <FormControl sx={{ m: 1, width: 300 }}>
+                                <InputLabel id="multiple-name-label">
+                                    Related Contacts
+                                </InputLabel>
+                                <Select
+                                    labelId="multiple-name-label"
+                                    id="multiple-name"
+                                    multiple
+                                    value={relatedContacts}
+                                    onChange={handleRelatedContacts}
+                                    input={
+                                        <OutlinedInput label="Related Contacts" />
+                                    }
+                                    MenuProps={MenuProps}
+                                >
+                                    {userContacts.map((contact, i) => (
+                                        <MenuItem key={i} value={contact}>
+                                            {contact.name}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+                        </Box>
+
+                        <Box mt={3} display="flex" justifyContent="center">
+                            <FormControl sx={{ m: 1, width: 300 }}>
+                                <InputLabel id="multiple-name-label">
+                                    Related Skills
+                                </InputLabel>
+                                <Select
+                                    labelId="multiple-name-label"
+                                    id="multiple-name"
+                                    multiple
+                                    value={relatedSkills}
+                                    onChange={handleRelatedSkills}
+                                    input={
+                                        <OutlinedInput label="Related Skills" />
+                                    }
+                                    MenuProps={MenuProps}
+                                >
+                                    {userSkills.map((skill, i) => (
+                                        <MenuItem key={i} value={skill}>
+                                            {skill.name}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+                        </Box>
+
+                        <Grid
+                            container
+                            mt={2}
+                            alignItems="center"
+                            justifyContent="center"
+                            gap={4}
+                        >
+                            <Button
+                                type="submit"
+                                variant="outlined"
+                                color="success"
+                            >
+                                Add
+                            </Button>
+                            <Button
+                                variant="outlined"
+                                color="error"
+                                onClick={handleClose}
+                            >
+                                Cancel
+                            </Button>
+                        </Grid>
+                    </form>
+                </Box>
+            </Modal>
         </Container>
     );
 }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import useUserStore from "../stores/userStore";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -11,7 +11,6 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import TextField from "@mui/material/TextField";
@@ -30,24 +29,22 @@ const style = {
 };
 
 function Skills() {
-    const userSkills = useUserStore((state) => state.skills);
-    const addSkill = useUserStore((state) => state.addSkill);
-
     const [sort, setSort] = useState("");
     const [open, setOpen] = useState(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
-
     const [name, setName] = useState("");
     const [comfortLevel, setComfortLevel] = useState(0);
+    const [skillItems, setSkillItems] = useState([]);
+
+    const userSkills = useUserStore((state) => state.skills);
+    const setSkills = useUserStore((state) => state.setSkills);
+    const addSkill = useUserStore((state) => state.addSkill);
+
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
 
     const handleChange = (event) => {
         setSort(event.target.value);
     };
-
-    const skillItems = userSkills.map((skill, i) => (
-        <SkillCard skill={skill} key={i} />
-    ));
 
     function handleSubmit(event) {
         event.preventDefault();
@@ -55,26 +52,64 @@ function Skills() {
         handleClose();
     }
 
+    // Any time sort changes, re-sort based on user's selection from drop-down
+    useEffect(() => {
+        if (sort === "A-Z") {
+            setSkills(
+                [...userSkills].sort((a, b) => {
+                    if (a.name < b.name) {
+                        return -1;
+                    }
+                    if (a.name > b.name) {
+                        return 1;
+                    }
+                    return 0;
+                })
+            );
+        } else if (sort === "Z-A") {
+            setSkills(
+                [...userSkills].sort((a, b) => {
+                    if (a.name < b.name) {
+                        return 1;
+                    }
+                    if (a.name > b.name) {
+                        return -1;
+                    }
+                    return 0;
+                })
+            );
+        } else if (sort === "Comfort: Asc") {
+            setSkills(
+                [...userSkills].sort((a, b) => {
+                    return a.comfortLevel - b.comfortLevel;
+                })
+            );
+        } else if (sort === "Comfort: Desc") {
+            setSkills(
+                [...userSkills].sort((a, b) => {
+                    return b.comfortLevel - a.comfortLevel;
+                })
+            );
+        }
+    }, [sort]);
+
+    useEffect(() => {
+        setSkillItems(
+            userSkills.map((skill, i) => <SkillCard skill={skill} key={i} />)
+        );
+    }, [userSkills]);
+
     return (
         <Container maxWidth="lg">
             <Grid container my={3} alignItems="center">
-                <Grid item xs={2} sm={5}>
+                <Grid item xs={5} sm={8}>
                     <Typography variant="h4">Skills</Typography>
                 </Grid>
                 <Grid item xs={3} sx={{ display: { sm: "none" } }}></Grid>
-                <Grid item xs={3} sm={3} textAlign="right" pr={1}>
-                    <Button
-                        variant="outlined"
-                        startIcon={<FilterAltIcon />}
-                        disabled
-                    >
-                        Filter
-                    </Button>
-                </Grid>
                 <Grid item xs={3} sm={3}>
                     <FormControl size="small" fullWidth>
                         <InputLabel id="demo-simple-select-label">
-                            Sort By
+                            Sort
                         </InputLabel>
                         <Select
                             labelId="demo-simple-select-label"
@@ -82,10 +117,9 @@ function Skills() {
                             value={sort}
                             label="sort"
                             onChange={handleChange}
-                            disabled
                         >
-                            <MenuItem value={"A-Z"}>A-Z</MenuItem>
-                            <MenuItem value={"Z-A"}>Z-A</MenuItem>
+                            <MenuItem value={"A-Z"}>Name: A-Z</MenuItem>
+                            <MenuItem value={"Z-A"}>Name: Z-A</MenuItem>
                             <MenuItem value={"Comfort: Asc"}>
                                 Comfort: Asc
                             </MenuItem>
@@ -156,6 +190,7 @@ function Skills() {
                                     min={0}
                                     max={10}
                                     value={comfortLevel}
+                                    valueLabelDisplay="auto"
                                     onChange={(e) =>
                                         setComfortLevel(e.target.value)
                                     }

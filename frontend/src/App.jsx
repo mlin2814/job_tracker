@@ -15,8 +15,6 @@ function App() {
     const { isLoading, isAuthenticated, user } = useAuth0();
     const [open, setOpen] = useState(false);
 
-    console.log({ isLoading, isAuthenticated, user });
-
     useEffect(() => {
         if (isLoading) {
             setOpen(true);
