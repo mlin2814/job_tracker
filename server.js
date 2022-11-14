@@ -29,11 +29,9 @@ app.use(cookieParser())
 app.use('/', express.static(path.join(__dirname, 'public')))
 
 app.use('/', require('./routes/root'))
-
-// app.use('/users', require('./routes/userRoutes'))
-app.use('/contacts', require('./routes/contactRoutes'))
-
+app.use('/users', require('./routes/userRoutes'))
 app.use('/jobs', require('./routes/jobRoutes'))
+app.use('/contacts', require('./routes/contactRoutes'))
 
 app.all('*', (req, res) => {
     res.status(404)

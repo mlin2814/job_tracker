@@ -45,7 +45,7 @@ const updateUser = asyncHandler(async (req, res) => {
     const { id, username, password, roles } = req.body
 
     if (!id || !username || !roles) {
-        return res.status(400).json({ message: 'All fields are required' })
+        return res.status(400).json({ message: 'All fields except password are required' })
     }
 
     const user = await User.findById(id).exec()
