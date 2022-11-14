@@ -37,6 +37,7 @@ function SkillCard({ skill }) {
     const open = Boolean(anchorEl);
 
     const deleteSkill = useUserStore((state) => state.deleteSkill);
+    const editSkill = useUserStore((state) => state.editSkill);
 
     function handleClick(event) {
         setAnchorEl(event.currentTarget);
@@ -48,8 +49,6 @@ function SkillCard({ skill }) {
 
     function handleModalClose() {
         setModalOpen(false);
-        setNewName(skill.name);
-        setNewComfortLevel(skill.comfortLevel);
     }
 
     function handleEdit() {
@@ -64,11 +63,12 @@ function SkillCard({ skill }) {
 
     function handleSubmit(event) {
         event.preventDefault();
-        // addSkill(name, comfortLevel);
-        // TODO - Implement edit skill function
-        console.log(
-            `New skill! name: ${newName}, comfortLevel: ${newComfortLevel}`
-        );
+        const editedSkill = {
+            id: skill.id,
+            comfortLevel: newComfortLevel,
+            name: newName,
+        };
+        editSkill(skill.id, editedSkill);
         handleModalClose();
     }
 

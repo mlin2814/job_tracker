@@ -8,12 +8,24 @@ const useUserStore = create((set) => ({
     jobs: dummyData.jobs,
     skills: dummyData.skills,
     contacts: dummyData.contacts,
-
     isLoggedIn: false,
+
     setIsLoggedIn: (newLoggedIn) =>
         set((state) => ({
             isLoggedIn: newLoggedIn,
         })),
+
+    editSkill: (skillId, updateObj) =>
+        set((state) => {
+            const updatedSkills = state.skills.map((skill) => {
+                if (skill.id === skillId) {
+                    return updateObj;
+                } else {
+                    return skill;
+                }
+            });
+            return { skills: updatedSkills };
+        }),
 
     addSkill: (skillName, skillComfort) =>
         set((state) => {
