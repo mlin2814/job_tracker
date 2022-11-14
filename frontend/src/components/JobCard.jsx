@@ -74,7 +74,6 @@ function JobCard({ job }) {
                     <MenuItem onClick={handleDelete}>Delete</MenuItem>
                 </Menu>
                 <CardContent>
-                    <Typography variant="body2">Job ID: {job.id}</Typography>
                     <Typography variant="body2" py={1}>
                         Company: {job.companyName}
                     </Typography>

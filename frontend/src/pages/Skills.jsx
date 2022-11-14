@@ -34,13 +34,11 @@ function Skills() {
     const [open, setOpen] = useState(false);
     const [name, setName] = useState("");
     const [comfortLevel, setComfortLevel] = useState(0);
+    const [skillItems, setSkillItems] = useState([]);
 
     const userSkills = useUserStore((state) => state.skills);
     const setSkills = useUserStore((state) => state.setSkills);
     const addSkill = useUserStore((state) => state.addSkill);
-    const skillItems = userSkills.map((skill, i) => (
-        <SkillCard skill={skill} key={i} />
-    ));
 
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -95,6 +93,12 @@ function Skills() {
             );
         }
     }, [sort]);
+
+    useEffect(() => {
+        setSkillItems(
+            userSkills.map((skill, i) => <SkillCard skill={skill} key={i} />)
+        );
+    }, [userSkills]);
 
     return (
         <Container maxWidth="lg">

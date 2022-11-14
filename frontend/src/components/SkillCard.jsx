@@ -1,7 +1,6 @@
 import React from "react";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
-import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import Menu from "@mui/material/Menu";
@@ -53,6 +52,8 @@ function SkillCard({ skill }) {
 
     function handleEdit() {
         setAnchorEl(null);
+        setNewName(skill.name);
+        setNewComfortLevel(skill.comfortLevel);
         setModalOpen(true);
     }
 
@@ -99,11 +100,6 @@ function SkillCard({ skill }) {
                     <MenuItem onClick={handleEdit}>Edit</MenuItem>
                     <MenuItem onClick={handleDelete}>Delete</MenuItem>
                 </Menu>
-                <CardContent>
-                    <Typography variant="body2">
-                        Skill ID: {skill.id}
-                    </Typography>
-                </CardContent>
             </Card>
 
             <Modal
