@@ -173,13 +173,23 @@ const JobForm = () => {
                 value={deadline}
             />
 
-            <label>Skills:</label>
+            {/* <label>Skills:</label>
             <input 
                 type="text" 
                 onChange={(e) => setSkills(e.target.value)} 
                 value={skills}
+            /> */}
+            <label>Skills:</label>
+            <input 
+                type="text" 
+                onChange={(e) => setSkills(e.target.value.split(', '))} 
+                value={skills}
             />
-
+        {/* <TextField name="tags" 
+        variant="outlined" 
+        label="Tags (coma separated)" 
+        fullWidth value={postData.tags} 
+        onChange={(e) => setPostData({ ...postData, tags: e.target.value.split(',') })} /> */}
             <button>Add Contact</button>
             {error && <div className="error">{error}</div>}
         </form>
