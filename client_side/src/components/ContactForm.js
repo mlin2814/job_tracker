@@ -1,11 +1,14 @@
 import { useState } from 'react'
+import { useContactsContext } from "../hooks/useContactsContext";
 
 const ContactForm = () => {
+    const { dispatch } = useContactsContext()
     const [username, setUsername] = useState('')
     const [email, setEmail] = useState('')
     const [phone, setPhone] = useState('')
     const [linkedin, setLinkedin] = useState('')
     const [error, setError] = useState(null)
+    const [emptyFields, setEmptyFields] = useState([])
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -23,14 +26,17 @@ const ContactForm = () => {
 
     if (!response.ok) {
         setError(json.error)
+        setEmptyFields(json.emptyFields)
     }
     if (response.ok) {
+        setEmptyFields([])
         setError(null)
         setUsername('')
         setEmail('')
         setPhone('')
         setLinkedin('')
         console.log('new contact added:', json)
+        dispatch({type: 'CREATE_CONTACT', payload: json})
     }
 
   }
@@ -44,6 +50,7 @@ const ContactForm = () => {
                 type="text" 
                 onChange={(e) => setUsername(e.target.value)} 
                 value={username}
+                className={emptyFields.includes('username') ? 'error' : ''}
             />
 
             <label>Email:</label>
@@ -51,6 +58,7 @@ const ContactForm = () => {
                 type="text" 
                 onChange={(e) => setEmail(e.target.value)} 
                 value={email}
+                className={emptyFields.includes('email') ? 'error' : ''}
             />
 
             <label>Phone:</label>
@@ -58,6 +66,7 @@ const ContactForm = () => {
                 type="text" 
                 onChange={(e) => setPhone(e.target.value)} 
                 value={phone}
+                className={emptyFields.includes('phone') ? 'error' : ''}
             />
 
             <label>LinkedIn:</label>
@@ -65,6 +74,7 @@ const ContactForm = () => {
                 type="text" 
                 onChange={(e) => setLinkedin(e.target.value)} 
                 value={linkedin}
+                className={emptyFields.includes('linkedin') ? 'error' : ''}
             />
 
 

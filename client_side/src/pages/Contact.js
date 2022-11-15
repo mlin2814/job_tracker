@@ -1,11 +1,15 @@
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
+
+import { useContactsContext } from "../hooks/useContactsContext";
 
 // components
 import ContactDetails from "../components/ContactDetails"
 import ContactForm from "../components/ContactForm"
 
 const Contact = () => {
-    const [contacts, setContacts] = useState(null)
+    // const [contacts, setContacts] = useState(null)
+
+    const { contacts, dispatch } = useContactsContext()
 
     useEffect(() => {
         const fetchContacts = async () => {
@@ -13,12 +17,13 @@ const Contact = () => {
             const json = await response.json()
 
             if (response.ok) {
-                setContacts(json)
+                // setContacts(json)
+                dispatch({type: 'SET_CONTACTS', payload: json})
             }
         }
 
         fetchContacts()
-    }, [])
+    }, [dispatch])
 
     return (
         <div className="home">
