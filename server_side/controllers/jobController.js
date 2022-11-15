@@ -32,7 +32,18 @@ const createJob = async (req, res) => {
 
   // add to the database
   try {
+    // const jobSkills = req.body.skills.split(', ')
+    // const jobSkills = JSON.parse(req.body.skills)
+    // console.log(jobSkills)
     const job = await Job.create({ title, company, description, location, deadline, skills })
+    // const job = await new Job({
+    //     "title": req.body.title,
+    //     "company": req.body.company,
+    //     "description": req.body.description,
+    //     "location": req.body.location,
+    //     "deadline": req.body.deadline,
+    //     "skills": jobSkills,
+    // })
     res.status(200).json(job)
   } catch (error) {
     res.status(400).json({ error: error.message })
