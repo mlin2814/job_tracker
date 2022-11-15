@@ -15,7 +15,9 @@ This project will be a single page app that allows the user specific areas to fo
 
 4. Create a .env file in root with DATABASE_URL populated with connection info
 
-ex. `DATABASE_URL=mongodb+srv://<username>:<password>@jobtracker-cluster`
+ex. 
+`NODE_ENV=development`
+`DATABASE_URI=mongodb+srv://@cluster0.lj9xaoq.mongodb.net/userJobs?retryWrites=true&w=majority`
 
 5. Start server
 

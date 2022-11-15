@@ -6,6 +6,7 @@ const bcrypt = require('bcrypt')
 // get all users; get /users; private
 const getAllUsers = asyncHandler(async (req, res) => {
     const users = await User.find().select('-password').lean()
+    
     if (!users?.length) {
         return res.status(400).json({ message: 'No users found' })
     }
@@ -14,9 +15,9 @@ const getAllUsers = asyncHandler(async (req, res) => {
 
 // create all users; post /users; private
 const createNewUser = asyncHandler(async (req, res) => {
-    const { username, password } = req.body
+    const { username, password, roles } = req.body
 
-    if (!username || !password) {
+    if (!username || !password || !roles) {
         return res.status(400).json({ message: 'All fields are required' })
     }
 
@@ -28,7 +29,7 @@ const createNewUser = asyncHandler(async (req, res) => {
 
     const hashedPwd = await bcrypt.hash(password, 10)
 
-    const userObject = { username, "password": hashedPwd }
+    const userObject = { username, "password": hashedPwd, roles }
 
     const user = await User.create(userObject)
 
@@ -41,10 +42,10 @@ const createNewUser = asyncHandler(async (req, res) => {
 
 // update all users; patch /users; private
 const updateUser = asyncHandler(async (req, res) => {
-    const { id, username, password } = req.body
+    const { id, username, password, roles } = req.body
 
-    if (!id || !username) {
-        return res.status(400).json({ message: 'All fields are required' })
+    if (!id || !username || !roles) {
+        return res.status(400).json({ message: 'All fields except password are required' })
     }
 
     const user = await User.findById(id).exec()
@@ -60,6 +61,7 @@ const updateUser = asyncHandler(async (req, res) => {
     }
 
     user.username = username
+    user.roles = roles
 
     if (password) {
         user.password = await bcrypt.hash(password, 10)

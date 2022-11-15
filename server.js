@@ -6,7 +6,7 @@ const { logger, logEvents } = require('./middleware/logger')
 const errorHandler = require('./middleware/errorHandler')
 const cookieParser = require('cookie-parser')
 const cors = require('cors')
-const corsOptions = require('./config/corsOptions')
+// const corsOptions = require('./config/corsOptions')
 const connectDB = require('./config/dbConn')
 const mongoose = require('mongoose')
 const { connect } = require('http2')
@@ -20,7 +20,7 @@ connectDB()
 
 app.use(logger)
 
-//app.use(cors(corsOptions))
+app.use(cors())
 app.set('view engine', 'ejs');
 
 app.use(express.json())
@@ -33,6 +33,7 @@ app.use('/', express.static(path.join(__dirname, 'public')))
 
 app.use('/users', require('./routes/userRoutes'))
 app.use('/jobs', require('./routes/jobRoutes'))
+app.use('/contacts', require('./routes/contactRoutes'))
 
 app.get('*', (req, res) => {
     res.render(path.resolve(__dirname, 'public', 'index.ejs'), {

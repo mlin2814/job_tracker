@@ -8,12 +8,24 @@ const useUserStore = create((set) => ({
     jobs: dummyData.jobs,
     skills: dummyData.skills,
     contacts: dummyData.contacts,
-
     isLoggedIn: false,
+
     setIsLoggedIn: (newLoggedIn) =>
         set((state) => ({
             isLoggedIn: newLoggedIn,
         })),
+
+    editSkill: (skillId, updateObj) =>
+        set((state) => {
+            const updatedSkills = state.skills.map((skill) => {
+                if (skill.id === skillId) {
+                    return updateObj;
+                } else {
+                    return skill;
+                }
+            });
+            return { skills: updatedSkills };
+        }),
 
     addSkill: (skillName, skillComfort) =>
         set((state) => {
@@ -27,10 +39,15 @@ const useUserStore = create((set) => ({
             return { skills: [...state.skills, newSkill] };
         }),
 
+    setSkills: (newSkills) => set((state) => (state.skills = newSkills)),
+
     deleteSkill: (skillId) =>
         set((state) => ({
             skills: state.skills.filter((skill) => skill.id !== skillId),
         })),
+
+    setContacts: (newContacts) =>
+        set((state) => (state.contacts = newContacts)),
 
     addContact: (newContact) =>
         set((state) => {
@@ -41,12 +58,47 @@ const useUserStore = create((set) => ({
             };
         }),
 
+    editContact: (contactId, updateObj) =>
+        set((state) => {
+            const updatedContacts = state.contacts.map((contact) => {
+                if (contact.id === contactId) {
+                    return updateObj;
+                } else {
+                    return contact;
+                }
+            });
+            return { contacts: updatedContacts };
+        }),
+
     deleteContact: (contactId) =>
         set((state) => ({
             contacts: state.contacts.filter(
                 (contact) => contact.id !== contactId
             ),
         })),
+
+    setJobs: (newJobs) => set((state) => (state.jobs = newJobs)),
+
+    addJob: (newJob) =>
+        set((state) => {
+            const newId = Math.floor(Math.random() * Date.now()).toString();
+
+            return {
+                jobs: [...state.jobs, { ...newJob, id: newId }],
+            };
+        }),
+
+    editJob: (jobId, updateObj) =>
+        set((state) => {
+            const updatedJobs = state.jobs.map((job) => {
+                if (job.id === jobId) {
+                    return updateObj;
+                } else {
+                    return job;
+                }
+            });
+            return { jobs: updatedJobs };
+        }),
 
     deleteJob: (jobId) =>
         set((state) => ({

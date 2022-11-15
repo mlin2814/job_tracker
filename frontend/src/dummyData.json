@@ -68,9 +68,9 @@
     "jobs": [
         {
             "id": "634c8f21fc13ae30ab000849",
-            "jobTitle": "Software Engineer I",
+            "jobTitle": "DevOps Engineer",
             "companyName": "Nike",
-            "jobDesc": "As a Software Engineer I on the Omnichannel Product Platform team, you will be developing and maintaining the core digital catalog of Nike’s physical products. This catalog platform serves this product information across Nike’s digital experiences, retail stores, and Nike’s retail partners. We work in real-time, so this platform is responsible for efficiently managing thousands of products, processing large data streams in and serving this information at scale!",
+            "jobDesc": "As a DevOps Engineer on the Omnichannel Product Platform team, you will be developing and maintaining the core digital catalog of Nike’s physical products. This catalog platform serves this product information across Nike’s digital experiences, retail stores, and Nike’s retail partners. We work in real-time, so this platform is responsible for efficiently managing thousands of products, processing large data streams in and serving this information at scale!",
             "jobLoc": "Beaverton, OR",
             "deadline": "2022-11-17",
             "isInternship": false,
@@ -90,7 +90,7 @@
         },
         {
             "id": "634c8f21fc13ae30ab00084b",
-            "jobTitle": "Software Engineering Intern",
+            "jobTitle": "Intern Software Engineer",
             "companyName": "Pinterest",
             "jobDesc": "Millions of people across the world come to Pinterest to find new ideas every day. It's where they get inspiration, dream about new possibilities and plan for what matters most. Our mission is to help those people find their inspiration and create a life they love. In your role, you'll be challenged to take on work that upholds this mission and pushes Pinterest forward. You'll grow as a person and leader in your field, all the while helping Pinners make their lives better in the positive corner of the internet.",
             "jobLoc": "Remote",
