@@ -39,7 +39,11 @@ function Skills() {
     const setSkills = useUserStore((state) => state.setSkills);
     const addSkill = useUserStore((state) => state.addSkill);
 
-    const handleOpen = () => setOpen(true);
+    const handleOpen = () => {
+        setName("");
+        setComfortLevel(0);
+        setOpen(true);
+    };
     const handleClose = () => setOpen(false);
 
     const handleChange = (event) => {

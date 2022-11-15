@@ -40,7 +40,13 @@ function Contacts() {
     const setContacts = useUserStore((state) => state.setContacts);
     const addContact = useUserStore((state) => state.addContact);
 
-    const handleOpen = () => setOpen(true);
+    const handleOpen = () => {
+        setName("");
+        setEmail("");
+        setPhoneNumber("");
+        setLinkedin("");
+        setOpen(true);
+    };
     const handleClose = () => setOpen(false);
 
     function handleSort(event) {
