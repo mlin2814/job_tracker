@@ -27,11 +27,12 @@ const getJob = async (req, res) => {
 
 // create a new job
 const createJob = async (req, res) => {
-  const {title, load, reps} = req.body
+  const {title, company, description, location, deadline, skills} = req.body
+  console.log(req.body)
 
   // add to the database
   try {
-    const job = await Job.create({ title, load, reps })
+    const job = await Job.create({ title, company, description, location, deadline, skills })
     res.status(200).json(job)
   } catch (error) {
     res.status(400).json({ error: error.message })
