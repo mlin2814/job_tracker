@@ -51,8 +51,6 @@ function Jobs() {
     const [sort, setSort] = useState("");
     const [filter, setFilter] = useState("");
     const [open, setOpen] = useState(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
 
     const [jobTitle, setJobTitle] = useState("");
     const [companyName, setCompanyName] = useState("");
@@ -62,6 +60,19 @@ function Jobs() {
     const [isInternship, setIsInternship] = useState(false);
     const [relatedSkills, setRelatedSkills] = useState([]);
     const [relatedContacts, setRelatedContacts] = useState([]);
+
+    const handleOpen = () => {
+        setJobTitle("");
+        setCompanyName("");
+        setJobDesc("");
+        setJobLoc("");
+        setDeadline("");
+        setIsInternship(false);
+        setRelatedSkills([]);
+        setRelatedContacts([]);
+        setOpen(true);
+    };
+    const handleClose = () => setOpen(false);
 
     const [jobItems, setJobItems] = useState([]);
 
@@ -170,8 +181,14 @@ function Jobs() {
     }, [userJobs, filter, sort]);
 
     useEffect(() => {
-        setJobItems(userJobs.map((job, i) => <JobCard job={job} key={i} />));
+        setFilteredJobs(userJobs);
     }, [userJobs]);
+
+    useEffect(() => {
+        setJobItems(
+            filteredJobs.map((job, i) => <JobCard job={job} key={i} />)
+        );
+    }, [filteredJobs]);
 
     return (
         <Container maxWidth="lg">
