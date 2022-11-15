@@ -63,14 +63,18 @@ function Jobs() {
     const [relatedSkills, setRelatedSkills] = useState([]);
     const [relatedContacts, setRelatedContacts] = useState([]);
 
+    const [jobItems, setJobItems] = useState([]);
+
     function handleSort(event) {
         setSort(event.target.value);
     }
 
     function handleSubmit(event) {
         event.preventDefault();
+
         const newSkills = relatedSkills.map((skill) => skill.id);
         const newContacts = relatedContacts.map((contact) => contact.id);
+
         addJob({
             jobTitle,
             companyName,
@@ -91,10 +95,6 @@ function Jobs() {
     function handleRelatedSkills(event) {
         setRelatedSkills(event.target.value);
     }
-
-    const jobItems = filteredJobs.map((job, i) => (
-        <JobCard job={job} key={i} />
-    ));
 
     useEffect(() => {
         // TODO - Re-filter userJobs into filteredJobs based on filter value
@@ -168,6 +168,10 @@ function Jobs() {
             );
         }
     }, [userJobs, filter, sort]);
+
+    useEffect(() => {
+        setJobItems(userJobs.map((job, i) => <JobCard job={job} key={i} />));
+    }, [userJobs]);
 
     return (
         <Container maxWidth="lg">
@@ -243,7 +247,7 @@ function Jobs() {
                         component="h2"
                         textAlign="center"
                     >
-                        Add a New Contact
+                        Add a New Job
                     </Typography>
 
                     <form onSubmit={handleSubmit}>
