@@ -30,6 +30,36 @@ const createJob = async (req, res) => {
   const {title, company, description, location, deadline, skills} = req.body
   console.log(req.body)
 
+  let emptyFields = []
+
+  if (!title) {
+    emptyFields.push('title')
+  }
+
+  if (!company) {
+    emptyFields.push('company')
+  }
+
+  if (!description) {
+    emptyFields.push('description')
+  }
+
+  if (!location) {
+    emptyFields.push('location')
+  }
+
+  if (!deadline) {
+    emptyFields.push('deadline')
+  }
+
+  if (!skills) {
+    emptyFields.push('skills')
+  }
+
+  if (emptyFields.length > 0) {
+    return res.status(400).json({ error: 'Please fill in all fields', emptyFields })
+  }
+
   // add to the database
   try {
     // const jobSkills = req.body.skills.split(', ')

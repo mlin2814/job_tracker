@@ -29,6 +29,28 @@ const getContact = async (req, res) => {
 const createContact = async (req, res) => {
   const { username, email, phone, linkedin } = req.body
 
+  let emptyFields = []
+
+  if (!username) {
+    emptyFields.push('username')
+  }
+
+  if (!email) {
+    emptyFields.push('email')
+  }
+
+  if (!phone) {
+    emptyFields.push('phone')
+  }
+
+  if (!linkedin) {
+    emptyFields.push('linkedin')
+  }
+
+  if (emptyFields.length > 0) {
+    return res.status(400).json({ error: 'Please fill in all fields', emptyFields })
+  }
+
   // add to the database
   try {
     const contact = await Contact.create({ username, email, phone, linkedin })
