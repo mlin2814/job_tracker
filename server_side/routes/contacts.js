@@ -7,7 +7,11 @@ const {
     updateContact
   } = require('../controllers/contactController')
 
+const requireAuth = require('../middleware/requireAuth')
+
 const router = express.Router()
+
+router.use(requireAuth)
 
 // GET all workouts
 router.get('/', getContacts)

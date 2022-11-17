@@ -21,11 +21,15 @@ const jobSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    skills: [String]
+    skills: [String],
     // skills: {
     //     type: Array,
     //     required: true
     // }
+    user_id: {
+        type: String,
+        required: true
+    }
 })
 
 module.exports = mongoose.model('Job', jobSchema)
