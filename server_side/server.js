@@ -4,6 +4,7 @@ const express = require('express')
 const mongoose = require('mongoose')
 const jobsRoutes = require('./routes/jobs')
 const contactsRoutes = require('./routes/contacts')
+const userRoutes = require('./routes/user')
 
 // express app
 const app = express()
@@ -22,6 +23,7 @@ app.use((req, res, next) => {
 // })
 app.use('/jobs', jobsRoutes)
 app.use('/contacts', contactsRoutes)
+app.use('/user', userRoutes)
 
 
 // connect to db
