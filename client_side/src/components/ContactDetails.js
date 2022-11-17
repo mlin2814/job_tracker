@@ -1,11 +1,20 @@
 import { useContactsContext } from "../hooks/useContactsContext";
+import { useAuthContext } from '../hooks/useAuthContext';
 
 const ContactDetails = ({ contact }) => {
     const { dispatch } = useContactsContext()
+    const { user } = useAuthContext()
 
     const handleClick = async () => {
+        if (!user) {
+            return
+        }
+
         const response = await fetch('/contacts/' + contact._id, {
-            method: 'DELETE'
+            method: 'DELETE',
+            headers: {
+              'Authorization': `Bearer ${user.token}`
+            }
         })
         const json = await response.json()
 

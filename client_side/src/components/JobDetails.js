@@ -1,11 +1,20 @@
 import { useJobsContext } from "../hooks/useJobsContext";
+import { useAuthContext } from '../hooks/useAuthContext'
 
 const JobDetails = ({ job }) => {
     const { dispatch } = useJobsContext()
+    const { user } = useAuthContext()
 
     const handleClick = async () => {
+        if (!user) {
+            return
+        }
+        
         const response = await fetch('/jobs/' + job._id, {
-            method: 'DELETE'
+            method: 'DELETE',
+            headers: {
+              'Authorization': `Bearer ${user.token}`
+            }
         })
         const json = await response.json()
 

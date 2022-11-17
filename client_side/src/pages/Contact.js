@@ -1,6 +1,6 @@
 import { useEffect } from "react"
-
 import { useContactsContext } from "../hooks/useContactsContext";
+import { useAuthContext } from "../hooks/useAuthContext"
 
 // components
 import ContactDetails from "../components/ContactDetails"
@@ -8,12 +8,14 @@ import ContactForm from "../components/ContactForm"
 
 const Contact = () => {
     // const [contacts, setContacts] = useState(null)
-
     const { contacts, dispatch } = useContactsContext()
+    const {user} = useAuthContext()
 
     useEffect(() => {
         const fetchContacts = async () => {
-            const response = await fetch('/contacts')
+            const response = await fetch('/contacts', {
+                headers: {'Authorization': `Bearer ${user.token}`},
+            })
             const json = await response.json()
 
             if (response.ok) {
@@ -21,9 +23,12 @@ const Contact = () => {
                 dispatch({type: 'SET_CONTACTS', payload: json})
             }
         }
-
+        
+        if (user) {
+            fetchContacts()
+        }
         fetchContacts()
-    }, [dispatch])
+    }, [dispatch, user])
 
     return (
         <div className="home">

@@ -1,8 +1,11 @@
 import { useState } from 'react'
 import { useJobsContext } from "../hooks/useJobsContext";
+import { useAuthContext } from '../hooks/useAuthContext'
 
 const JobForm = () => {
     const { dispatch } = useJobsContext()
+    const { user } = useAuthContext()
+
     const [title, setTitle] = useState('')
     const [company, setCompany] = useState('')
     const [description, setDescription] = useState('')
@@ -15,13 +18,19 @@ const JobForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault()
 
-    const job = {title, company, description, location, deadline, skills}
-    
-    const response = await fetch('/jobs', {
-        method: 'POST',
-        body: JSON.stringify(job),
-        headers: {
-            'Content-Type': 'application/json'
+        if (!user) {
+            setError('You must be logged in')
+            return
+        }
+
+        const job = {title, company, description, location, deadline, skills}
+        
+        const response = await fetch('/jobs', {
+            method: 'POST',
+            body: JSON.stringify(job),
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${user.token}`
         }
     })
     const json = await response.json()

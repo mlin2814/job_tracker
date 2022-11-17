@@ -1,8 +1,11 @@
 import { useState } from 'react'
 import { useContactsContext } from "../hooks/useContactsContext";
+import { useAuthContext } from '../hooks/useAuthContext';
 
 const ContactForm = () => {
     const { dispatch } = useContactsContext()
+    const { user } = useAuthContext()
+
     const [username, setUsername] = useState('')
     const [email, setEmail] = useState('')
     const [phone, setPhone] = useState('')
@@ -13,33 +16,39 @@ const ContactForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault()
 
-    const contact = {username, email, phone, linkedin}
-    
-    const response = await fetch('/contacts', {
-        method: 'POST',
-        body: JSON.stringify(contact),
-        headers: {
-            'Content-Type': 'application/json'
+        if (!user) {
+            setError('You must be logged in')
+            return
         }
-    })
-    const json = await response.json()
 
-    if (!response.ok) {
-        setError(json.error)
-        setEmptyFields(json.emptyFields)
-    }
-    if (response.ok) {
-        setEmptyFields([])
-        setError(null)
-        setUsername('')
-        setEmail('')
-        setPhone('')
-        setLinkedin('')
-        console.log('new contact added:', json)
-        dispatch({type: 'CREATE_CONTACT', payload: json})
-    }
+        const contact = {username, email, phone, linkedin}
+        
+        const response = await fetch('/contacts', {
+            method: 'POST',
+            body: JSON.stringify(contact),
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${user.token}`
+            }
+        })
+        const json = await response.json()
 
-  }
+        if (!response.ok) {
+            setError(json.error)
+            setEmptyFields(json.emptyFields)
+        }
+        if (response.ok) {
+            setEmptyFields([])
+            setError(null)
+            setUsername('')
+            setEmail('')
+            setPhone('')
+            setLinkedin('')
+            console.log('new contact added:', json)
+            dispatch({type: 'CREATE_CONTACT', payload: json})
+        }
+
+    }
 
     return (
         <form className="create" onSubmit={handleSubmit}> 
