@@ -16,10 +16,13 @@ const Navbar = () => {
         <Link to="/">
           <h1>Job/Internship Tracker</h1>
         </Link>
+        
+        {user && (
+            <Link to="/contacts"><h1>Contacts</h1></Link>
+          )}
         <nav>
           {user && (
             <div>
-              <Link to="/contacts">Contacts  </Link>
               <span>{user.email}</span>
               <button onClick={handleClick}>Log out</button>
             </div>
