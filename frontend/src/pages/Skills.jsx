@@ -147,7 +147,13 @@ function Skills() {
             </Grid>
 
             <Grid container spacing={2}>
-                {skillItems}
+                {skillItems.length ? (
+                    skillItems
+                ) : (
+                    <Typography variant="subtitle1">
+                        Click the + button to add a new skill!
+                    </Typography>
+                )}
             </Grid>
 
             <Modal

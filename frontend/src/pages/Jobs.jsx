@@ -49,8 +49,8 @@ function Jobs() {
 
     const [filteredJobs, setFilteredJobs] = useState(userJobs);
     const [sort, setSort] = useState("");
-    const [filter, setFilter] = useState("");
     const [open, setOpen] = useState(false);
+    const [filterOpen, setFilterOpen] = useState(false);
 
     const [jobTitle, setJobTitle] = useState("");
     const [companyName, setCompanyName] = useState("");
@@ -60,6 +60,13 @@ function Jobs() {
     const [isInternship, setIsInternship] = useState(false);
     const [relatedSkills, setRelatedSkills] = useState([]);
     const [relatedContacts, setRelatedContacts] = useState([]);
+
+    const [filterInternships, setFilterInternships] = useState(true);
+    const [filterFullTime, setFilterFullTime] = useState(true);
+    const [filterRelatedSkills, setFilterRelatedSkills] = useState([]);
+    const [filterRelatedContacts, setFilterRelatedContacts] = useState([]);
+
+    const [jobItems, setJobItems] = useState([]);
 
     const handleOpen = () => {
         setJobTitle("");
@@ -74,7 +81,10 @@ function Jobs() {
     };
     const handleClose = () => setOpen(false);
 
-    const [jobItems, setJobItems] = useState([]);
+    const handleFilterOpen = () => {
+        setFilterOpen(true);
+    };
+    const handleFilterClose = () => setFilterOpen(false);
 
     function handleSort(event) {
         setSort(event.target.value);
@@ -99,6 +109,11 @@ function Jobs() {
         handleClose();
     }
 
+    function handleFilterSubmit(event) {
+        event.preventDefault();
+        handleFilterClose();
+    }
+
     function handleRelatedContacts(event) {
         setRelatedContacts(event.target.value);
     }
@@ -107,78 +122,85 @@ function Jobs() {
         setRelatedSkills(event.target.value);
     }
 
-    useEffect(() => {
-        // TODO - Re-filter userJobs into filteredJobs based on filter value
-        // TODO - If filter is "", just set filteredJobs to the same as userJobs
+    function handleFilterRelatedContacts(event) {
+        setFilterRelatedContacts(event.target.value);
+    }
 
+    function handleFilterRelatedSkills(event) {
+        setFilterRelatedSkills(event.target.value);
+    }
+
+    useEffect(() => {
         // Re-sort the filteredJobs if sort or userJobs changes
-        if (sort === "Job Title: A-Z") {
-            setFilteredJobs(
-                [...filteredJobs].sort((a, b) => {
-                    if (a.jobTitle < b.jobTitle) {
-                        return -1;
-                    }
-                    if (a.jobTitle > b.jobTitle) {
-                        return 1;
-                    }
-                    return 0;
-                })
-            );
+        if (filteredJobs) {
+            if (sort === "Job Title: A-Z") {
+                setFilteredJobs(
+                    [...filteredJobs].sort((a, b) => {
+                        if (a.jobTitle < b.jobTitle) {
+                            return -1;
+                        }
+                        if (a.jobTitle > b.jobTitle) {
+                            return 1;
+                        }
+                        return 0;
+                    })
+                );
+            }
+            if (sort === "Job Title: Z-A") {
+                setFilteredJobs(
+                    [...filteredJobs].sort((a, b) => {
+                        if (a.jobTitle < b.jobTitle) {
+                            return 1;
+                        }
+                        if (a.jobTitle > b.jobTitle) {
+                            return -1;
+                        }
+                        return 0;
+                    })
+                );
+            }
+            if (sort === "Company: A-Z") {
+                setFilteredJobs(
+                    [...filteredJobs].sort((a, b) => {
+                        if (a.companyName < b.companyName) {
+                            return -1;
+                        }
+                        if (a.companyName > b.companyName) {
+                            return 1;
+                        }
+                        return 0;
+                    })
+                );
+            }
+            if (sort === "Company: Z-A") {
+                setFilteredJobs(
+                    [...filteredJobs].sort((a, b) => {
+                        if (a.companyName < b.companyName) {
+                            return 1;
+                        }
+                        if (a.companyName > b.companyName) {
+                            return -1;
+                        }
+                        return 0;
+                    })
+                );
+            }
+            if (sort === "Deadline (soonest first)") {
+                setFilteredJobs(
+                    [...filteredJobs].sort((a, b) => {
+                        return moment(a.deadline) - moment(b.deadline);
+                    })
+                );
+            }
+            if (sort === "Deadline (latest first)") {
+                setFilteredJobs(
+                    [...filteredJobs].sort((a, b) => {
+                        return moment(b.deadline) - moment(a.deadline);
+                    })
+                );
+            }
         }
-        if (sort === "Job Title: Z-A") {
-            setFilteredJobs(
-                [...filteredJobs].sort((a, b) => {
-                    if (a.jobTitle < b.jobTitle) {
-                        return 1;
-                    }
-                    if (a.jobTitle > b.jobTitle) {
-                        return -1;
-                    }
-                    return 0;
-                })
-            );
-        }
-        if (sort === "Company: A-Z") {
-            setFilteredJobs(
-                [...filteredJobs].sort((a, b) => {
-                    if (a.companyName < b.companyName) {
-                        return -1;
-                    }
-                    if (a.companyName > b.companyName) {
-                        return 1;
-                    }
-                    return 0;
-                })
-            );
-        }
-        if (sort === "Company: Z-A") {
-            setFilteredJobs(
-                [...filteredJobs].sort((a, b) => {
-                    if (a.companyName < b.companyName) {
-                        return 1;
-                    }
-                    if (a.companyName > b.companyName) {
-                        return -1;
-                    }
-                    return 0;
-                })
-            );
-        }
-        if (sort === "Deadline (soonest first)") {
-            setFilteredJobs(
-                [...filteredJobs].sort((a, b) => {
-                    return moment(a.deadline) - moment(b.deadline);
-                })
-            );
-        }
-        if (sort === "Deadline (latest first)") {
-            setFilteredJobs(
-                [...filteredJobs].sort((a, b) => {
-                    return moment(b.deadline) - moment(a.deadline);
-                })
-            );
-        }
-    }, [userJobs, filter, sort]);
+    }, [userJobs, sort]);
 
     useEffect(() => {
         setFilteredJobs(userJobs);
@@ -188,7 +210,33 @@ function Jobs() {
         setJobItems(
             filteredJobs.map((job, i) => <JobCard job={job} key={i} />)
         );
-    }, [filteredJobs]);
+    }, [filteredJobs, userJobs]);
+
+    useEffect(() => {
+        const jobsByType = userJobs.filter((job) => {
+            if (job.isInternship && filterInternships) {
+                return true;
+            }
+            if (!job.isInternship && filterFullTime) {
+                return true;
+            }
+            return false;
+        });
+
+        const jobsWithAllRelatedSkills = jobsByType.filter((job) => {
+            return filterRelatedSkills.every((skill) =>
+                job.skills.includes(skill.id)
+            );
+        });
+
+        setFilteredJobs(jobsWithAllRelatedSkills);
+    }, [
+        userJobs,
+        filterFullTime,
+        filterInternships,
+        filterRelatedSkills,
+        filterRelatedContacts,
+    ]);
 
     return (
         <Container maxWidth="lg">
@@ -198,7 +246,11 @@ function Jobs() {
                 </Grid>
                 <Grid item xs={3} sx={{ display: { sm: "none" } }}></Grid>
                 <Grid item xs={3} sm={3} textAlign="right" pr={1}>
-                    <Button variant="outlined" startIcon={<FilterAltIcon />}>
+                    <Button
+                        variant="outlined"
+                        startIcon={<FilterAltIcon />}
+                        onClick={handleFilterOpen}
+                    >
                         Filter
                     </Button>
                 </Grid>
@@ -248,7 +300,15 @@ function Jobs() {
                 </Grid>
             </Grid>
             <Grid container spacing={2}>
-                {jobItems}
+                {filteredJobs && filteredJobs.length ? (
+                    jobItems
+                ) : (
+                    <Typography variant="subtitle1">
+                        No jobs available or no jobs matching your filters!
+                        Click the Filter button to adjust your filters or click
+                        the + button to add a new job!
+                    </Typography>
+                )}
             </Grid>
 
             <Modal
@@ -400,6 +460,117 @@ function Jobs() {
                                 onClick={handleClose}
                             >
                                 Cancel
+                            </Button>
+                        </Grid>
+                    </form>
+                </Box>
+            </Modal>
+
+            <Modal
+                open={filterOpen}
+                onClose={handleFilterClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box sx={style}>
+                    <Typography
+                        id="modal-modal-title"
+                        variant="h6"
+                        component="h2"
+                        textAlign="center"
+                    >
+                        Filter Jobs
+                    </Typography>
+
+                    <form onSubmit={handleFilterSubmit}>
+                        <Box
+                            display="flex"
+                            justifyContent="space-around"
+                            mt={3}
+                        >
+                            <FormControlLabel
+                                control={<Checkbox />}
+                                label="Full-time"
+                                value={filterFullTime}
+                                checked={filterFullTime}
+                                onChange={(e) =>
+                                    setFilterFullTime(e.target.checked)
+                                }
+                            />
+                            <FormControlLabel
+                                control={<Checkbox />}
+                                label="Internships"
+                                value={filterInternships}
+                                checked={filterInternships}
+                                onChange={(e) =>
+                                    setFilterInternships(e.target.checked)
+                                }
+                            />
+                        </Box>
+
+                        <Box mt={3} display="flex" justifyContent="left">
+                            <FormControl sx={{ m: 1, width: "100%" }}>
+                                <InputLabel id="multiple-filter-name-label">
+                                    Related Contacts
+                                </InputLabel>
+                                <Select
+                                    labelId="multiple-filter-name-label"
+                                    id="multiple-filter-name"
+                                    multiple
+                                    value={filterRelatedContacts}
+                                    onChange={handleFilterRelatedContacts}
+                                    input={
+                                        <OutlinedInput label="Related Contacts" />
+                                    }
+                                    MenuProps={MenuProps}
+                                >
+                                    {userContacts.map((contact, i) => (
+                                        <MenuItem key={i} value={contact}>
+                                            {contact.name}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+                        </Box>
+
+                        <Box mt={3} display="flex" justifyContent="left">
+                            <FormControl sx={{ m: 1, width: "100%" }}>
+                                <InputLabel id="multiple-name-filter-label">
+                                    Related Skills
+                                </InputLabel>
+                                <Select
+                                    labelId="multiple-name-filter-label"
+                                    id="multiple-filter-name"
+                                    multiple
+                                    value={filterRelatedSkills}
+                                    onChange={handleFilterRelatedSkills}
+                                    input={
+                                        <OutlinedInput label="Related Skills" />
+                                    }
+                                    MenuProps={MenuProps}
+                                >
+                                    {userSkills.map((skill, i) => (
+                                        <MenuItem key={i} value={skill}>
+                                            {skill.name}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+                        </Box>
+
+                        <Grid
+                            container
+                            mt={2}
+                            alignItems="center"
+                            justifyContent="center"
+                            gap={4}
+                        >
+                            <Button
+                                variant="outlined"
+                                color="success"
+                                onClick={handleFilterClose}
+                            >
+                                Done
                             </Button>
                         </Grid>
                     </form>

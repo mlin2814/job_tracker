@@ -65,24 +65,13 @@ function JobCard({ job }) {
     const [newRelatedSkills, setNewRelatedSkills] = useState(job.skills);
     const [newRelatedContacts, setNewRelatedContacts] = useState(job.contacts);
 
-    const [relatedSkills, setRelatedSkills] = useState([]);
-    const [relatedContacts, setRelatedContacts] = useState([]);
+    const relatedSkills = userSkills
+        .filter((skill) => job.skills.includes(skill.id))
+        .map((skill) => skill.name);
 
-    // console.log({ relatedSkills, relatedContacts });
-    // console.log({ job });
-    // console.log({ newRelatedSkills });
-
-    function generateRelatedSkills() {
-        return userSkills
-            .filter((skill) => newRelatedSkills.includes(skill.id))
-            .map((skill) => skill.name);
-    }
-
-    function generateRelatedContacts() {
-        return userContacts
-            .filter((contact) => newRelatedContacts.includes(contact.id))
-            .map((contact) => contact.name);
-    }
+    const relatedContacts = userContacts
+        .filter((contact) => job.contacts.includes(contact.id))
+        .map((contact) => contact.name);
 
     function handleClick(event) {
         setAnchorEl(event.currentTarget);
@@ -142,14 +131,6 @@ function JobCard({ job }) {
         editJob(job.id, editedJob);
         handleModalClose();
     }
-
-    useEffect(() => {
-        setRelatedSkills(generateRelatedSkills());
-    }, [userJobs]);
-
-    useEffect(() => {
-        setRelatedContacts(generateRelatedContacts());
-    }, [userJobs]);
 
     return (
         <Grid item xs={12}>

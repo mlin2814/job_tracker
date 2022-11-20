@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
+import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import { useState } from "react";
 import useUserStore from "../stores/userStore.js";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
@@ -34,8 +34,31 @@ function SkillCard({ skill }) {
     const [newName, setNewName] = useState(skill.name);
     const [newComfortLevel, setNewComfortLevel] = useState(skill.comfortLevel);
 
+    const [frequency, setFrequency] = useState(0);
+
+    const userJobs = useUserStore((state) => state.jobs);
     const deleteSkill = useUserStore((state) => state.deleteSkill);
     const editSkill = useUserStore((state) => state.editSkill);
+
+    useEffect(() => {
+        // If skill.id is in the userJob's skills array, increase count
+        if (userJobs) {
+            const total = userJobs.length;
+            let count = 0;
+
+            for (const job of userJobs) {
+                if (job.skills.includes(skill.id)) {
+                    count++;
+                }
+            }
+
+            if (count) {
+                setFrequency(count / total);
+            } else {
+                setFrequency(0);
+            }
+        }
+    }, [userJobs]);
 
     const open = Boolean(anchorEl);
 
@@ -92,8 +115,17 @@ function SkillCard({ skill }) {
                         </IconButton>
                     }
                     title={skill.name}
-                    subheader={`Comfort Level: ${skill.comfortLevel}/10`}
                 />
+
+                <CardContent>
+                    <Typography variant="body2" color="text.secondary">
+                        Comfort Level: {skill.comfortLevel}/10
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                        Frequency: {(frequency * 100).toFixed(0)}%
+                    </Typography>
+                </CardContent>
+
                 <Menu
                     id="basic-menu"
                     anchorEl={anchorEl}

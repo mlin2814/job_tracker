@@ -132,7 +132,13 @@ function Contacts() {
             </Grid>
 
             <Grid container spacing={2}>
-                {contactItems}
+                {contactItems.length ? (
+                    contactItems
+                ) : (
+                    <Typography variant="subtitle1">
+                        Click the + button to add a new contact!
+                    </Typography>
+                )}
             </Grid>
 
             <Modal
