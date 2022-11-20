@@ -11,7 +11,7 @@ const JobForm = () => {
     const [description, setDescription] = useState('')
     const [location, setLocation] = useState('')
     const [deadline, setDeadline] = useState('')
-    const [skills, setSkills] = useState('')
+    const [skills, setSkills] = useState([])
     const [error, setError] = useState(null)
     const [emptyFields, setEmptyFields] = useState([])
 
@@ -108,7 +108,7 @@ const JobForm = () => {
             <input 
                 type="text" 
                 onChange={(e) => setSkills(e.target.value.split(', '))} 
-                value={skills}
+                value={skills.join(', ')}
                 className={emptyFields.includes('skills') ? 'error' : ''}
             />
         {/* <TextField name="tags" 
