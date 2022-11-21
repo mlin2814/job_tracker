@@ -1,3 +1,12 @@
+/*
+CODE CITATION
+Title: MERN Auth tutorial source code
+Author: The Net Ninja
+Date: 2022
+Type: Adapted from
+Source: https://github.com/iamshaunjp/MERN-Auth-Tutorial
+*/
+
 import { useState } from 'react'
 import { useContactsContext } from "../hooks/useContactsContext";
 import { useAuthContext } from '../hooks/useAuthContext';
@@ -21,8 +30,8 @@ const ContactForm = () => {
             return
         }
 
-        const contact = {username, email, phone, linkedin}
-        
+        const contact = { username, email, phone, linkedin }
+
         const response = await fetch('/contacts', {
             method: 'POST',
             body: JSON.stringify(contact),
@@ -45,43 +54,43 @@ const ContactForm = () => {
             setPhone('')
             setLinkedin('')
             console.log('new contact added:', json)
-            dispatch({type: 'CREATE_CONTACT', payload: json})
+            dispatch({ type: 'CREATE_CONTACT', payload: json })
         }
 
     }
 
     return (
-        <form className="create" onSubmit={handleSubmit}> 
+        <form className="create" onSubmit={handleSubmit}>
             <h3>Add a New Contact</h3>
 
             <label>Contact Name:</label>
-            <input 
-                type="text" 
-                onChange={(e) => setUsername(e.target.value)} 
+            <input
+                type="text"
+                onChange={(e) => setUsername(e.target.value)}
                 value={username}
                 className={emptyFields.includes('username') ? 'error' : ''}
             />
 
             <label>Email:</label>
-            <input 
-                type="text" 
-                onChange={(e) => setEmail(e.target.value)} 
+            <input
+                type="text"
+                onChange={(e) => setEmail(e.target.value)}
                 value={email}
                 className={emptyFields.includes('email') ? 'error' : ''}
             />
 
             <label>Phone:</label>
-            <input 
-                type="text" 
-                onChange={(e) => setPhone(e.target.value)} 
+            <input
+                type="text"
+                onChange={(e) => setPhone(e.target.value)}
                 value={phone}
                 className={emptyFields.includes('phone') ? 'error' : ''}
             />
 
             <label>LinkedIn:</label>
-            <input 
-                type="text" 
-                onChange={(e) => setLinkedin(e.target.value)} 
+            <input
+                type="text"
+                onChange={(e) => setLinkedin(e.target.value)}
                 value={linkedin}
                 className={emptyFields.includes('linkedin') ? 'error' : ''}
             />

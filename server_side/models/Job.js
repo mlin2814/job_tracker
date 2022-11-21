@@ -1,3 +1,12 @@
+/*
+CODE CITATION
+Title: MERN Auth tutorial source code
+Author: The Net Ninja
+Date: 2022
+Type: Adapted from
+Source: https://github.com/iamshaunjp/MERN-Auth-Tutorial
+*/
+
 const mongoose = require('mongoose')
 
 const jobSchema = new mongoose.Schema({
@@ -22,10 +31,6 @@ const jobSchema = new mongoose.Schema({
         required: true
     },
     skills: [String],
-    // skills: {
-    //     type: Array,
-    //     required: true
-    // }
     user_id: {
         type: String,
         required: true

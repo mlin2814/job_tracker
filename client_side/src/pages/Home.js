@@ -1,3 +1,12 @@
+/*
+CODE CITATION
+Title: MERN Auth tutorial source code
+Author: The Net Ninja
+Date: 2022
+Type: Adapted from
+Source: https://github.com/iamshaunjp/MERN-Auth-Tutorial
+*/
+
 import { useEffect } from "react";
 import { useJobsContext } from "../hooks/useJobsContext";
 import { useAuthContext } from "../hooks/useAuthContext";
@@ -8,17 +17,17 @@ import JobForm from "../components/JobForm"
 
 const Home = () => {
     const { jobs, dispatch } = useJobsContext()
-    const {user} = useAuthContext()
+    const { user } = useAuthContext()
 
     useEffect(() => {
         const fetchJobs = async () => {
             const response = await fetch('/jobs', {
-                headers: {'Authorization': `Bearer ${user.token}`},
+                headers: { 'Authorization': `Bearer ${user.token}` },
             })
             const json = await response.json()
 
             if (response.ok) {
-                dispatch({type: 'SET_JOBS', payload: json})
+                dispatch({ type: 'SET_JOBS', payload: json })
             }
         }
 
@@ -26,15 +35,15 @@ const Home = () => {
             fetchJobs()
         }
 
-        
+
     }, [dispatch, user])
 
     return (
         <div className="home">
             <div className="jobs">
-            {jobs && jobs.map(job => (
-                <JobDetails job={job} key={job._id} />
-            ))}
+                {jobs && jobs.map(job => (
+                    <JobDetails job={job} key={job._id} />
+                ))}
             </div>
             <JobForm />
         </div>

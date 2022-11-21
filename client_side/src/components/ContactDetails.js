@@ -1,3 +1,12 @@
+/*
+CODE CITATION
+Title: MERN Auth tutorial source code
+Author: The Net Ninja
+Date: 2022
+Type: Adapted from
+Source: https://github.com/iamshaunjp/MERN-Auth-Tutorial
+*/
+
 import { useState } from 'react'
 import { useContactsContext } from "../hooks/useContactsContext";
 import { useAuthContext } from '../hooks/useAuthContext';
@@ -17,13 +26,13 @@ const ContactDetails = ({ contact }) => {
         const response = await fetch('/contacts/' + contact._id, {
             method: 'DELETE',
             headers: {
-              'Authorization': `Bearer ${user.token}`
+                'Authorization': `Bearer ${user.token}`
             }
         })
         const json = await response.json()
 
         if (response.ok) {
-        dispatch({type: 'DELETE_CONTACT', payload: json})
+            dispatch({ type: 'DELETE_CONTACT', payload: json })
         }
     }
 
@@ -40,12 +49,12 @@ const ContactDetails = ({ contact }) => {
                     <span className="material-symbols-outlined card-buttons" onClick={handleDelete}>DELETE</span>
                 </div>
             </div>
-            
+
             <p><strong>Email: </strong>{contact.email}</p>
             <p><strong>Phone: </strong>{contact.phone}</p>
             <p><strong>LinkedIn: </strong>{contact.linkedin}</p>
 
-            {modalOpen && <EditContactModal setModalOpen={setModalOpen} contact={contact}/>}
+            {modalOpen && <EditContactModal setModalOpen={setModalOpen} contact={contact} />}
         </div>
     )
 }

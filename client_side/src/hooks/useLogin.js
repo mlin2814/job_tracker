@@ -1,3 +1,12 @@
+/*
+CODE CITATION
+Title: MERN Auth tutorial source code
+Author: The Net Ninja
+Date: 2022
+Type: Adapted from
+Source: https://github.com/iamshaunjp/MERN-Auth-Tutorial
+*/
+
 import { useState } from 'react'
 import { useAuthContext } from './useAuthContext'
 
@@ -12,7 +21,7 @@ export const useLogin = () => {
 
         const response = await fetch('/user/login', {
             method: 'POST',
-            headers: {'Content-Type': 'application/json'},
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email, password })
         })
         const json = await response.json()
@@ -26,7 +35,7 @@ export const useLogin = () => {
             localStorage.setItem('user', JSON.stringify(json))
 
             // update the auth context
-            dispatch({type: 'LOGIN', payload: json})
+            dispatch({ type: 'LOGIN', payload: json })
 
             // update loading state
             setIsLoading(false)

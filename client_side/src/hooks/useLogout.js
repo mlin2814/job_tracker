@@ -1,3 +1,12 @@
+/*
+CODE CITATION
+Title: MERN Auth tutorial source code
+Author: The Net Ninja
+Date: 2022
+Type: Adapted from
+Source: https://github.com/iamshaunjp/MERN-Auth-Tutorial
+*/
+
 import { useAuthContext } from './useAuthContext'
 import { useJobsContext } from "./useJobsContext";
 import { useContactsContext } from "./useContactsContext";

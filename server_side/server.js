@@ -1,3 +1,12 @@
+/*
+CODE CITATION
+Title: MERN Auth tutorial source code
+Author: The Net Ninja
+Date: 2022
+Type: Adapted from
+Source: https://github.com/iamshaunjp/MERN-Auth-Tutorial
+*/
+
 require('dotenv').config()
 
 const express = require('express')
@@ -6,10 +15,9 @@ const jobsRoutes = require('./routes/jobs')
 const contactsRoutes = require('./routes/contacts')
 const userRoutes = require('./routes/user')
 
-// express app
 const app = express()
 
-// middleware
+// Middleware
 app.use(express.json())
 
 app.use((req, res, next) => {
@@ -17,22 +25,18 @@ app.use((req, res, next) => {
   next()
 })
 
-// routes
-// app.get('/', (req, res) => {
-//   res.json({message: 'Welcome to the app'})
-// })
+// Routes
 app.use('/jobs', jobsRoutes)
 app.use('/contacts', contactsRoutes)
 app.use('/user', userRoutes)
 
 
-// connect to db
+// Connect to DB
 mongoose.connect(process.env.MONGO_DB)
   .then(() => {
-    console.log('connected to database')
-    // listen to port
+    console.log('Connected to DB')
     app.listen(process.env.PORT, () => {
-      console.log('listening for requests on port', process.env.PORT)
+      console.log('Listening on port', process.env.PORT)
     })
   })
   .catch((err) => {

@@ -1,3 +1,12 @@
+/*
+CODE CITATION
+Title: MERN Auth tutorial source code
+Author: The Net Ninja
+Date: 2022
+Type: Adapted from
+Source: https://github.com/iamshaunjp/MERN-Auth-Tutorial
+*/
+
 import { useState } from 'react'
 import { useJobsContext } from "../hooks/useJobsContext";
 import { useAuthContext } from '../hooks/useAuthContext'
@@ -13,17 +22,17 @@ const JobDetails = ({ job }) => {
         if (!user) {
             return
         }
-        
+
         const response = await fetch('/jobs/' + job._id, {
             method: 'DELETE',
             headers: {
-              'Authorization': `Bearer ${user.token}`
+                'Authorization': `Bearer ${user.token}`
             }
         })
         const json = await response.json()
 
         if (response.ok) {
-        dispatch({type: 'DELETE_JOB', payload: json})
+            dispatch({ type: 'DELETE_JOB', payload: json })
         }
     }
 
@@ -50,7 +59,7 @@ const JobDetails = ({ job }) => {
             <p><strong>Deadline: </strong>{job.deadline}</p>
             <p><strong>Skills: </strong>{jobSkillString}</p>
 
-            {modalOpen && <EditJobModal setModalOpen={setModalOpen} job={job}/>}
+            {modalOpen && <EditJobModal setModalOpen={setModalOpen} job={job} />}
         </div>
     )
 }

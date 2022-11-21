@@ -1,3 +1,12 @@
+/*
+CODE CITATION
+Title: MERN Auth tutorial source code
+Author: The Net Ninja
+Date: 2022
+Type: Adapted from
+Source: https://github.com/iamshaunjp/MERN-Auth-Tutorial
+*/
+
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { useAuthContext } from './hooks/useAuthContext'
 
@@ -17,35 +26,23 @@ function App() {
         <Navbar />
         <div className="pages">
           <Routes>
-            <Route 
-              path="/" 
-              element={user ? <Home /> : <Navigate to="/login" />} 
+            <Route
+              path="/"
+              element={user ? <Home /> : <Navigate to="/login" />}
             />
-            <Route 
-              path="/login" 
-              element={!user ? <Login /> : <Navigate to="/" />} 
+            <Route
+              path="/login"
+              element={!user ? <Login /> : <Navigate to="/" />}
             />
-            <Route 
-              path="/signup" 
-              element={!user ? <SignUp /> : <Navigate to="/" />} 
+            <Route
+              path="/signup"
+              element={!user ? <SignUp /> : <Navigate to="/" />}
             />
-            <Route 
-              path="/contacts" 
-              element={user ? <Contact /> : <Navigate to="/login" />} 
+            <Route
+              path="/contacts"
+              element={user ? <Contact /> : <Navigate to="/login" />}
             />
           </Routes>
-          {/* <Routes>
-            <Route 
-              path="/jobs" 
-              element={<Home />} 
-            />
-          </Routes> */}
-          {/* <Routes>
-            <Route 
-              path="/contacts" 
-              element={<Contact />} 
-            />
-          </Routes> */}
         </div>
       </BrowserRouter>
     </div>

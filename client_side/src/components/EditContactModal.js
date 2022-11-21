@@ -1,3 +1,12 @@
+/*
+CODE CITATION
+Title: MERN Auth tutorial source code
+Author: The Net Ninja
+Date: 2022
+Type: Adapted from
+Source: https://github.com/iamshaunjp/MERN-Auth-Tutorial
+*/
+
 import { useState } from 'react'
 import { useContactsContext } from "../hooks/useContactsContext";
 import { useAuthContext } from '../hooks/useAuthContext';
@@ -21,8 +30,8 @@ const EditContactModal = ({ setModalOpen, contact }) => {
             return
         }
 
-        const newContact = {...contact, username, email, linkedin, phone}
-        
+        const newContact = { ...contact, username, email, linkedin, phone }
+
         const response = await fetch(`/contacts/${contact._id}`, {
             method: 'PATCH',
             body: JSON.stringify(newContact),
@@ -38,7 +47,7 @@ const EditContactModal = ({ setModalOpen, contact }) => {
             setEmptyFields(json.emptyFields)
         }
         if (response.ok) {
-            dispatch({type: 'EDIT_CONTACT', payload: newContact})
+            dispatch({ type: 'EDIT_CONTACT', payload: newContact })
             setModalOpen(false)
         }
     }
@@ -49,37 +58,37 @@ const EditContactModal = ({ setModalOpen, contact }) => {
                 <div className="modal-header">
                     <h3>Edit Contact</h3>
                 </div>
-                <form className="create" onSubmit={handleSubmit}> 
+                <form className="create" onSubmit={handleSubmit}>
 
                     <label>Name:</label>
-                    <input 
-                        type="text" 
-                        onChange={(e) => setUsername(e.target.value)} 
+                    <input
+                        type="text"
+                        onChange={(e) => setUsername(e.target.value)}
                         value={username}
                         className={emptyFields.includes('username') ? 'error' : ''}
                         required
                     />
 
                     <label>Email:</label>
-                    <input 
-                        type="text" 
-                        onChange={(e) => setEmail(e.target.value)} 
+                    <input
+                        type="text"
+                        onChange={(e) => setEmail(e.target.value)}
                         value={email}
                         className={emptyFields.includes('email') ? 'error' : ''}
                     />
 
                     <label>Phone:</label>
-                    <input 
-                        type="text" 
-                        onChange={(e) => setPhone(e.target.value)} 
+                    <input
+                        type="text"
+                        onChange={(e) => setPhone(e.target.value)}
                         value={phone}
                         className={emptyFields.includes('phone') ? 'error' : ''}
                     />
 
                     <label>LinkedIn:</label>
-                    <input 
-                        type="text" 
-                        onChange={(e) => setLinkedin(e.target.value)} 
+                    <input
+                        type="text"
+                        onChange={(e) => setLinkedin(e.target.value)}
                         value={linkedin}
                         className={emptyFields.includes('linkedin') ? 'error' : ''}
                     />
@@ -88,7 +97,7 @@ const EditContactModal = ({ setModalOpen, contact }) => {
                         <button onClick={handleSubmit} type="submit">Save</button>
                         <button onClick={() => setModalOpen(false)} type="button">Cancel</button>
                     </div>
-                    
+
                     {error && <div className="error">{error}</div>}
                 </form>
             </div>

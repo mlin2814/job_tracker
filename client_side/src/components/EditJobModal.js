@@ -1,3 +1,12 @@
+/*
+CODE CITATION
+Title: MERN Auth tutorial source code
+Author: The Net Ninja
+Date: 2022
+Type: Adapted from
+Source: https://github.com/iamshaunjp/MERN-Auth-Tutorial
+*/
+
 import { useState } from 'react'
 import { useJobsContext } from "../hooks/useJobsContext";
 import { useAuthContext } from '../hooks/useAuthContext';
@@ -23,8 +32,8 @@ const EditJobModal = ({ setModalOpen, job }) => {
             return
         }
 
-        const newJob = {...job, title, company, description, location, deadline, skills}
-        
+        const newJob = { ...job, title, company, description, location, deadline, skills }
+
         const response = await fetch(`/jobs/${job._id}`, {
             method: 'PATCH',
             body: JSON.stringify(newJob),
@@ -40,7 +49,7 @@ const EditJobModal = ({ setModalOpen, job }) => {
             setEmptyFields(json.emptyFields)
         }
         if (response.ok) {
-            dispatch({type: 'EDIT_JOB', payload: newJob})
+            dispatch({ type: 'EDIT_JOB', payload: newJob })
             setModalOpen(false)
         }
     }
@@ -53,49 +62,49 @@ const EditJobModal = ({ setModalOpen, job }) => {
                 </div>
                 <form className="create" onSubmit={handleSubmit}>
                     <label>Job Title:</label>
-                    <input 
-                        type="text" 
-                        onChange={(e) => setTitle(e.target.value)} 
+                    <input
+                        type="text"
+                        onChange={(e) => setTitle(e.target.value)}
                         value={title}
                         className={emptyFields.includes('title') ? 'error' : ''}
                     />
 
                     <label>Company:</label>
-                    <input 
-                        type="text" 
-                        onChange={(e) => setCompany(e.target.value)} 
+                    <input
+                        type="text"
+                        onChange={(e) => setCompany(e.target.value)}
                         value={company}
                         className={emptyFields.includes('company') ? 'error' : ''}
                     />
 
                     <label>Description:</label>
-                    <input 
-                        type="text" 
-                        onChange={(e) => setDescription(e.target.value)} 
+                    <input
+                        type="text"
+                        onChange={(e) => setDescription(e.target.value)}
                         value={description}
                         className={emptyFields.includes('description') ? 'error' : ''}
                     />
 
                     <label>Location:</label>
-                    <input 
-                        type="text" 
-                        onChange={(e) => setLocation(e.target.value)} 
+                    <input
+                        type="text"
+                        onChange={(e) => setLocation(e.target.value)}
                         value={location}
                         className={emptyFields.includes('location') ? 'error' : ''}
                     />
 
                     <label>Deadline:</label>
-                    <input 
-                        type="text" 
-                        onChange={(e) => setDeadline(e.target.value)} 
+                    <input
+                        type="text"
+                        onChange={(e) => setDeadline(e.target.value)}
                         value={deadline}
                         className={emptyFields.includes('deadline') ? 'error' : ''}
                     />
 
                     <label>Skills:</label>
-                    <input 
-                        type="text" 
-                        onChange={(e) => setSkills(e.target.value.split(', '))} 
+                    <input
+                        type="text"
+                        onChange={(e) => setSkills(e.target.value.split(', '))}
                         value={skills.join(', ')}
                         className={emptyFields.includes('skills') ? 'error' : ''}
                     />
