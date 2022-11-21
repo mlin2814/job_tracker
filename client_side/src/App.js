@@ -48,6 +48,18 @@ function App() {
               element={user ? <Skill /> : <Navigate to="/login" />} 
             />
           </Routes>
+          {/* <Routes>
+            <Route 
+              path="/jobs" 
+              element={<Home />} 
+            />
+          </Routes> */}
+          {/* <Routes>
+            <Route 
+              path="/skills" 
+              element={user ? <Skill /> : <Navigate to="/login" />} 
+            />
+          </Routes> */}
         </div>
       </BrowserRouter>
     </div>
@@ -55,5 +67,3 @@ function App() {
 }
 
 export default App;
-
-
