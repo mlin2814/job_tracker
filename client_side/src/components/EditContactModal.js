@@ -38,7 +38,6 @@ const EditContactModal = ({ setModalOpen, contact }) => {
             setEmptyFields(json.emptyFields)
         }
         if (response.ok) {
-            console.log('contact edited:', json)
             dispatch({type: 'EDIT_CONTACT', payload: newContact})
             setModalOpen(false)
         }
@@ -50,8 +49,8 @@ const EditContactModal = ({ setModalOpen, contact }) => {
                 <div className="modal-header">
                     <h3>Edit Contact</h3>
                 </div>
-
                 <form className="create" onSubmit={handleSubmit}> 
+
                     <label>Name:</label>
                     <input 
                         type="text" 
@@ -89,6 +88,7 @@ const EditContactModal = ({ setModalOpen, contact }) => {
                         <button onClick={handleSubmit} type="submit">Save</button>
                         <button onClick={() => setModalOpen(false)} type="button">Cancel</button>
                     </div>
+                    
                     {error && <div className="error">{error}</div>}
                 </form>
             </div>

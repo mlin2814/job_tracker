@@ -56,16 +56,6 @@ header a {
   font-size: 0.9em;
   color: #555;
 }
-.job-details span {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  cursor: pointer;
-  background: #f1f1f1;
-  padding: 6px;
-  border-radius: 50%;
-  color: #333;
-}
 
 .contact {
   display: grid;
