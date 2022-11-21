@@ -46,6 +46,18 @@ const SkillForm = () => {
 
     }
 
+    const generateComfortLevelOptions = () => {
+        const options = []
+
+        for (let i = 0; i <= 10; i++) {
+            options.push(
+                <option value={i} key={i}>{i}</option>
+            )
+        }
+
+        return options
+    }
+
     return (
         <form className="create" onSubmit={handleSubmit}> 
             <h3>Add a New Skill</h3>
@@ -59,15 +71,15 @@ const SkillForm = () => {
             />
 
             <label>Comfort Level (0 - 10):</label>
-            <input 
-                type="number"
-                min="0"
-                max="10"
-                step="1"
-                onChange={(e) => setComfortLevel(e.target.value)} 
-                value={comfortLevel}
+            <select
+                name="comfortLevel"
+                id="comfortLevel"
+                defaultValue={comfortLevel}
+                onChange={(e) => setComfortLevel(parseInt(e.target.value, 10))}
                 className={emptyFields.includes('comfortLevel') ? 'error' : ''}
-            />
+            >
+                {generateComfortLevelOptions()}
+            </select>
 
             <button>Add Skill</button>
             {error && <div className="error">{error}</div>}
