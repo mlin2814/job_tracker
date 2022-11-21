@@ -14,6 +14,7 @@ import { useAuthContext } from './hooks/useAuthContext'
 import Home from './pages/Home'
 import Navbar from './components/Navbar'
 import Contact from './pages/Contact'
+import Skill from './pages/Skill'
 import Login from './pages/Login'
 import SignUp from './pages/SignUp'
 
@@ -42,7 +43,23 @@ function App() {
               path="/contacts"
               element={user ? <Contact /> : <Navigate to="/login" />}
             />
+            <Route 
+              path="/skills" 
+              element={user ? <Skill /> : <Navigate to="/login" />} 
+            />
           </Routes>
+          {/* <Routes>
+            <Route 
+              path="/jobs" 
+              element={<Home />} 
+            />
+          </Routes> */}
+          {/* <Routes>
+            <Route 
+              path="/skills" 
+              element={user ? <Skill /> : <Navigate to="/login" />} 
+            />
+          </Routes> */}
         </div>
       </BrowserRouter>
     </div>
@@ -50,5 +67,3 @@ function App() {
 }
 
 export default App;
-
-
