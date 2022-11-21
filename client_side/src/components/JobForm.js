@@ -11,7 +11,7 @@ const JobForm = () => {
     const [description, setDescription] = useState('')
     const [location, setLocation] = useState('')
     const [deadline, setDeadline] = useState('')
-    const [skills, setSkills] = useState('')
+    const [skills, setSkills] = useState([])
     const [error, setError] = useState(null)
     const [emptyFields, setEmptyFields] = useState([])
 
@@ -31,28 +31,27 @@ const JobForm = () => {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${user.token}`
+            }
+        })
+        const json = await response.json()
+
+        if (!response.ok) {
+            setError(json.error)
+            setEmptyFields(json.emptyFields)
         }
-    })
-    const json = await response.json()
-
-    if (!response.ok) {
-        setError(json.error)
-        setEmptyFields(json.emptyFields)
+        if (response.ok) {
+            setEmptyFields([])
+            setError(null)
+            setTitle('')
+            setCompany('')
+            setDescription('')
+            setLocation('')
+            setDeadline('')
+            setSkills([])
+            console.log('new job added:', json)
+            dispatch({type: 'CREATE_JOB', payload: json})
+        }
     }
-    if (response.ok) {
-        setEmptyFields([])
-        setError(null)
-        setTitle('')
-        setCompany('')
-        setDescription('')
-        setLocation('')
-        setDeadline('')
-        setSkills([])
-        console.log('new job added:', json)
-        dispatch({type: 'CREATE_JOB', payload: json})
-    }
-
-  }
 
     return (
         <form className="create" onSubmit={handleSubmit}> 
@@ -98,17 +97,11 @@ const JobForm = () => {
                 className={emptyFields.includes('deadline') ? 'error' : ''}
             />
 
-            {/* <label>Skills:</label>
-            <input 
-                type="text" 
-                onChange={(e) => setSkills(e.target.value)} 
-                value={skills}
-            /> */}
             <label>Skills:</label>
             <input 
                 type="text" 
                 onChange={(e) => setSkills(e.target.value.split(', '))} 
-                value={skills}
+                value={skills.join(', ')}
                 className={emptyFields.includes('skills') ? 'error' : ''}
             />
         {/* <TextField name="tags" 

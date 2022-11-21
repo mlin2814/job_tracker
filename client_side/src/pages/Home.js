@@ -7,7 +7,6 @@ import JobDetails from "../components/JobDetails"
 import JobForm from "../components/JobForm"
 
 const Home = () => {
-    // const [jobs, setJobs] = useState(null)
     const { jobs, dispatch } = useJobsContext()
     const {user} = useAuthContext()
 
@@ -19,7 +18,6 @@ const Home = () => {
             const json = await response.json()
 
             if (response.ok) {
-                // setJobs(json)
                 dispatch({type: 'SET_JOBS', payload: json})
             }
         }

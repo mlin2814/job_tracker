@@ -7,7 +7,6 @@ import ContactDetails from "../components/ContactDetails"
 import ContactForm from "../components/ContactForm"
 
 const Contact = () => {
-    // const [contacts, setContacts] = useState(null)
     const { contacts, dispatch } = useContactsContext()
     const {user} = useAuthContext()
 
@@ -19,7 +18,6 @@ const Contact = () => {
             const json = await response.json()
 
             if (response.ok) {
-                // setContacts(json)
                 dispatch({type: 'SET_CONTACTS', payload: json})
             }
         }
@@ -41,6 +39,5 @@ const Contact = () => {
         </div>
     )
 }
-
 
 export default Contact

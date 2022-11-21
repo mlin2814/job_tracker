@@ -1,11 +1,15 @@
+import { useState } from 'react'
 import { useJobsContext } from "../hooks/useJobsContext";
 import { useAuthContext } from '../hooks/useAuthContext'
+import EditJobModal from './EditJobModal';
 
 const JobDetails = ({ job }) => {
     const { dispatch } = useJobsContext()
     const { user } = useAuthContext()
 
-    const handleClick = async () => {
+    const [modalOpen, setModalOpen] = useState(false)
+
+    const handleDelete = async () => {
         if (!user) {
             return
         }
@@ -23,17 +27,30 @@ const JobDetails = ({ job }) => {
         }
     }
 
+    const handleEdit = async () => {
+        setModalOpen(true)
+    }
+
     const jobSkillString = job.skills.toString().replaceAll(',', ', ')
 
     return (
         <div className="job-details">
-        <h4><strong>Position: </strong>{job.title}</h4>
-        <p><strong>Company: </strong>{job.company}</p>
-        <p><strong>Description: </strong>{job.description}</p>
-        <p><strong>Location: </strong>{job.location}</p>
-        <p><strong>Deadline: </strong>{job.deadline}</p>
-        <p><strong>Skills: </strong>{jobSkillString}</p>
-        <span className="material-symbols-outlined" onClick={handleClick}>DELETE</span>
+            <div className="card-header">
+                <h4>{job.title}</h4>
+                <div className="card-button-container">
+                    <span className="material-symbols-outlined card-buttons" onClick={handleEdit}>EDIT</span>
+                    <span className="material-symbols-outlined card-buttons" onClick={handleDelete}>DELETE</span>
+                </div>
+            </div>
+
+
+            <p><strong>Company: </strong>{job.company}</p>
+            <p><strong>Description: </strong>{job.description}</p>
+            <p><strong>Location: </strong>{job.location}</p>
+            <p><strong>Deadline: </strong>{job.deadline}</p>
+            <p><strong>Skills: </strong>{jobSkillString}</p>
+
+            {modalOpen && <EditJobModal setModalOpen={setModalOpen} job={job}/>}
         </div>
     )
 }
