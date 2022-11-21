@@ -3,6 +3,7 @@ require('dotenv').config()
 const express = require('express')
 const mongoose = require('mongoose')
 const jobsRoutes = require('./routes/jobs')
+const skillsRoutes = require('./routes/skills')
 const contactsRoutes = require('./routes/contacts')
 const userRoutes = require('./routes/user')
 
@@ -22,6 +23,7 @@ app.use((req, res, next) => {
 //   res.json({message: 'Welcome to the app'})
 // })
 app.use('/jobs', jobsRoutes)
+app.use('/skills', skillsRoutes)
 app.use('/contacts', contactsRoutes)
 app.use('/user', userRoutes)
 
