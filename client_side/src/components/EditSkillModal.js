@@ -41,17 +41,6 @@ const EditSkillModal = ({ setModalOpen, skill }) => {
         }
     }
 
-    const handleComfortLevelChange = (e) => {
-        console.log(e.target.value)
-        if (e.target.value > 10) {
-            setComfortLevel(10)
-        } else if (e.target.value < 0 || e.target.value === '') {
-            setComfortLevel(0)
-        } else {
-            setComfortLevel(e.target.value)
-        }
-    }
-
     const generateComfortLevelOptions = () => {
         const options = []
 
