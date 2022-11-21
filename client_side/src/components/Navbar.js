@@ -18,8 +18,11 @@ const Navbar = () => {
         </Link>
         
         {user && (
+            <Link to="/skills"><h1>Skills</h1></Link>
+        )}
+        {user && (
             <Link to="/contacts"><h1>Contacts</h1></Link>
-          )}
+        )}
         <nav>
           {user && (
             <div>

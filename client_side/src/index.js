@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import { JobsContextProvider } from "./context/JobContext";
+import { SkillsContextProvider } from "./context/SkillContext";
 import { ContactsContextProvider } from "./context/ContactContext";
 import { AuthContextProvider } from "./context/AuthContext";
 
@@ -11,9 +12,11 @@ root.render(
   <React.StrictMode>
     <AuthContextProvider>
       <JobsContextProvider>
-        <ContactsContextProvider>
-          <App />
-        </ContactsContextProvider>
+        <SkillsContextProvider>
+          <ContactsContextProvider>
+            <App />
+          </ContactsContextProvider>
+        </SkillsContextProvider>
       </JobsContextProvider>
     </AuthContextProvider>
   </React.StrictMode>
