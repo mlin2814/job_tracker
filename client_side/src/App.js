@@ -67,7 +67,7 @@ function App() {
             fetchContacts()
         }
 
-    }, [jobsDispatch, skillsDispatch, user])
+    }, [jobsDispatch, skillsDispatch, contactsDispatch, user])
 
 
   return (
