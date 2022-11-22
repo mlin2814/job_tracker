@@ -40,7 +40,10 @@ const JobDetails = ({ job }) => {
         setModalOpen(true)
     }
 
-    const jobSkillString = job.skills.toString().replaceAll(',', ', ')
+    console.log({job})
+
+    // TODO - Update fetching of jobs to include the skills objects inside of each job (see Populate video)
+    const jobSkillString = job.skills.join(", ")
 
     return (
         <div className="job-details">

@@ -30,7 +30,7 @@ const jobSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    skills: [String],
+    skills: [{type: mongoose.Schema.Types.ObjectId, ref: "Skill"}],
     user_id: {
         type: String,
         required: true

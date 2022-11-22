@@ -8,6 +8,7 @@ Source: https://github.com/iamshaunjp/MERN-Auth-Tutorial
 */
 
 const Job = require('../models/Job')
+const Skill = require('../models/Skill')
 const mongoose = require('mongoose')
 
 // get all jobs
@@ -18,6 +19,10 @@ const getJobs = async (req, res) => {
   }).sort({
     createdAt: -1
   })
+
+    // TODO - Use 'One to Many' and 'Populate' videos as references
+    // TODO - Use Populate so frontend gets skills objects
+    // TODO - instead of just skill IDs
 
   res.status(200).json(jobs)
 }
@@ -33,6 +38,10 @@ const getJob = async (req, res) => {
       error: 'No such job'
     })
   }
+
+    // TODO - Use 'One to Many' and 'Populate' videos as references
+    // TODO - Use Populate so frontend gets skills objects
+    // TODO - instead of just skill IDs
 
   const job = await Job.findById(id)
 
@@ -93,15 +102,24 @@ const createJob = async (req, res) => {
   // add to the database
   try {
     const user_id = req.user._id
-    const job = await Job.create({
+    const job = new Job({
       title,
       company,
       description,
       location,
       deadline,
-      skills,
+      skills: [],
       user_id
     })
+
+
+    for (const skillID of skills) {
+        const skill = await Skill.findById(skillID)
+        job.skills.push(skill)
+    }
+
+    await job.save()
+
     res.status(200).json(job)
   } catch (error) {
     res.status(400).json({
@@ -152,6 +170,10 @@ const updateJob = async (req, res) => {
   }, {
     ...req.body
   })
+
+    // TODO - Use 'One to Many' and 'Populate' videos as references
+    // TODO - For Update Skill, use Populate so frontend gets skills objects
+    // TODO - instead of just skill IDs
 
   if (!job) {
     return res.status(400).json({
