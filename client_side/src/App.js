@@ -10,6 +10,7 @@ import { useEffect } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { useAuthContext } from './hooks/useAuthContext'
 import { useSkillsContext } from "./hooks/useSkillsContext";
+import { useContactsContext } from "./hooks/useContactsContext";
 import { useJobsContext } from "./hooks/useJobsContext";
 
 // pages & components
@@ -23,6 +24,7 @@ import SignUp from './pages/SignUp'
 function App() {
     const { dispatch: skillsDispatch } = useSkillsContext()
     const { dispatch: jobsDispatch } = useJobsContext()
+    const { dispatch: contactsDispatch } = useContactsContext()
     const { user } = useAuthContext()
 
     useEffect(() => {
@@ -48,9 +50,21 @@ function App() {
             }
         }
 
+        const fetchContacts = async () => {
+            const response = await fetch('/contacts', {
+                headers: { 'Authorization': `Bearer ${user.token}` },
+            })
+            const json = await response.json()
+
+            if (response.ok) {
+                contactsDispatch({ type: 'SET_CONTACTS', payload: json })
+            }
+        }
+
         if (user) {
             fetchJobs()
             fetchSkills()
+            fetchContacts()
         }
 
     }, [jobsDispatch, skillsDispatch, user])
