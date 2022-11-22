@@ -8,6 +8,7 @@ Source: https://github.com/iamshaunjp/MERN-Auth-Tutorial
 */
 
 const Job = require('../models/Job')
+const Skill = require('../models/Skill')
 const mongoose = require('mongoose')
 
 // get all jobs
@@ -15,7 +16,7 @@ const getJobs = async (req, res) => {
   const user_id = req.user._id
   const jobs = await Job.find({
     user_id
-  }).sort({
+  }).populate('skills').sort({
     createdAt: -1
   })
 
@@ -34,7 +35,7 @@ const getJob = async (req, res) => {
     })
   }
 
-  const job = await Job.findById(id)
+  const job = await Job.findById(id).populate('skills')
 
   if (!job) {
     return res.status(404).json({
@@ -55,7 +56,6 @@ const createJob = async (req, res) => {
     deadline,
     skills
   } = req.body
-  console.log(req.body)
 
   let emptyFields = []
 
@@ -93,15 +93,24 @@ const createJob = async (req, res) => {
   // add to the database
   try {
     const user_id = req.user._id
-    const job = await Job.create({
+    const job = new Job({
       title,
       company,
       description,
       location,
       deadline,
-      skills,
+      skills: [],
       user_id
     })
+
+
+    for (const skillID of skills) {
+        const skill = await Skill.findById(skillID)
+        job.skills.push(skill)
+    }
+
+    await job.save()
+
     res.status(200).json(job)
   } catch (error) {
     res.status(400).json({
@@ -124,7 +133,7 @@ const deleteJob = async (req, res) => {
 
   const job = await Job.findOneAndDelete({
     _id: id
-  })
+  }).populate('skills')
 
   if (!job) {
     return res.status(400).json({
@@ -147,11 +156,7 @@ const updateJob = async (req, res) => {
     })
   }
 
-  const job = await Job.findOneAndUpdate({
-    _id: id
-  }, {
-    ...req.body
-  })
+  const job = await Job.findOneAndUpdate({_id: id}, {...req.body}, {new: true}).populate('skills')
 
   if (!job) {
     return res.status(400).json({

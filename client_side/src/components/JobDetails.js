@@ -40,7 +40,7 @@ const JobDetails = ({ job }) => {
         setModalOpen(true)
     }
 
-    const jobSkillString = job.skills.toString().replaceAll(',', ', ')
+    const jobSkillString = job.skills.map(s => s.name).join(', ')
 
     return (
         <div className="job-details">

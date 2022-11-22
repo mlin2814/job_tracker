@@ -6,9 +6,11 @@ Date: 2022
 Type: Adapted from
 Source: https://github.com/iamshaunjp/MERN-Auth-Tutorial
 */
-
+import { useEffect } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { useAuthContext } from './hooks/useAuthContext'
+import { useSkillsContext } from "./hooks/useSkillsContext";
+import { useJobsContext } from "./hooks/useJobsContext";
 
 // pages & components
 import Home from './pages/Home'
@@ -19,7 +21,40 @@ import Login from './pages/Login'
 import SignUp from './pages/SignUp'
 
 function App() {
-  const { user } = useAuthContext()
+    const { dispatch: skillsDispatch } = useSkillsContext()
+    const { dispatch: jobsDispatch } = useJobsContext()
+    const { user } = useAuthContext()
+
+    useEffect(() => {
+        const fetchSkills = async () => {
+            const response = await fetch('/skills', {
+                headers: {'Authorization': `Bearer ${user.token}`},
+            })
+            const json = await response.json()
+    
+            if (response.ok) {
+                skillsDispatch({type: 'SET_SKILLS', payload: json})
+            }
+        }
+    
+        const fetchJobs = async () => {
+            const response = await fetch('/jobs', {
+                headers: { 'Authorization': `Bearer ${user.token}` },
+            })
+            const json = await response.json()
+    
+            if (response.ok) {
+                jobsDispatch({ type: 'SET_JOBS', payload: json })
+            }
+        }
+
+        if (user) {
+            fetchJobs()
+            fetchSkills()
+        }
+
+    }, [jobsDispatch, skillsDispatch, user])
+
 
   return (
     <div className="App">
@@ -48,18 +83,6 @@ function App() {
               element={user ? <Skill /> : <Navigate to="/login" />} 
             />
           </Routes>
-          {/* <Routes>
-            <Route 
-              path="/jobs" 
-              element={<Home />} 
-            />
-          </Routes> */}
-          {/* <Routes>
-            <Route 
-              path="/skills" 
-              element={user ? <Skill /> : <Navigate to="/login" />} 
-            />
-          </Routes> */}
         </div>
       </BrowserRouter>
     </div>

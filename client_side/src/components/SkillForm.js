@@ -7,7 +7,7 @@ const SkillForm = () => {
     const { user } = useAuthContext()
 
     const [name, setName] = useState('')
-    const [comfortLevel, setComfortLevel] = useState(0)
+    const [comfortLevel, setComfortLevel] = useState(1)
     const [error, setError] = useState(null)
     const [emptyFields, setEmptyFields] = useState([])
 
@@ -40,7 +40,6 @@ const SkillForm = () => {
             setError(null)
             setName('')
             setComfortLevel(0)
-            console.log('new skill added:', json)
             dispatch({type: 'CREATE_SKILL', payload: json})
         }
 
@@ -49,7 +48,7 @@ const SkillForm = () => {
     const generateComfortLevelOptions = () => {
         const options = []
 
-        for (let i = 0; i <= 10; i++) {
+        for (let i = 1; i <= 10; i++) {
             options.push(
                 <option value={i} key={i}>{i}</option>
             )
@@ -70,7 +69,7 @@ const SkillForm = () => {
                 className={emptyFields.includes('name') ? 'error' : ''}
             />
 
-            <label>Comfort Level (0 - 10):</label>
+            <label>Comfort Level (1 - 10):</label>
             <select
                 name="comfortLevel"
                 id="comfortLevel"

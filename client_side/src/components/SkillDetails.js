@@ -1,10 +1,12 @@
 import { useState } from 'react'
 import { useSkillsContext } from "../hooks/useSkillsContext";
+import { useJobsContext } from "../hooks/useJobsContext";
 import { useAuthContext } from '../hooks/useAuthContext';
 import EditSkillModal from './EditSkillModal';
 
 const SkillDetails = ({ skill }) => {
-    const { dispatch } = useSkillsContext()
+    const { dispatch: skillsDispatch } = useSkillsContext()
+    const { jobs, dispatch: jobsDispatch } = useJobsContext()
     const { user } = useAuthContext()
 
     const [modalOpen, setModalOpen] = useState(false)
@@ -23,7 +25,13 @@ const SkillDetails = ({ skill }) => {
         const json = await response.json()
 
         if (response.ok) {
-        dispatch({type: 'DELETE_SKILL', payload: json})
+            // Remove skill from jobs that referred to the skill
+            const updatedJobs = jobs.map(j => {
+                j.skills = j.skills.filter(s => s._id !== skill._id)
+                return j
+            })
+            jobsDispatch({type: 'SET_JOBS', payload: updatedJobs})
+            skillsDispatch({type: 'DELETE_SKILL', payload: json})
         }
     }
 
