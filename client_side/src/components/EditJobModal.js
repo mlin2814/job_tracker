@@ -10,11 +10,13 @@ Source: https://github.com/iamshaunjp/MERN-Auth-Tutorial
 import { useState } from 'react'
 import { useJobsContext } from "../hooks/useJobsContext";
 import { useSkillsContext } from "../hooks/useSkillsContext";
+import { useContactsContext } from "../hooks/useContactsContext";
 import { useAuthContext } from '../hooks/useAuthContext';
 
 const EditJobModal = ({ setModalOpen, job }) => {
     const { dispatch } = useJobsContext()
     const { skills } = useSkillsContext()
+    const { contacts } = useContactsContext()
     const { user } = useAuthContext()
 
     const [title, setTitle] = useState(job.title)
@@ -23,6 +25,7 @@ const EditJobModal = ({ setModalOpen, job }) => {
     const [location, setLocation] = useState(job.location)
     const [deadline, setDeadline] = useState(job.deadline)
     const [newSkills, setNewSkills] = useState(job.skills)
+    const [newContacts, setNewContacts] = useState(job.contacts)
     const [error, setError] = useState(null)
     const [emptyFields, setEmptyFields] = useState([])
 
@@ -34,7 +37,16 @@ const EditJobModal = ({ setModalOpen, job }) => {
             return
         }
 
-        const newJob = { ...job, title, company, description, location, deadline, skills: newSkills }
+        const newJob = { 
+            ...job, 
+            title, 
+            company, 
+            description, 
+            location, 
+            deadline, 
+            skills: newSkills, 
+            contacts: newContacts 
+        }
 
         const response = await fetch(`/jobs/${job._id}`, {
             method: 'PATCH',
@@ -69,6 +81,19 @@ const EditJobModal = ({ setModalOpen, job }) => {
         setNewSkills(selectedSkills)
     }
 
+    const handleContactsSelect = (e) => {
+        const options = e.target.options
+        const selectedContacts = []
+
+        for (const option of options) {
+            if (option.selected) {
+                selectedContacts.push(option.value)
+            }
+        }
+
+        setNewContacts(selectedContacts)
+    }
+
     const generateSkillsOptions = () => {
         const options = []
 
@@ -76,6 +101,20 @@ const EditJobModal = ({ setModalOpen, job }) => {
             for (const skill of skills) {
                 options.push(
                     <option value={skill._id} key={skill._id}>{skill.name}</option>
+                )
+            }
+        }
+
+        return options
+    }
+
+    const generateContactsOptions = () => {
+        const options = []
+
+        if (contacts) {
+            for (const contact of contacts) {
+                options.push(
+                    <option value={contact._id} key={contact._id}>{contact.username}</option>
                 )
             }
         }
@@ -140,6 +179,18 @@ const EditJobModal = ({ setModalOpen, job }) => {
                         multiple
                     >
                         {generateSkillsOptions()}
+                    </select>
+
+                    <label>Contacts:</label>
+                    <select
+                        name="contacts"
+                        id="contacts"
+                        onChange={handleContactsSelect}
+                        className={emptyFields.includes('contacts') ? 'error' : ''}
+                        defaultValue={job.contacts.map(c => c._id)}
+                        multiple
+                    >
+                        {generateContactsOptions()}
                     </select>
 
                     <div className="modal-button-container">

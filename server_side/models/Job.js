@@ -31,6 +31,7 @@ const jobSchema = new mongoose.Schema({
         required: true
     },
     skills: [{type: mongoose.Schema.Types.ObjectId, ref: "Skill"}],
+    contacts: [{type: mongoose.Schema.Types.ObjectId, ref: "Contact"}],
     user_id: {
         type: String,
         required: true

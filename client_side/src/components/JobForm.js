@@ -10,11 +10,13 @@ Source: https://github.com/iamshaunjp/MERN-Auth-Tutorial
 import { useState } from 'react'
 import { useJobsContext } from "../hooks/useJobsContext";
 import { useSkillsContext } from "../hooks/useSkillsContext";
+import { useContactsContext } from "../hooks/useContactsContext";
 import { useAuthContext } from '../hooks/useAuthContext'
 
 const JobForm = () => {
     const { dispatch } = useJobsContext()
     const { skills } = useSkillsContext()
+    const { contacts } = useContactsContext()
     const { user } = useAuthContext()
 
     const [title, setTitle] = useState('')
@@ -23,6 +25,7 @@ const JobForm = () => {
     const [location, setLocation] = useState('')
     const [deadline, setDeadline] = useState('')
     const [newSkills, setNewSkills] = useState([])
+    const [newContacts, setNewContacts] = useState([])
     const [error, setError] = useState(null)
     const [emptyFields, setEmptyFields] = useState([])
 
@@ -34,7 +37,15 @@ const JobForm = () => {
             return
         }
 
-        const newJob = { title, company, description, location, deadline, skills: newSkills }
+        const newJob = { 
+            title, 
+            company, 
+            description, 
+            location, 
+            deadline, 
+            skills: newSkills, 
+            contacts: newContacts
+        }
 
         const response = await fetch('/jobs', {
             method: 'POST',
@@ -59,7 +70,7 @@ const JobForm = () => {
             setLocation('')
             setDeadline('')
             setNewSkills([])
-            console.log('new job added:', json)
+            setNewContacts([])
             dispatch({ type: 'CREATE_JOB', payload: json })
         }
     }
@@ -84,6 +95,34 @@ const JobForm = () => {
             for (const skill of skills) {
                 options.push(
                     <option value={skill._id} key={skill._id}>{skill.name}</option>
+                )
+            }
+        }
+
+        return options
+    }
+
+    const handleContactsSelect = (e) => {
+        const options = e.target.options
+        const selectedContacts = []
+
+        for (const option of options) {
+            if (option.selected) {
+                selectedContacts.push(option.value)
+            }
+        }
+
+        setNewContacts(selectedContacts)
+    }
+
+
+    const generateContactsOptions = () => {
+        const options = []
+
+        if (contacts) {
+            for (const contact of contacts) {
+                options.push(
+                    <option value={contact._id} key={contact._id}>{contact.username}</option>
                 )
             }
         }
@@ -146,11 +185,17 @@ const JobForm = () => {
                 {generateSkillsOptions()}
             </select>
 
-            {/* <TextField name="tags" 
-        variant="outlined" 
-        label="Tags (coma separated)" 
-        fullWidth value={postData.tags} 
-        onChange={(e) => setPostData({ ...postData, tags: e.target.value.split(',') })} /> */}
+            <label>Contacts:</label>
+            <select
+                name="contacts"
+                id="contacts"
+                onChange={handleContactsSelect}
+                className={emptyFields.includes('contacts') ? 'error' : ''}
+                multiple
+            >
+                {generateContactsOptions()}
+            </select>
+
             <button>Add Job</button>
             {error && <div className="error">{error}</div>}
         </form>

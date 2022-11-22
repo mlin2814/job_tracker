@@ -9,6 +9,7 @@ Source: https://github.com/iamshaunjp/MERN-Auth-Tutorial
 
 const Job = require('../models/Job')
 const Skill = require('../models/Skill')
+const Contact = require('../models/Contact')
 const mongoose = require('mongoose')
 
 // get all jobs
@@ -16,7 +17,7 @@ const getJobs = async (req, res) => {
   const user_id = req.user._id
   const jobs = await Job.find({
     user_id
-  }).populate('skills').sort({
+  }).populate(['skills', 'contacts']).sort({
     createdAt: -1
   })
 
@@ -35,7 +36,7 @@ const getJob = async (req, res) => {
     })
   }
 
-  const job = await Job.findById(id).populate('skills')
+  const job = await Job.findById(id).populate(['skills', 'contacts'])
 
   if (!job) {
     return res.status(404).json({
@@ -54,7 +55,8 @@ const createJob = async (req, res) => {
     description,
     location,
     deadline,
-    skills
+    skills,
+    contacts
   } = req.body
 
   let emptyFields = []
@@ -83,6 +85,10 @@ const createJob = async (req, res) => {
     emptyFields.push('skills')
   }
 
+  if (!contacts) {
+    emptyFields.push('contacts')
+  }
+
   if (emptyFields.length > 0) {
     return res.status(400).json({
       error: 'Please fill in all fields',
@@ -100,13 +106,20 @@ const createJob = async (req, res) => {
       location,
       deadline,
       skills: [],
+      contacts: [],
       user_id
     })
 
-
+    // Convert skills array of strings into skills array of ObjectIDs
     for (const skillID of skills) {
         const skill = await Skill.findById(skillID)
         job.skills.push(skill)
+    }
+
+    // Convert contacts array of strings into contacts array of ObjectIDs
+    for (const contactID of contacts) {
+        const contact = await Contact.findById(contactID)
+        job.contacts.push(contact)
     }
 
     await job.save()
@@ -133,7 +146,7 @@ const deleteJob = async (req, res) => {
 
   const job = await Job.findOneAndDelete({
     _id: id
-  }).populate('skills')
+  }).populate(['skills', 'contacts'])
 
   if (!job) {
     return res.status(400).json({
@@ -156,7 +169,7 @@ const updateJob = async (req, res) => {
     })
   }
 
-  const job = await Job.findOneAndUpdate({_id: id}, {...req.body}, {new: true}).populate('skills')
+  const job = await Job.findOneAndUpdate({_id: id}, {...req.body}, {new: true}).populate(['skills', 'contacts'])
 
   if (!job) {
     return res.status(400).json({
