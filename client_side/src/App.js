@@ -31,24 +31,18 @@ function App() {
                 headers: {'Authorization': `Bearer ${user.token}`},
             })
             const json = await response.json()
-
+    
             if (response.ok) {
                 skillsDispatch({type: 'SET_SKILLS', payload: json})
             }
         }
-        
-        if (user) {
-            fetchSkills()
-        }
-    }, [skillsDispatch, user])
-
-    useEffect(() => {
+    
         const fetchJobs = async () => {
             const response = await fetch('/jobs', {
                 headers: { 'Authorization': `Bearer ${user.token}` },
             })
             const json = await response.json()
-
+    
             if (response.ok) {
                 jobsDispatch({ type: 'SET_JOBS', payload: json })
             }
@@ -56,10 +50,11 @@ function App() {
 
         if (user) {
             fetchJobs()
+            fetchSkills()
         }
 
+    }, [jobsDispatch, skillsDispatch, user])
 
-    }, [jobsDispatch, user])
 
   return (
     <div className="App">
@@ -88,18 +83,6 @@ function App() {
               element={user ? <Skill /> : <Navigate to="/login" />} 
             />
           </Routes>
-          {/* <Routes>
-            <Route 
-              path="/jobs" 
-              element={<Home />} 
-            />
-          </Routes> */}
-          {/* <Routes>
-            <Route 
-              path="/skills" 
-              element={user ? <Skill /> : <Navigate to="/login" />} 
-            />
-          </Routes> */}
         </div>
       </BrowserRouter>
     </div>

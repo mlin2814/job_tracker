@@ -51,7 +51,7 @@ const EditJobModal = ({ setModalOpen, job }) => {
             setEmptyFields(json.emptyFields)
         }
         if (response.ok) {
-            dispatch({ type: 'EDIT_JOB', payload: newJob })
+            dispatch({ type: 'EDIT_JOB', payload: json })
             setModalOpen(false)
         }
     }
@@ -136,7 +136,7 @@ const EditJobModal = ({ setModalOpen, job }) => {
                         id="skills"
                         onChange={handleSkillsSelect}
                         className={emptyFields.includes('skills') ? 'error' : ''}
-                        defaultValue={job.skills}
+                        defaultValue={job.skills.map(s => s._id)}
                         multiple
                     >
                         {generateSkillsOptions()}

@@ -1,9 +1,11 @@
 import { useState } from 'react'
 import { useSkillsContext } from "../hooks/useSkillsContext";
+import { useJobsContext } from "../hooks/useJobsContext";
 import { useAuthContext } from '../hooks/useAuthContext';
 
 const EditSkillModal = ({ setModalOpen, skill }) => {
-    const { dispatch } = useSkillsContext()
+    const { dispatch: skillsDispatch } = useSkillsContext()
+    const { jobs, dispatch: jobsDispatch } = useJobsContext()
     const { user } = useAuthContext()
 
     const [name, setName] = useState(skill.name)
@@ -36,7 +38,19 @@ const EditSkillModal = ({ setModalOpen, skill }) => {
             setEmptyFields(json.emptyFields)
         }
         if (response.ok) {
-            dispatch({type: 'EDIT_SKILL', payload: newSkill})
+            // Edit skill in any job that referred to the skill
+            const updatedJobs = jobs.map(j => {
+                j.skills = j.skills.map(s => {
+                    if (s._id === skill._id) {
+                        return {...s, name, comfortLevel}
+                    } else {
+                        return s
+                    }
+                })
+                return j
+            })
+            jobsDispatch({type: 'SET_JOBS', payload: updatedJobs})
+            skillsDispatch({type: 'EDIT_SKILL', payload: newSkill})
             setModalOpen(false)
         }
     }
@@ -44,7 +58,7 @@ const EditSkillModal = ({ setModalOpen, skill }) => {
     const generateComfortLevelOptions = () => {
         const options = []
 
-        for (let i = 0; i <= 10; i++) {
+        for (let i = 1; i <= 10; i++) {
             options.push(
                 <option value={i} key={i}>{i}</option>
             )
@@ -70,7 +84,7 @@ const EditSkillModal = ({ setModalOpen, skill }) => {
                         required
                     />
 
-                    <label>Comfort Level (0 - 10):</label>
+                    <label>Comfort Level (1 - 10):</label>
                     <select
                         name="comfortLevel"
                         id="comfortLevel"

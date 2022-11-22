@@ -16,13 +16,9 @@ const getJobs = async (req, res) => {
   const user_id = req.user._id
   const jobs = await Job.find({
     user_id
-  }).sort({
+  }).populate('skills').sort({
     createdAt: -1
   })
-
-    // TODO - Use 'One to Many' and 'Populate' videos as references
-    // TODO - Use Populate so frontend gets skills objects
-    // TODO - instead of just skill IDs
 
   res.status(200).json(jobs)
 }
@@ -39,11 +35,7 @@ const getJob = async (req, res) => {
     })
   }
 
-    // TODO - Use 'One to Many' and 'Populate' videos as references
-    // TODO - Use Populate so frontend gets skills objects
-    // TODO - instead of just skill IDs
-
-  const job = await Job.findById(id)
+  const job = await Job.findById(id).populate('skills')
 
   if (!job) {
     return res.status(404).json({
@@ -64,7 +56,6 @@ const createJob = async (req, res) => {
     deadline,
     skills
   } = req.body
-  console.log(req.body)
 
   let emptyFields = []
 
@@ -142,7 +133,7 @@ const deleteJob = async (req, res) => {
 
   const job = await Job.findOneAndDelete({
     _id: id
-  })
+  }).populate('skills')
 
   if (!job) {
     return res.status(400).json({
@@ -165,15 +156,7 @@ const updateJob = async (req, res) => {
     })
   }
 
-  const job = await Job.findOneAndUpdate({
-    _id: id
-  }, {
-    ...req.body
-  })
-
-    // TODO - Use 'One to Many' and 'Populate' videos as references
-    // TODO - For Update Skill, use Populate so frontend gets skills objects
-    // TODO - instead of just skill IDs
+  const job = await Job.findOneAndUpdate({_id: id}, {...req.body}, {new: true}).populate('skills')
 
   if (!job) {
     return res.status(400).json({
