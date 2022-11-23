@@ -7,14 +7,23 @@ Type: Adapted from
 Source: https://github.com/iamshaunjp/MERN-Auth-Tutorial
 */
 
+import { useState, useEffect } from 'react'
 import { useJobsContext } from "../hooks/useJobsContext";
 
 // components
 import JobDetails from "../components/JobDetails"
 import JobForm from "../components/JobForm"
+import FilterForm from "../components/FilterForm"
 
 const Home = () => {
     const { jobs } = useJobsContext()
+    const [filteredJobs, setFilteredJobs] = useState([])
+    const [filters, setFilters] = useState()
+
+    useEffect(() => {
+        console.log("Filters updated. Time to filter jobs into filteredJobs.")
+    }, [filters])
+    
 
     return (
         <div className="home">
@@ -23,7 +32,10 @@ const Home = () => {
                     <JobDetails job={job} key={job._id} />
                 ))}
             </div>
-            <JobForm />
+            <div>
+                <FilterForm setFilters={setFilters} />
+                <JobForm />
+            </div>
         </div>
     )
 }
