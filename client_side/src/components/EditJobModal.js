@@ -12,6 +12,7 @@ import { useJobsContext } from "../hooks/useJobsContext";
 import { useSkillsContext } from "../hooks/useSkillsContext";
 import { useContactsContext } from "../hooks/useContactsContext";
 import { useAuthContext } from '../hooks/useAuthContext';
+import Select from 'react-select';
 
 const EditJobModal = ({ setModalOpen, job }) => {
     const { dispatch } = useJobsContext()
@@ -21,13 +22,20 @@ const EditJobModal = ({ setModalOpen, job }) => {
 
     const [title, setTitle] = useState(job.title)
     const [company, setCompany] = useState(job.company)
-    const [description, setDescription] = useState(job.description)
     const [location, setLocation] = useState(job.location)
+    const [type, setType] = useState({value: job.type, label: job.type})
+    const [description, setDescription] = useState(job.description)
+    const [newSkills, setNewSkills] = useState(job.skills.map(s => ({value: s._id, label: s.name})))
+    const [newContacts, setNewContacts] = useState(job.contacts.map(c => ({value: c._id, label: c.username})))
     const [deadline, setDeadline] = useState(job.deadline)
-    const [newSkills, setNewSkills] = useState(job.skills)
-    const [newContacts, setNewContacts] = useState(job.contacts)
     const [error, setError] = useState(null)
+
     const [emptyFields, setEmptyFields] = useState([])
+
+    const typeOptions = [
+        {value: "Full-time", label: "Full-time"},
+        {value: "Internship", label: "Internship"}
+    ]
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -44,8 +52,8 @@ const EditJobModal = ({ setModalOpen, job }) => {
             description, 
             location, 
             deadline, 
-            skills: newSkills, 
-            contacts: newContacts 
+            skills: newSkills.map(s => s.value), 
+            contacts: newContacts.map(c => c.value)
         }
 
         const response = await fetch(`/jobs/${job._id}`, {
@@ -68,39 +76,13 @@ const EditJobModal = ({ setModalOpen, job }) => {
         }
     }
 
-    const handleSkillsSelect = (e) => {
-        const options = e.target.options
-        const selectedSkills = []
-
-        for (const option of options) {
-            if (option.selected) {
-                selectedSkills.push(option.value)
-            }
-        }
-
-        setNewSkills(selectedSkills)
-    }
-
-    const handleContactsSelect = (e) => {
-        const options = e.target.options
-        const selectedContacts = []
-
-        for (const option of options) {
-            if (option.selected) {
-                selectedContacts.push(option.value)
-            }
-        }
-
-        setNewContacts(selectedContacts)
-    }
-
     const generateSkillsOptions = () => {
         const options = []
 
         if (skills) {
             for (const skill of skills) {
                 options.push(
-                    <option value={skill._id} key={skill._id}>{skill.name}</option>
+                    {value: skill._id, label: skill.name}
                 )
             }
         }
@@ -114,7 +96,7 @@ const EditJobModal = ({ setModalOpen, job }) => {
         if (contacts) {
             for (const contact of contacts) {
                 options.push(
-                    <option value={contact._id} key={contact._id}>{contact.username}</option>
+                    {value: contact._id, label: contact.username}
                 )
             }
         }
@@ -145,20 +127,27 @@ const EditJobModal = ({ setModalOpen, job }) => {
                         className={emptyFields.includes('company') ? 'error' : ''}
                     />
 
-                    <label>Description:</label>
-                    <input
-                        type="text"
-                        onChange={(e) => setDescription(e.target.value)}
-                        value={description}
-                        className={emptyFields.includes('description') ? 'error' : ''}
-                    />
-
                     <label>Location:</label>
                     <input
                         type="text"
                         onChange={(e) => setLocation(e.target.value)}
                         value={location}
                         className={emptyFields.includes('location') ? 'error' : ''}
+                    />
+
+                    <label>Type:</label>
+                    <Select
+                        value={type}
+                        onChange={setType}
+                        options={typeOptions}
+                        className="input-select"
+                    />
+
+                    <label>Description:</label>
+                    <textarea
+                        onChange={(e) => setDescription(e.target.value)}
+                        value={description}
+                        className={emptyFields.includes('description') ? 'error' : ''}
                     />
 
                     <label>Deadline:</label>
@@ -170,28 +159,22 @@ const EditJobModal = ({ setModalOpen, job }) => {
                     />
 
                     <label>Skills:</label>
-                    <select
-                        name="skills"
-                        id="skills"
-                        onChange={handleSkillsSelect}
-                        className={emptyFields.includes('skills') ? 'error' : ''}
-                        defaultValue={job.skills.map(s => s._id)}
-                        multiple
-                    >
-                        {generateSkillsOptions()}
-                    </select>
+                    <Select
+                        value={newSkills}
+                        onChange={setNewSkills}
+                        options={generateSkillsOptions()}
+                        isMulti={true}
+                        className="input-select"
+                    />
 
                     <label>Contacts:</label>
-                    <select
-                        name="contacts"
-                        id="contacts"
-                        onChange={handleContactsSelect}
-                        className={emptyFields.includes('contacts') ? 'error' : ''}
-                        defaultValue={job.contacts.map(c => c._id)}
-                        multiple
-                    >
-                        {generateContactsOptions()}
-                    </select>
+                    <Select
+                        value={newContacts}
+                        onChange={setNewContacts}
+                        options={generateContactsOptions()}
+                        isMulti={true}
+                        className="input-select"
+                    />
 
                     <div className="modal-button-container">
                         <button onClick={handleSubmit} type="submit">Save</button>

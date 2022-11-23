@@ -20,8 +20,10 @@ const Home = () => {
     const [filteredJobs, setFilteredJobs] = useState([])
     const [filters, setFilters] = useState()
 
+    // console.log({jobs})
+
     useEffect(() => {
-        console.log("Filters updated. Time to filter jobs into filteredJobs.")
+        // console.log(filters)
     }, [filters])
     
 

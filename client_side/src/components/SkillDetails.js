@@ -61,7 +61,7 @@ const SkillDetails = ({ skill }) => {
     }
 
     return (
-        <div className="contact-details">
+        <div className="skill-details">
             <div className="card-header">
                 <h4>{skill.name}</h4>
                 <div className="card-button-container">

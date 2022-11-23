@@ -55,6 +55,7 @@ const createJob = async (req, res) => {
     description,
     location,
     deadline,
+    type,
     skills,
     contacts
   } = req.body
@@ -81,6 +82,10 @@ const createJob = async (req, res) => {
     emptyFields.push('deadline')
   }
 
+  if (!type) {
+    emptyFields.push('type')
+  }
+
   if (!skills) {
     emptyFields.push('skills')
   }
@@ -105,6 +110,7 @@ const createJob = async (req, res) => {
       description,
       location,
       deadline,
+      type,
       skills: [],
       contacts: [],
       user_id

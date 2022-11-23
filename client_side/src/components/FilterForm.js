@@ -11,30 +11,23 @@ import { useState, useEffect } from 'react'
 import { useJobsContext } from "../hooks/useJobsContext";
 import { useSkillsContext } from "../hooks/useSkillsContext";
 import { useContactsContext } from "../hooks/useContactsContext";
+import Select from 'react-select';
 
 const JobForm = ({ setFilters }) => {
     const { jobs } = useJobsContext()
     const { skills } = useSkillsContext()
     const { contacts } = useContactsContext()
 
-    const [jobType, setJobType] = useState('All')
+    const [type, setType] = useState([])
     const [selectedCompanies, setSelectedCompanies] = useState([])
     const [selectedLocations, setSelectedLocations] = useState([])
     const [selectedSkills, setSelectedSkills] = useState([])
     const [selectedContacts, setSelectedContacts] = useState([])
 
-    const handleCompanySelect = (e) => {
-        const options = e.target.options
-        const newSelectedCompanies = []
-
-        for (const option of options) {
-            if (option.selected) {
-                newSelectedCompanies.push(option.value)
-            }
-        }
-
-        setSelectedCompanies(newSelectedCompanies)
-    }
+    const typeOptions = [
+        {value: "Full-time", label: "Full-time"},
+        {value: "Internship", label: "Internship"}
+    ]
 
     const generateCompanyOptions = () => {
         const options = []
@@ -45,26 +38,13 @@ const JobForm = ({ setFilters }) => {
                 if (!companies.includes(job.company.toLowerCase())) {
                     companies.push(job.company.toLowerCase())
                     options.push(
-                        <option value={job.company} key={job._id}>{job.company}</option>
+                        {value: job.company, label: job.company}
                     )
                 }
             }
         }
 
         return options
-    }
-
-    const handleLocationSelect = (e) => {
-        const options = e.target.options
-        const newSelectedLocations = []
-
-        for (const option of options) {
-            if (option.selected) {
-                newSelectedLocations.push(option.value)
-            }
-        }
-
-        setSelectedLocations(newSelectedLocations)
     }
 
     const generateLocationOptions = () => {
@@ -76,7 +56,7 @@ const JobForm = ({ setFilters }) => {
                 if (!locations.includes(job.location.toLowerCase())) {
                     locations.push(job.location.toLowerCase())
                     options.push(
-                        <option value={job.location} key={job._id}>{job.location}</option>
+                        {value: job.location, label: job.location}
                     )
                 }
             }
@@ -85,26 +65,13 @@ const JobForm = ({ setFilters }) => {
         return options
     }
 
-    const handleSkillsSelect = (e) => {
-        const options = e.target.options
-        const newSelectedSkills = []
-
-        for (const option of options) {
-            if (option.selected) {
-                newSelectedSkills.push(option.value)
-            }
-        }
-
-        setSelectedSkills(newSelectedSkills)
-    }
-
     const generateSkillsOptions = () => {
         const options = []
 
         if (skills) {
             for (const skill of skills) {
                 options.push(
-                    <option value={skill._id} key={skill._id}>{skill.name}</option>
+                    {value: skill._id, label: skill.name}
                 )
             }
         }
@@ -112,27 +79,13 @@ const JobForm = ({ setFilters }) => {
         return options
     }
 
-    const handleContactsSelect = (e) => {
-        const options = e.target.options
-        const newSelectedContacts = []
-
-        for (const option of options) {
-            if (option.selected) {
-                newSelectedContacts.push(option.value)
-            }
-        }
-
-        setSelectedContacts(newSelectedContacts)
-    }
-
-
     const generateContactsOptions = () => {
         const options = []
 
         if (contacts) {
             for (const contact of contacts) {
                 options.push(
-                    <option value={contact._id} key={contact._id}>{contact.username}</option>
+                    {value: contact._id, label: contact.username}
                 )
             }
         }
@@ -141,63 +94,57 @@ const JobForm = ({ setFilters }) => {
     }
 
     useEffect(() => {
-        setFilters({ jobType, selectedCompanies, selectedLocations, selectedSkills, selectedContacts })
-    }, [jobType, selectedCompanies, selectedLocations, selectedSkills, selectedContacts])
+        setFilters({ type, selectedCompanies, selectedLocations, selectedSkills, selectedContacts })
+    }, [type, selectedCompanies, selectedLocations, selectedSkills, selectedContacts])
 
     return (
         <form className="create">
             <h3>Filter Jobs</h3>
 
-            <label>Job Type:</label>
-            <select
-                name="type"
-                id="type"
-                onChange={(e) => setJobType(e.target.value)}
-            >
-                <option value="All">All</option>
-                <option value="Full-time">Full-time</option>
-                <option value="Internships">Internships</option>
-            </select>
-
             <label>Company:</label>
-            <select
-                name="company"
-                id="company"
-                onChange={handleCompanySelect}
-                multiple
-            >
-                {generateCompanyOptions()}
-            </select>
+            <Select
+                defaultValue={selectedCompanies}
+                onChange={setSelectedCompanies}
+                options={generateCompanyOptions()}
+                isMulti={true}
+                className="input-select"
+            />
 
             <label>Location:</label>
-            <select
-                name="location"
-                id="location"
-                onChange={handleLocationSelect}
-                multiple
-            >
-                {generateLocationOptions()}
-            </select>
+            <Select
+                defaultValue={selectedLocations}
+                onChange={setSelectedLocations}
+                options={generateLocationOptions()}
+                isMulti={true}
+                className="input-select"
+            />
+
+            <label>Type:</label>
+            <Select
+                defaultValue={type}
+                onChange={setType}
+                options={typeOptions}
+                isMulti={true}
+                className="input-select"
+            />
 
             <label>Skills:</label>
-            <select
-                name="skills"
-                id="skills"
-                onChange={handleSkillsSelect}
-                multiple
-            >
-                {generateSkillsOptions()}
-            </select>
+            <Select
+                defaultValue={selectedSkills}
+                onChange={setSelectedSkills}
+                options={generateSkillsOptions()}
+                isMulti={true}
+                className="input-select"
+            />
 
             <label>Contacts:</label>
-            <select
-                name="contacts"
-                id="contacts"
-                onChange={handleContactsSelect}
-                multiple
-            >
-                {generateContactsOptions()}
-            </select>
+            <Select
+                defaultValue={selectedContacts}
+                onChange={setSelectedContacts}
+                options={generateContactsOptions()}
+                isMulti={true}
+                className="input-select"
+            />
         </form>
     )
 }

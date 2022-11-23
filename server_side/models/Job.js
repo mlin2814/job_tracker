@@ -30,6 +30,11 @@ const jobSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    type: {
+        type: String,
+        enum: ['Full-time', 'Internship'],
+        required: true
+    },
     skills: [{type: mongoose.Schema.Types.ObjectId, ref: "Skill"}],
     contacts: [{type: mongoose.Schema.Types.ObjectId, ref: "Contact"}],
     user_id: {

@@ -37,7 +37,7 @@ const createSkill = async (req, res) => {
     emptyFields.push('name')
   }
 
-  if (!comfortLevel) {
+  if (!req.body.hasOwnProperty('comfortLevel')) {
     emptyFields.push('comfortLevel')
   }
 

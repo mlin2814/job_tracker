@@ -12,6 +12,7 @@ import { useJobsContext } from "../hooks/useJobsContext";
 import { useSkillsContext } from "../hooks/useSkillsContext";
 import { useContactsContext } from "../hooks/useContactsContext";
 import { useAuthContext } from '../hooks/useAuthContext'
+import Select from 'react-select';
 
 const JobForm = () => {
     const { dispatch } = useJobsContext()
@@ -21,11 +22,13 @@ const JobForm = () => {
 
     const [title, setTitle] = useState('')
     const [company, setCompany] = useState('')
-    const [description, setDescription] = useState('')
     const [location, setLocation] = useState('')
-    const [deadline, setDeadline] = useState('')
+    const [type, setType] = useState({value: "Full-time", label: "Full-time"})
+    const [description, setDescription] = useState('')
     const [newSkills, setNewSkills] = useState([])
     const [newContacts, setNewContacts] = useState([])
+    const [deadline, setDeadline] = useState('')
+
     const [error, setError] = useState(null)
     const [emptyFields, setEmptyFields] = useState([])
 
@@ -40,11 +43,12 @@ const JobForm = () => {
         const newJob = { 
             title, 
             company, 
+            location,
+            type: type.value, 
             description, 
-            location, 
-            deadline, 
-            skills: newSkills, 
-            contacts: newContacts
+            skills: newSkills.map(s => s.value), 
+            contacts: newContacts.map(c => c.value),
+            deadline
         }
 
         const response = await fetch('/jobs', {
@@ -66,8 +70,9 @@ const JobForm = () => {
             setError(null)
             setTitle('')
             setCompany('')
-            setDescription('')
             setLocation('')
+            setType({value: "Full-time", label: "Full-time"})
+            setDescription('')
             setDeadline('')
             setNewSkills([])
             setNewContacts([])
@@ -75,18 +80,10 @@ const JobForm = () => {
         }
     }
 
-    const handleSkillsSelect = (e) => {
-        const options = e.target.options
-        const selectedSkills = []
-
-        for (const option of options) {
-            if (option.selected) {
-                selectedSkills.push(option.value)
-            }
-        }
-
-        setNewSkills(selectedSkills)
-    }
+    const typeOptions = [
+        {value: "Full-time", label: "Full-time"},
+        {value: "Internship", label: "Internship"}
+    ]
 
     const generateSkillsOptions = () => {
         const options = []
@@ -94,7 +91,7 @@ const JobForm = () => {
         if (skills) {
             for (const skill of skills) {
                 options.push(
-                    <option value={skill._id} key={skill._id}>{skill.name}</option>
+                    {value: skill._id, label: skill.name}
                 )
             }
         }
@@ -102,27 +99,13 @@ const JobForm = () => {
         return options
     }
 
-    const handleContactsSelect = (e) => {
-        const options = e.target.options
-        const selectedContacts = []
-
-        for (const option of options) {
-            if (option.selected) {
-                selectedContacts.push(option.value)
-            }
-        }
-
-        setNewContacts(selectedContacts)
-    }
-
-
     const generateContactsOptions = () => {
         const options = []
 
         if (contacts) {
             for (const contact of contacts) {
                 options.push(
-                    <option value={contact._id} key={contact._id}>{contact.username}</option>
+                    {value: contact._id, label: contact.username}
                 )
             }
         }
@@ -150,20 +133,45 @@ const JobForm = () => {
                 className={emptyFields.includes('company') ? 'error' : ''}
             />
 
-            <label>Description:</label>
-            <input
-                type="text"
-                onChange={(e) => setDescription(e.target.value)}
-                value={description}
-                className={emptyFields.includes('description') ? 'error' : ''}
-            />
-
             <label>Location:</label>
             <input
                 type="text"
                 onChange={(e) => setLocation(e.target.value)}
                 value={location}
                 className={emptyFields.includes('location') ? 'error' : ''}
+            />
+
+            <label>Type:</label>
+            <Select
+                value={type}
+                onChange={setType}
+                options={typeOptions}
+                className="input-select"
+            />
+
+            <label>Description:</label>
+            <textarea
+                onChange={(e) => setDescription(e.target.value)}
+                value={description}
+                className={emptyFields.includes('description') ? 'error' : ''}
+            />
+
+            <label>Skills:</label>
+            <Select
+                value={newSkills}
+                onChange={setNewSkills}
+                options={generateSkillsOptions()}
+                isMulti={true}
+                className="input-select"
+            />
+
+            <label>Contacts:</label>
+            <Select
+                value={newContacts}
+                onChange={setNewContacts}
+                options={generateContactsOptions()}
+                isMulti={true}
+                className="input-select"
             />
 
             <label>Deadline:</label>
@@ -173,28 +181,6 @@ const JobForm = () => {
                 value={deadline}
                 className={emptyFields.includes('deadline') ? 'error' : ''}
             />
-
-            <label>Skills:</label>
-            <select
-                name="skills"
-                id="skills"
-                onChange={handleSkillsSelect}
-                className={emptyFields.includes('skills') ? 'error' : ''}
-                multiple
-            >
-                {generateSkillsOptions()}
-            </select>
-
-            <label>Contacts:</label>
-            <select
-                name="contacts"
-                id="contacts"
-                onChange={handleContactsSelect}
-                className={emptyFields.includes('contacts') ? 'error' : ''}
-                multiple
-            >
-                {generateContactsOptions()}
-            </select>
 
             <button>Add Job</button>
             {error && <div className="error">{error}</div>}

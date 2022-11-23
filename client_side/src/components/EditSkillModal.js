@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useSkillsContext } from "../hooks/useSkillsContext";
 import { useJobsContext } from "../hooks/useJobsContext";
 import { useAuthContext } from '../hooks/useAuthContext';
+import Select from 'react-select';
 
 const EditSkillModal = ({ setModalOpen, skill }) => {
     const { dispatch: skillsDispatch } = useSkillsContext()
@@ -9,7 +10,7 @@ const EditSkillModal = ({ setModalOpen, skill }) => {
     const { user } = useAuthContext()
 
     const [name, setName] = useState(skill.name)
-    const [comfortLevel, setComfortLevel] = useState(skill.comfortLevel)
+    const [comfortLevel, setComfortLevel] = useState({value: skill.comfortLevel, label: skill.comfortLevel})
     const [error, setError] = useState(null)
     const [emptyFields, setEmptyFields] = useState([])
 
@@ -58,9 +59,9 @@ const EditSkillModal = ({ setModalOpen, skill }) => {
     const generateComfortLevelOptions = () => {
         const options = []
 
-        for (let i = 1; i <= 10; i++) {
+        for (let i = 0; i <= 10; i++) {
             options.push(
-                <option value={i} key={i}>{i}</option>
+                {value: i, label: i}
             )
         }
 
@@ -84,15 +85,13 @@ const EditSkillModal = ({ setModalOpen, skill }) => {
                         required
                     />
 
-                    <label>Comfort Level (1 - 10):</label>
-                    <select
-                        name="comfortLevel"
-                        id="comfortLevel"
+                    <label>Comfort Level:</label>
+                    <Select
                         defaultValue={comfortLevel}
-                        onChange={(e) => setComfortLevel(parseInt(e.target.value, 10))}
-                    >
-                        {generateComfortLevelOptions()}
-                    </select>
+                        onChange={(selection) => setComfortLevel(selection.value)}
+                        options={generateComfortLevelOptions()}
+                        className="input-select"
+                    />
 
                     <div className="modal-button-container">
                         <button onClick={handleSubmit} type="submit">Save</button>
