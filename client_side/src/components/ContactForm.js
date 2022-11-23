@@ -53,7 +53,6 @@ const ContactForm = () => {
             setEmail('')
             setPhone('')
             setLinkedin('')
-            console.log('new contact added:', json)
             dispatch({ type: 'CREATE_CONTACT', payload: json })
         }
 

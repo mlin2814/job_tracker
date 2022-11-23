@@ -41,6 +41,7 @@ const JobDetails = ({ job }) => {
     }
 
     const jobSkillString = job.skills.map(s => s.name).join(', ')
+    const jobContactString = job.contacts.map(c => c.username).join(', ')
 
     return (
         <div className="job-details">
@@ -58,6 +59,7 @@ const JobDetails = ({ job }) => {
             <p><strong>Location: </strong>{job.location}</p>
             <p><strong>Deadline: </strong>{job.deadline}</p>
             <p><strong>Skills: </strong>{jobSkillString}</p>
+            <p><strong>Contacts: </strong>{jobContactString}</p>
 
             {modalOpen && <EditJobModal setModalOpen={setModalOpen} job={job} />}
         </div>

@@ -9,10 +9,12 @@ Source: https://github.com/iamshaunjp/MERN-Auth-Tutorial
 
 import { useState } from 'react'
 import { useContactsContext } from "../hooks/useContactsContext";
+import { useJobsContext } from "../hooks/useJobsContext";
 import { useAuthContext } from '../hooks/useAuthContext';
 
 const EditContactModal = ({ setModalOpen, contact }) => {
-    const { dispatch } = useContactsContext()
+    const { dispatch: contactsDispatch } = useContactsContext()
+    const { jobs, dispatch: jobsDispatch } = useJobsContext()
     const { user } = useAuthContext()
 
     const [username, setUsername] = useState(contact.username)
@@ -47,7 +49,19 @@ const EditContactModal = ({ setModalOpen, contact }) => {
             setEmptyFields(json.emptyFields)
         }
         if (response.ok) {
-            dispatch({ type: 'EDIT_CONTACT', payload: newContact })
+            // Edit contact in any job that referred to the contact
+            const updatedJobs = jobs.map(j => {
+                j.contacts = j.contacts.map(c => {
+                    if (c._id === contact._id) {
+                        return {...c, username, email, linkedin, phone}
+                    } else {
+                        return c
+                    }
+                })
+                return j
+            })
+            jobsDispatch({type: 'SET_JOBS', payload: updatedJobs})
+            contactsDispatch({ type: 'EDIT_CONTACT', payload: newContact })
             setModalOpen(false)
         }
     }
