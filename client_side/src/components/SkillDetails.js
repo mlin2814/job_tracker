@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useSkillsContext } from "../hooks/useSkillsContext";
 import { useJobsContext } from "../hooks/useJobsContext";
 import { useAuthContext } from '../hooks/useAuthContext';
@@ -10,6 +10,7 @@ const SkillDetails = ({ skill }) => {
     const { user } = useAuthContext()
 
     const [modalOpen, setModalOpen] = useState(false)
+    const [skillFrequency, setSkillFrequency] = useState(3)
 
     const handleDelete = async () => {
         if (!user) {
@@ -35,6 +36,26 @@ const SkillDetails = ({ skill }) => {
         }
     }
 
+    useEffect(() => {
+        // Calculate frequency that skill appears in jobs
+        if (jobs) {
+            const total = jobs.length;
+            let count = 0;
+
+            for (const job of jobs) {
+                if (job.skills.map(j => j._id).includes(skill._id)) {
+                    count++;
+                }
+            }
+
+            if (count) {
+                setSkillFrequency(count / total);
+            } else {
+                setSkillFrequency(0);
+            }
+        }
+    }, [jobs])
+
     const handleEdit = async () => {
         setModalOpen(true)
     }
@@ -50,6 +71,7 @@ const SkillDetails = ({ skill }) => {
             </div>
             
             <p><strong>Comfort Level: </strong>{skill.comfortLevel}/10</p>
+            <p><strong>Frequency: </strong>{`${(skillFrequency * 100).toFixed(0)}%`}</p>
 
             {modalOpen && <EditSkillModal setModalOpen={setModalOpen} skill={skill}/>}
         </div>
