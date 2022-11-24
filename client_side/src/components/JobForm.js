@@ -46,8 +46,8 @@ const JobForm = () => {
             location,
             type: type.value, 
             description, 
-            skills: newSkills.map(s => s.value), 
-            contacts: newContacts.map(c => c.value),
+            skills: newSkills.map(selection => selection.value), 
+            contacts: newContacts.map(selection => selection.value),
             deadline
         }
 

@@ -49,11 +49,12 @@ const EditJobModal = ({ setModalOpen, job }) => {
             ...job, 
             title, 
             company, 
+            location,
+            type: type.value,
             description, 
-            location, 
-            deadline, 
-            skills: newSkills.map(s => s.value), 
-            contacts: newContacts.map(c => c.value)
+            skills: newSkills.map(selection => selection.value), 
+            contacts: newContacts.map(selection => selection.value),
+            deadline
         }
 
         const response = await fetch(`/jobs/${job._id}`, {

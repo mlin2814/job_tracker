@@ -73,7 +73,7 @@ const SkillForm = () => {
             <label>Comfort Level:</label>
             <Select
                 defaultValue={comfortLevel}
-                onChange={(selection) => setComfortLevel(selection.value)}
+                onChange={setComfortLevel}
                 options={generateComfortLevelOptions()}
                 className="input-select"
             />

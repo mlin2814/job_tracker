@@ -22,7 +22,7 @@ const EditSkillModal = ({ setModalOpen, skill }) => {
             return
         }
 
-        const newSkill = { ...skill, name, comfortLevel }
+        const newSkill = { ...skill, name, comfortLevel: comfortLevel.value }
         
         const response = await fetch(`/skills/${skill._id}`, {
             method: 'PATCH',
@@ -88,7 +88,7 @@ const EditSkillModal = ({ setModalOpen, skill }) => {
                     <label>Comfort Level:</label>
                     <Select
                         defaultValue={comfortLevel}
-                        onChange={(selection) => setComfortLevel(selection.value)}
+                        onChange={setComfortLevel}
                         options={generateComfortLevelOptions()}
                         className="input-select"
                     />

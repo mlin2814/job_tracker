@@ -18,9 +18,9 @@ const JobForm = ({ setFilters }) => {
     const { skills } = useSkillsContext()
     const { contacts } = useContactsContext()
 
-    const [type, setType] = useState([])
     const [selectedCompanies, setSelectedCompanies] = useState([])
     const [selectedLocations, setSelectedLocations] = useState([])
+    const [selectedTypes, setSepectedTypes] = useState([])
     const [selectedSkills, setSelectedSkills] = useState([])
     const [selectedContacts, setSelectedContacts] = useState([])
 
@@ -94,8 +94,8 @@ const JobForm = ({ setFilters }) => {
     }
 
     useEffect(() => {
-        setFilters({ type, selectedCompanies, selectedLocations, selectedSkills, selectedContacts })
-    }, [type, selectedCompanies, selectedLocations, selectedSkills, selectedContacts])
+        setFilters({ selectedCompanies, selectedLocations, selectedTypes, selectedSkills, selectedContacts })
+    }, [selectedCompanies, selectedLocations, selectedTypes, selectedSkills, selectedContacts])
 
     return (
         <form className="create">
@@ -121,8 +121,8 @@ const JobForm = ({ setFilters }) => {
 
             <label>Type:</label>
             <Select
-                defaultValue={type}
-                onChange={setType}
+                defaultValue={selectedTypes}
+                onChange={setSepectedTypes}
                 options={typeOptions}
                 isMulti={true}
                 className="input-select"
