@@ -29,7 +29,6 @@ const getSkill = async (req, res) => {
 // create a new skill
 const createSkill = async (req, res) => {
   const {name, comfortLevel} = req.body
-  console.log(req.body)
 
   let emptyFields = []
 
@@ -37,7 +36,7 @@ const createSkill = async (req, res) => {
     emptyFields.push('name')
   }
 
-  if (!comfortLevel) {
+  if (!req.body.hasOwnProperty('comfortLevel')) {
     emptyFields.push('comfortLevel')
   }
 

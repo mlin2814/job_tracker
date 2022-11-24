@@ -1,13 +1,14 @@
 import { useState } from 'react'
 import { useSkillsContext } from "../hooks/useSkillsContext";
 import { useAuthContext } from '../hooks/useAuthContext';
+import Select from 'react-select';
 
 const SkillForm = () => {
     const { dispatch } = useSkillsContext()
     const { user } = useAuthContext()
 
     const [name, setName] = useState('')
-    const [comfortLevel, setComfortLevel] = useState(1)
+    const [comfortLevel, setComfortLevel] = useState({value: 0, label: 0})
     const [error, setError] = useState(null)
     const [emptyFields, setEmptyFields] = useState([])
 
@@ -19,7 +20,7 @@ const SkillForm = () => {
             return
         }
 
-        const skill = { name, comfortLevel }
+        const skill = { name, comfortLevel: comfortLevel.value }
         
         const response = await fetch('/skills', {
             method: 'POST',
@@ -39,7 +40,7 @@ const SkillForm = () => {
             setEmptyFields([])
             setError(null)
             setName('')
-            setComfortLevel(0)
+            setComfortLevel({value: 0, label: 0})
             dispatch({type: 'CREATE_SKILL', payload: json})
         }
 
@@ -48,9 +49,9 @@ const SkillForm = () => {
     const generateComfortLevelOptions = () => {
         const options = []
 
-        for (let i = 1; i <= 10; i++) {
+        for (let i = 0; i <= 10; i++) {
             options.push(
-                <option value={i} key={i}>{i}</option>
+                {value: i, label: i}
             )
         }
 
@@ -69,18 +70,15 @@ const SkillForm = () => {
                 className={emptyFields.includes('name') ? 'error' : ''}
             />
 
-            <label>Comfort Level (1 - 10):</label>
-            <select
-                name="comfortLevel"
-                id="comfortLevel"
+            <label>Comfort Level:</label>
+            <Select
                 defaultValue={comfortLevel}
-                onChange={(e) => setComfortLevel(parseInt(e.target.value, 10))}
-                className={emptyFields.includes('comfortLevel') ? 'error' : ''}
-            >
-                {generateComfortLevelOptions()}
-            </select>
+                onChange={setComfortLevel}
+                options={generateComfortLevelOptions()}
+                className="input-select"
+            />
 
-            <button>Add Skill</button>
+            <button type="submit">Add Skill</button>
             {error && <div className="error">{error}</div>}
         </form>
     )
