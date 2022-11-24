@@ -97,13 +97,22 @@ const JobForm = ({ setFilters }) => {
         setFilters({ selectedCompanies, selectedLocations, selectedTypes, selectedSkills, selectedContacts })
     }, [selectedCompanies, selectedLocations, selectedTypes, selectedSkills, selectedContacts])
 
+    useEffect(() => {
+        // If jobs are edited or deleted, reset filters so no stale filters are present
+        setSelectedCompanies([])
+        setSelectedLocations([])
+        setSepectedTypes([])
+        setSelectedSkills([])
+        setSelectedContacts([])
+    }, [jobs])
+
     return (
         <form className="create">
             <h3>Filter Jobs</h3>
 
             <label>Company:</label>
             <Select
-                defaultValue={selectedCompanies}
+                value={selectedCompanies}
                 onChange={setSelectedCompanies}
                 options={generateCompanyOptions()}
                 isMulti={true}
@@ -112,7 +121,7 @@ const JobForm = ({ setFilters }) => {
 
             <label>Location:</label>
             <Select
-                defaultValue={selectedLocations}
+                value={selectedLocations}
                 onChange={setSelectedLocations}
                 options={generateLocationOptions()}
                 isMulti={true}
@@ -121,7 +130,7 @@ const JobForm = ({ setFilters }) => {
 
             <label>Type:</label>
             <Select
-                defaultValue={selectedTypes}
+                value={selectedTypes}
                 onChange={setSepectedTypes}
                 options={typeOptions}
                 isMulti={true}
@@ -130,7 +139,7 @@ const JobForm = ({ setFilters }) => {
 
             <label>Skills:</label>
             <Select
-                defaultValue={selectedSkills}
+                value={selectedSkills}
                 onChange={setSelectedSkills}
                 options={generateSkillsOptions()}
                 isMulti={true}
@@ -139,7 +148,7 @@ const JobForm = ({ setFilters }) => {
 
             <label>Contacts:</label>
             <Select
-                defaultValue={selectedContacts}
+                value={selectedContacts}
                 onChange={setSelectedContacts}
                 options={generateContactsOptions()}
                 isMulti={true}

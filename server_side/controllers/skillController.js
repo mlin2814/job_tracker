@@ -29,7 +29,6 @@ const getSkill = async (req, res) => {
 // create a new skill
 const createSkill = async (req, res) => {
   const {name, comfortLevel} = req.body
-  console.log(req.body)
 
   let emptyFields = []
 
