@@ -95,7 +95,7 @@ const JobForm = ({ setFilters }) => {
 
     useEffect(() => {
         setFilters({ selectedCompanies, selectedLocations, selectedTypes, selectedSkills, selectedContacts })
-    }, [selectedCompanies, selectedLocations, selectedTypes, selectedSkills, selectedContacts])
+    }, [setFilters, selectedCompanies, selectedLocations, selectedTypes, selectedSkills, selectedContacts])
 
     useEffect(() => {
         // If jobs are edited or deleted, reset filters so no stale filters are present

@@ -54,7 +54,7 @@ const SkillDetails = ({ skill }) => {
                 setSkillFrequency(0);
             }
         }
-    }, [jobs])
+    }, [jobs, skill])
 
     const handleEdit = async () => {
         setModalOpen(true)
