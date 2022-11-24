@@ -51,13 +51,13 @@ const Home = () => {
                     return false
                 }
 
-                // Exclude a job if its skill IDs doesn't contain all of the skills in filters.selectedSkills
-                if (selectedSkills.length && !selectedSkills.every(id => j.skills.map(s => s._id).includes(id))) {
+                // Exclude a job if its skill IDs doesn't contain any of the skills in filters.selectedSkills
+                if (selectedSkills.length && !selectedSkills.some(id => j.skills.map(s => s._id).includes(id))) {
                     return false
                 }
 
-                // Exclude a job if its contact IDs doesn't contain all of the contacts in filters.selectedContacts
-                if (selectedContacts.length && !selectedContacts.every(id => j.contacts.map(c => c._id).includes(id))) {
+                // Exclude a job if its contact IDs doesn't contain any of the contacts in filters.selectedContacts
+                if (selectedContacts.length && !selectedContacts.some(id => j.contacts.map(c => c._id).includes(id))) {
                     return false
                 }
 
