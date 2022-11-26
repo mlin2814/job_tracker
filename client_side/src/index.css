@@ -242,3 +242,7 @@ form.signup, form.login {
   background: #fff;
   border-radius: 4px;
 }
+
+#user_email {
+  margin-right: 10px
+}
