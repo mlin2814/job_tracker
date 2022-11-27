@@ -11,6 +11,7 @@ require('dotenv').config()
 
 const express = require('express')
 const mongoose = require('mongoose')
+const path = require('path')
 const jobsRoutes = require('./routes/jobs')
 const skillsRoutes = require('./routes/skills')
 const contactsRoutes = require('./routes/contacts')
@@ -25,6 +26,12 @@ app.use((req, res, next) => {
   console.log(req.path, req.method)
   next()
 })
+
+app.use(express.static(path.join(__dirname, 'build')));
+
+app.get('/', function (req, res) {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
 
 // Routes
 app.use('/jobs', jobsRoutes)
