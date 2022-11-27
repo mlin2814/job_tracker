@@ -43,8 +43,37 @@ jobs:
       working-directory: client_side
       run: npm ci
 
+    - name: Populate Env
+      working-directory: server_side
+      run: |
+        echo '${{ secrets.ENV_FILE}}' > .env
     
     - name: Client Build
       working-directory: client_side
       run: npm run build
+
+    - name: DEBUG
+      working-directory: server_side
+      run: |
+        ls -a
+        cd build
+        cat index.html
+        cd static/js
+        ls -a
+
+    - name: Auth
+      uses: 'google-github-actions/auth@v1'
+      with:
+        credentials_json: '${{ secrets.GOOGLE_CREDENTIALS }}'
+
+    - id: 'deploy'
+      name: Deploy
+      uses: 'google-github-actions/deploy-appengine@v0'
+      with:
+        working_directory: server_side
+        deliverables: 'app.yaml'
+        project_id: '${{ secrets.GCP_PROJECT }}'
+
+    - name: 'show output'
+      run: 'echo ${{ steps.deploy.outputs.url }}'
     

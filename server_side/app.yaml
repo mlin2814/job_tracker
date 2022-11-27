@@ -1,1 +1,2 @@
 runtime: nodejs16
+default_expiration: "30s"
