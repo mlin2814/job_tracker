@@ -73,6 +73,7 @@ jobs:
         working_directory: server_side
         deliverables: 'app.yaml'
         project_id: '${{ secrets.GCP_PROJECT }}'
+        version: 'prod'
 
     - name: 'show output'
       run: 'echo ${{ steps.deploy.outputs.url }}'
